@@ -1,8 +1,11 @@
-import { StyleSheet, Text, View, Image, TextInput } from 'react-native'
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-function Changepassfield() {
+function Changepassfield(propschangepassfield) {
+
+  const stack = propschangepassfield.stack;
+
   return (
     <View>
       <View style={{
@@ -70,64 +73,79 @@ function Changepassfield() {
           }}
         />
       </View>
-      <BottomButtons3 />
+      <BottomButtons3 stack={stack} />
     </View>
   )
 }
 
-function BottomButtons3() {
+function BottomButtons3(propsbottombuttons3) {
+
+  const stack = propsbottombuttons3.stack;
+
+  function gotoeditacc(){
+    stack.navigate('Editacc')
+  }
+
   return (
+    <View style={{
+      flexDirection: 'row',
+      marginHorizontal: 20,
+      marginBottom: 112,
+    }}>
+
+      <TouchableOpacity onPress={gotoeditacc}>
       <View style={{
-          flexDirection: 'row',
-          marginHorizontal: 20,
-          marginBottom: 56,
+        backgroundColor: '#F6BD0F',
+        height: 40,
+        width: 150,
+        justifyContent: 'center',
+        borderRadius: 20,
+        marginHorizontal: 10,
+        marginTop: 20,
+        marginBottom: 4,
+
       }}>
-          <View style={{
-              backgroundColor: '#F6BD0F',
-              height: 40,
-              width: 150,
-              justifyContent: 'center',
-              borderRadius: 20,
-              marginHorizontal: 10,
-              marginTop: 20,
-              marginBottom: 4,
-
-          }}>
-              <Text style={{
-                  fontSize: 25,
-                  color: '#000000',
-                  textAlign: 'center'
-              }}>
-                  Cancel
-              </Text>
-          </View>
-
-          <View style={{
-              backgroundColor: '#F6BD0F',
-              height: 40,
-              width: 150,
-              justifyContent: 'center',
-              borderRadius: 20,
-              marginHorizontal: 20,
-              marginTop: 20,
-
-          }}>
-              <Text style={{
-                  fontSize: 25,
-                  color: '#000000',
-                  textAlign: 'center'
-              }}>
-                  Save
-              </Text>
-          </View>
-
+        <Text style={{
+          fontSize: 25,
+          color: '#000000',
+          textAlign: 'center'
+        }}>
+          Cancel
+        </Text>
       </View>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={gotoeditacc}>
+        <View style={{
+          backgroundColor: '#F6BD0F',
+          height: 40,
+          width: 150,
+          justifyContent: 'center',
+          borderRadius: 20,
+          marginHorizontal: 20,
+          marginTop: 20,
+
+        }}>
+          <Text style={{
+            fontSize: 25,
+            color: '#000000',
+            textAlign: 'center'
+          }}>
+            Save
+          </Text>
+        </View>
+      </TouchableOpacity>
+
+    </View>
   );
 }
 
-const Changepass = () => {
+const Changepass = (propschangepass) => {
+
+  const stack = propschangepass.stack;
+
   return (
-    // <KeyboardAwareScrollView>
+    <KeyboardAwareScrollView>
     <View style={styles.container}>
 
       <Text style={{
@@ -149,10 +167,10 @@ const Changepass = () => {
           marginBottom: 30,
         }}
       />
-      <Changepassfield />
+      <Changepassfield stack={stack} />
     </View>
 
-    // </KeyboardAwareScrollView>
+    </KeyboardAwareScrollView>
   )
 }
 

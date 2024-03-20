@@ -2,16 +2,27 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import Splash from '../screens/Splash';
-import Login from '../screens/Login';
-import Resetpass1 from '../screens/Resetpass1';
-import Resetpass2 from '../screens/Resetpass2';
-import Newpass from '../screens/Newpass';
-import Updatedpass from '../screens/Updatedpass';
+
 import Changepass from '../screens/Changepass';
-import Editacc from '../screens/Editacc';
+import Chats from '../screens/Chats';
 import Createacc from '../screens/Createacc';
 import Dashboard from '../screens/Dashboard';
+import Editacc from '../screens/Editacc';
+import Eventchat from '../screens/Eventchat';
+import Eventdetails from '../screens/Eventdetails';
+import Favourite from '../screens/Favourite';
+import Login from '../screens/Login';
+import Mytickets from '../screens/Mytickets';
+import Newpass from '../screens/Newpass';
+import Notifications from '../screens/Notifications';
+import Popularevents from '../screens/Popularevents';
+import Profile from '../screens/Profile';
+import Resetpass1 from '../screens/Resetpass1';
+import Resetpass2 from '../screens/Resetpass2';
+import Search from '../screens/Search';
+import Selecttickets from '../screens/Selecttickets';
+import Splash from '../screens/Splash';
+import Updatedpass from '../screens/Updatedpass';
 
 
 const Stack = createStackNavigator();
@@ -50,11 +61,6 @@ const AppNavigation = () => {
                         cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
                     }
                 }/>
-                <Stack.Screen name="Loginback" component={Login} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
                 <Stack.Screen name="Createacc" component={Createacc} options={
                     {
                         cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
@@ -71,6 +77,56 @@ const AppNavigation = () => {
                     }
                 }/>
                 <Stack.Screen name="Dashboard" component={Dashboard} options={
+                    {
+                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
+                    }
+                }/>
+                <Stack.Screen name="Eventdetails" component={Eventdetails} options={
+                    {
+                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
+                    }
+                }/>
+                <Stack.Screen name="Popularevents" component={Popularevents} options={
+                    {
+                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
+                    }
+                }/>
+                <Stack.Screen name="Profile" component={Profile} options={
+                    {
+                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
+                    }
+                }/>
+                <Stack.Screen name="Selecttickets" component={Selecttickets} options={
+                    {
+                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
+                    }
+                }/>
+                <Stack.Screen name="Chats" component={Chats} options={
+                    {
+                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
+                    }
+                }/>
+                <Stack.Screen name="Eventchat" component={Eventchat} options={
+                    {
+                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
+                    }
+                }/>
+                <Stack.Screen name="Favourite" component={Favourite} options={
+                    {
+                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
+                    }
+                }/>
+                <Stack.Screen name="Mytickets" component={Mytickets} options={
+                    {
+                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
+                    }
+                }/>
+                <Stack.Screen name="Notifications" component={Notifications} options={
+                    {
+                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
+                    }
+                }/>
+                <Stack.Screen name="Search" component={Search} options={
                     {
                         cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
                     }

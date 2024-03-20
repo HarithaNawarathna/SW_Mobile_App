@@ -2,7 +2,10 @@ import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from 'reac
 import React from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-function Createprofilefield() {
+function Createprofilefield(propscreateprofilef) {
+
+    const stack = propscreateprofilef.stack;
+    const stack2 = propscreateprofilef.stack2;
 
     return (
         <View>
@@ -149,12 +152,25 @@ function Createprofilefield() {
                     }}
                 />
             </View>
-            <BottomButtons />
+            <BottomButtons stack={stack} stack2={stack2}/>
         </View>
     );
 }
 
-function BottomButtons() {
+function BottomButtons(propsbottombuttons) {
+
+    const stack = propsbottombuttons.stack;
+    const stack2 = propsbottombuttons.stack;
+
+    function gobacktologin(){
+        stack2.navigate('Login')
+    }
+
+    function gotodashboard(){
+        stack.navigate('Dashboard')
+    }
+
+
     return (
         <View style={{
             flexDirection: 'row',
@@ -162,6 +178,7 @@ function BottomButtons() {
             marginTop: 40,
             marginBottom: 56,
         }}>
+            <TouchableOpacity onPress={gobacktologin}>
             <View style={{
                 backgroundColor: '#F6BD0F',
                 height: 40,
@@ -180,10 +197,11 @@ function BottomButtons() {
                     Cancel
                 </Text>
             </View>
+            </TouchableOpacity>
 
-            <TouchableOpacity>
+            <TouchableOpacity onPress={gotodashboard}>
             <View style={{
-                backgroundColor: '#F6BD0F',
+                backgroundColor:'#F6BD0F',
                 height: 40,
                 width: 150,
                 justifyContent: 'center',
@@ -206,7 +224,11 @@ function BottomButtons() {
     );
 }
 
-const Createacc = () => {
+const Createacc = (propscreateacc) => {
+
+const stack = propscreateacc.navigation;
+const stack2 = propscreateacc.navigation;
+
     return (
         <KeyboardAwareScrollView>
             <View style={styles.container}>
@@ -230,7 +252,7 @@ const Createacc = () => {
                         marginBottom: 30,
                     }}
                 />
-                <Createprofilefield />
+                <Createprofilefield stack={stack} stack2={stack2}/>
             </View>
         </KeyboardAwareScrollView>
     )

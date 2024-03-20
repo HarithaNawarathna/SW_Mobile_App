@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import Icon from 'react-native-vector-icons/Ionicons'
 
@@ -42,7 +42,94 @@ function CircleWithText2() {
     );
 };
 
-const Profile = () => {
+function TicketsButton(propsticketsbutton) {
+
+    const stack = propsticketsbutton.stack;
+
+    function gotoMytickets() {
+        stack.navigate('Mytickets')
+    }
+
+    return (
+        <TouchableOpacity onPress={gotoMytickets}>
+            <View>
+            <Icon style={{
+                marginTop: 40,
+            }} name="ticket" size={40} color="#FFB300" />
+            <Text style={{
+                fontSize: 25,
+                color: '#FFFFFF',
+                marginHorizontal: 45,
+                marginTop: -33,
+            }}>
+                Tickets
+            </Text>
+        </View>
+        </TouchableOpacity>
+    );
+}
+
+function EditProfileButton(propseditprofilebutton) {
+
+    const stack2 = propseditprofilebutton.stack2;
+
+    function gotoEditacc() {
+        stack2.navigate('Editacc')
+    }
+
+    return (
+        <TouchableOpacity onPress={gotoEditacc}>
+            <View>
+                <Icon style={{
+                    marginTop: 80,
+                }} name="pencil-sharp" size={30} color="#C7ADCE" />
+                <Text style={{
+                    fontSize: 20,
+                    color: '#C7ADCE',
+                    marginHorizontal: 30,
+                    marginTop: -25,
+                }}>
+                    Edit Profile
+                </Text>
+            </View>
+        </TouchableOpacity>
+    );
+}
+
+function LogoutButton(propslogoutbutton) {
+
+    const stack3 = propslogoutbutton.stack3;
+
+    function gotologin() {
+        stack3.navigate('Login')
+    }
+
+    return (
+        <TouchableOpacity onPress={gotologin}>
+            <View >
+                <Icon style={{
+                    marginTop: 20,
+                }} name="log-out-outline" size={40} color="#C7ADCE" />
+                <Text style={{
+                    fontSize: 25,
+                    color: '#C7ADCE',
+                    marginHorizontal: 30,
+                    marginTop: -35,
+                    marginLeft: 47,
+                }}>
+                    Logout
+                </Text>
+            </View>
+        </TouchableOpacity>
+    )
+}
+
+const Profile = (propsprofile) => {
+
+    const stack = propsprofile.stack;
+    const stack2 = propsprofile.stack2;
+    const stack3 = propsprofile.stack3;
+
     return (
         <View style={styles.container}>
             <Image
@@ -94,33 +181,11 @@ const Profile = () => {
                 </Text>
             </View>
 
-            <View>
-            <Icon style={{
-                marginTop: 40,
-                }} name="ticket" size={40} color="#FFB300" />
-                <Text style={{
-                    fontSize: 25,
-                    color: '#FFFFFF',
-                    marginHorizontal: 45,
-                    marginTop: -33,
-                }}>
-                    Tickets
-                </Text>
-            </View>
+            <TicketsButton stack={stack} />
 
-            <View>
-            <Icon style={{
-                marginTop: 90,
-                }} name="log-out-outline" size={40} color="#C7ADCE" />
-                <Text style={{
-                    fontSize: 25,
-                    color: '#C7ADCE',
-                    marginHorizontal: 45,
-                    marginTop: -35,
-                }}>
-                    Logout
-                </Text>
-            </View>
+            <EditProfileButton stack2={stack2} />
+
+            <LogoutButton stack3={stack3} />
         </View>
     )
 }

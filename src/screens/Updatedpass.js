@@ -5,13 +5,13 @@ function LoginButton(propsloginback) {
 
     const stack = propsloginback.stack;
 
-    function gobacktoLogin(){
-        stack.navigate('Loginback')
+    function gotoLogin(){
+        stack.navigate('Login')
     }
 
     return (
 
-        <TouchableOpacity onPress={gobacktoLogin}>
+        <TouchableOpacity onPress={gotoLogin}>
             <View style={{
                 backgroundColor: '#F6BD0F',
                 height: 40,

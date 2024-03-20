@@ -5,6 +5,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 function Editprofilefield(propseditprofilefield) {
 
     const stack = propseditprofilefield.stack;
+    const stack2 = propseditprofilefield.stack2;
 
     return (
         <View>
@@ -166,7 +167,8 @@ function Editprofilefield(propseditprofilefield) {
                 />
             </View>
             <Changepassbutton stack={stack} />
-            <BottomButtons2 />
+            <BottomButtons2 stack2={stack2} />
+            
         </View>
     );
 }
@@ -187,9 +189,6 @@ function Changepassbutton(propschangepass) {
                 justifyContent: 'center',
                 borderRadius: 20,
                 marginHorizontal: 20,
-
-
-
             }}>
                 <Text style={{
                     fontSize: 18,
@@ -204,13 +203,25 @@ function Changepassbutton(propschangepass) {
     );
 }
 
-function BottomButtons2() {
+function BottomButtons2(propsbottombuttons2) {
+
+    const stack2 = propsbottombuttons2.stack2;
+
+    function gotoDashboard() {
+        stack2.navigate('Dashboard')
+    }
+
+    function gotoProfile() {
+        stack2.navigate('Profile')
+    }
+
     return (
         <View style={{
             flexDirection: 'row',
             marginHorizontal: 20,
             marginBottom: 56,
         }}>
+            <TouchableOpacity onPress={gotoProfile}>
             <View style={{
                 backgroundColor: '#F6BD0F',
                 height: 40,
@@ -230,25 +241,28 @@ function BottomButtons2() {
                     Cancel
                 </Text>
             </View>
+            </TouchableOpacity>
 
-            <View style={{
-                backgroundColor: '#F6BD0F',
-                height: 40,
-                width: 150,
-                justifyContent: 'center',
-                borderRadius: 20,
-                marginHorizontal: 20,
-                marginTop: 20,
+            <TouchableOpacity onPress={gotoDashboard}>
+                <View style={{
+                    backgroundColor: '#F6BD0F',
+                    height: 40,
+                    width: 150,
+                    justifyContent: 'center',
+                    borderRadius: 20,
+                    marginHorizontal: 20,
+                    marginTop: 20,
 
-            }}>
-                <Text style={{
-                    fontSize: 25,
-                    color: '#000000',
-                    textAlign: 'center'
                 }}>
-                    Create
-                </Text>
-            </View>
+                    <Text style={{
+                        fontSize: 25,
+                        color: '#000000',
+                        textAlign: 'center'
+                    }}>
+                        Save
+                    </Text>
+                </View>
+            </TouchableOpacity>
 
         </View>
     );
@@ -257,6 +271,7 @@ function BottomButtons2() {
 const Editacc = (propseditacc) => {
 
     const stack = propseditacc.navigation;
+    const stack2 = propseditacc.navigation; 
 
     return (
         <KeyboardAwareScrollView>
@@ -265,7 +280,7 @@ const Editacc = (propseditacc) => {
                 <Text style={{
                     fontSize: 30,
                     color: '#FFFFFF',
-                    marginBottom: 20,
+                    marginBottom: 44,
                     marginTop: 30,
                 }}>
                     User Profile
@@ -288,7 +303,7 @@ const Editacc = (propseditacc) => {
                 }}>
                     --Name--
                 </Text>
-                <Editprofilefield stack={stack} />
+                <Editprofilefield stack={stack} stack2={stack2} />
             </View>
         </KeyboardAwareScrollView>
     )

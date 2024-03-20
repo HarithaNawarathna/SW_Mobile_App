@@ -30,7 +30,7 @@ import Mytickets from './src/screens/Mytickets';
 export default function App() {
   return (
     
-      // <AppNavigation />
+      <AppNavigation />
       // <BottomTabNavigatoion />
 
      // <Splash />
@@ -39,8 +39,9 @@ export default function App() {
     // <Resetpass2 />
     // <Newpass />
     // <Updatedpass />
-    <Createacc/>
+    // <Createacc/>
     // <Editacc />
+
     // <Changepass/>
     // <Dashboard />
     // <Popularevents />
