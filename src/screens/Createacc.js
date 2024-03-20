@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, Image } from 'react-native'
+import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -181,6 +181,7 @@ function BottomButtons() {
                 </Text>
             </View>
 
+            <TouchableOpacity>
             <View style={{
                 backgroundColor: '#F6BD0F',
                 height: 40,
@@ -199,6 +200,7 @@ function BottomButtons() {
                     Create
                 </Text>
             </View>
+            </TouchableOpacity>
 
         </View>
     );

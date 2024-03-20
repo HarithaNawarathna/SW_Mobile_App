@@ -2,13 +2,13 @@ import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'reac
 import React from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-function Editprofilefield (propseditprofilefield) {
+function Editprofilefield(propseditprofilefield) {
 
     const stack = propseditprofilefield.stack;
 
     return (
         <View>
-             <View>
+            <View>
                 <Text style={{
                     fontSize: 18,
                     color: '#C7ADCE',
@@ -18,8 +18,8 @@ function Editprofilefield (propseditprofilefield) {
                 }}>
                     First Name
                 </Text>
-             </View>
-             <View style={{
+            </View>
+            <View style={{
                 backgroundColor: '#FFFFFF',
                 borderRadius: 10,
                 height: 35,
@@ -50,7 +50,7 @@ function Editprofilefield (propseditprofilefield) {
                 }}>
                     Last Name
                 </Text>
-             </View>
+            </View>
 
             <View style={{
                 backgroundColor: '#FFFFFF',
@@ -81,7 +81,7 @@ function Editprofilefield (propseditprofilefield) {
                 }}>
                     Email Address
                 </Text>
-             </View>
+            </View>
 
             <View style={{
                 backgroundColor: '#FFFFFF',
@@ -102,7 +102,7 @@ function Editprofilefield (propseditprofilefield) {
                     }}
                 />
             </View>
-            
+
             <View>
                 <Text style={{
                     fontSize: 18,
@@ -113,7 +113,7 @@ function Editprofilefield (propseditprofilefield) {
                 }}>
                     Contact Number
                 </Text>
-             </View>
+            </View>
             <View style={{
                 backgroundColor: '#FFFFFF',
                 borderRadius: 10,
@@ -144,7 +144,7 @@ function Editprofilefield (propseditprofilefield) {
                 }}>
                     NIC
                 </Text>
-             </View>
+            </View>
 
             <View style={{
                 backgroundColor: '#FFFFFF',
@@ -165,8 +165,8 @@ function Editprofilefield (propseditprofilefield) {
                     }}
                 />
             </View>
-            <Changepassbutton stack={stack}/>
-            <BottomButtons2/>
+            <Changepassbutton stack={stack} />
+            <BottomButtons2 />
         </View>
     );
 }
@@ -181,25 +181,25 @@ function Changepassbutton(propschangepass) {
 
     return (
         <TouchableOpacity onPress={gotoChangepass}>
-        <View style={{
-            height: 40,
-            width: 300,
-            justifyContent: 'center',
-            borderRadius: 20,
-            marginHorizontal: 20,
+            <View style={{
+                height: 40,
+                width: 300,
+                justifyContent: 'center',
+                borderRadius: 20,
+                marginHorizontal: 20,
 
 
-
-        }}>
-            <Text style={{
-                fontSize: 18,
-                color: '#C69CD1',
-                paddingLeft: 15,
 
             }}>
-                Change Password
-            </Text>
-        </View>
+                <Text style={{
+                    fontSize: 18,
+                    color: '#C69CD1',
+                    paddingLeft: 15,
+
+                }}>
+                    Change Password
+                </Text>
+            </View>
         </TouchableOpacity>
     );
 }
@@ -258,9 +258,9 @@ const Editacc = (propseditacc) => {
 
     const stack = propseditacc.navigation;
 
-  return (
-    <KeyboardAwareScrollView>
-    <View style={styles.container}>
+    return (
+        <KeyboardAwareScrollView>
+            <View style={styles.container}>
 
                 <Text style={{
                     fontSize: 30,
@@ -288,10 +288,10 @@ const Editacc = (propseditacc) => {
                 }}>
                     --Name--
                 </Text>
-                <Editprofilefield stack={stack}/>
+                <Editprofilefield stack={stack} />
             </View>
-            </KeyboardAwareScrollView>
-  )
+        </KeyboardAwareScrollView>
+    )
 }
 
 export default Editacc

@@ -13,6 +13,7 @@ import Editacc from '../screens/Editacc';
 import Createacc from '../screens/Createacc';
 import Dashboard from '../screens/Dashboard';
 
+
 const Stack = createStackNavigator();
 
 const AppNavigation = () => {
@@ -76,6 +77,7 @@ const AppNavigation = () => {
                 }/>
             </Stack.Navigator>
         </NavigationContainer>
+
     )
 }
 
