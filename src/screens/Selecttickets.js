@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 function CheckoutButton() {
@@ -26,20 +26,22 @@ function BackButton({ navigation }) {
     );
 }
 
-const TicketType = ({ price, ticketPrice, setQuantity }) => {
-    const [quantity, updateQuantity] = useState(0);
+const TicketType = ({ price, ticketPrice, updateOrderSummary }) => {
+    const [quantity, setQuantity] = useState(0);
 
     const decreaseQuantity = () => {
         if (quantity > 0) {
-            updateQuantity(quantity - 1);
-            setQuantity(quantity - 1);
+            setQuantity(prevQuantity => prevQuantity - 1); // Corrected the decrement logic
         }
     };
 
     const increaseQuantity = () => {
-        updateQuantity(quantity + 1);
-        setQuantity(quantity + 1);
+        setQuantity(prevQuantity => prevQuantity + 1);
     };
+
+    useEffect(() => {
+        updateOrderSummary(price, quantity);
+    }, [quantity]); // Update order summary whenever quantity changes
 
     return (
         <View style={styles.ticketType}>
@@ -58,11 +60,16 @@ const TicketType = ({ price, ticketPrice, setQuantity }) => {
 }
 
 const Selecttickets = ({ navigation }) => {
-    const [totalQuantity, setTotalQuantity] = useState(0);
+    const [orderSummary, setOrderSummary] = useState({
+        totalQuantity: 0,
+        totalPrice: 0,
+    });
     const ticketPrice = 1000; // replace with the actual ticket price
 
-    const handleSetQuantity = (newQuantity) => {
-        setTotalQuantity(newQuantity);
+    const updateOrderSummary = (price, quantity) => {
+        const totalPrice = orderSummary.totalPrice + (quantity * ticketPrice);
+        const totalQuantity = orderSummary.totalQuantity + quantity;
+        setOrderSummary({ totalQuantity, totalPrice });
     };
 
     const ticketTypes = ["Price 01", "Price 02", "Price 03"];
@@ -86,7 +93,7 @@ const Selecttickets = ({ navigation }) => {
 
             <View style={styles.ticketTypeTitle}>
                 {ticketTypes.map((price, index) => (
-                    <TicketType key={index} price={price} ticketPrice={ticketPrice} setQuantity={handleSetQuantity} />
+                    <TicketType key={index} price={price} ticketPrice={ticketPrice} updateOrderSummary={updateOrderSummary} />
                 ))}
             </View>
 
@@ -95,11 +102,11 @@ const Selecttickets = ({ navigation }) => {
                 <View style={styles.orderSummaryItem}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
                         <Text style={styles.orderSummaryText}>Quantity</Text>
-                        <Text style={styles.orderSummaryText}>{totalQuantity}</Text>
+                        <Text style={styles.orderSummaryText}>{orderSummary.totalQuantity}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
                         <Text style={styles.orderSummaryText}>Total</Text>
-                        <Text style={styles.orderSummaryText}>{totalQuantity * ticketPrice}</Text>
+                        <Text style={styles.orderSummaryText}>{orderSummary.totalPrice}</Text>
                     </View>
                 </View>
             </View>

@@ -9,7 +9,6 @@ const Splash = (props_splash) => {
       navigateToLogin();
     }, 1500);
 
-    // Clear the timer when component unmounts
     return () => clearTimeout(timer);
   }, []);
 
