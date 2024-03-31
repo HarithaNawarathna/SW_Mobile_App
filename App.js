@@ -26,6 +26,7 @@ import Eventchat from './src/screens/Eventchat';
 import Favourite from './src/screens/Favourite';
 import Profile from './src/screens/Profile';
 import Mytickets from './src/screens/Mytickets';
+import Paymentdetails from './src/screens/Paymentdetails';
 
 export default function App() {
   return (
@@ -41,6 +42,7 @@ export default function App() {
     // <Updatedpass />
     // <Createacc/>
     // <Editacc />
+    // <Paymentdetails />
 
     // <Changepass/>
     // <Dashboard />

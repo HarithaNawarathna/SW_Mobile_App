@@ -23,6 +23,7 @@ import Search from '../screens/Search';
 import Selecttickets from '../screens/Selecttickets';
 import Splash from '../screens/Splash';
 import Updatedpass from '../screens/Updatedpass';
+import Paymentdetails from '../screens/Paymentdetails';
 
 
 const Stack = createStackNavigator();
@@ -127,6 +128,11 @@ const AppNavigation = () => {
                     }
                 }/>
                 <Stack.Screen name="Search" component={Search} options={
+                    {
+                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
+                    }
+                }/>
+                <Stack.Screen name="Paymentdetails" component={Paymentdetails} options={
                     {
                         cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
                     }
