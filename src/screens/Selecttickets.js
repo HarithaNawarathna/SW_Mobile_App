@@ -2,9 +2,12 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-function CheckoutButton() {
+function CheckoutButton({ navigation}) {
+    const gotoPaymentdetails = () => {
+        navigation.navigate('Paymentdetails')
+    }
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={gotoPaymentdetails}>
             <View style={styles.checkoutButton}>
                 <Text style={styles.checkoutButtonText}>
                     Checkout
@@ -111,7 +114,7 @@ const Selecttickets = ({ navigation }) => {
                 </View>
             </View>
 
-            <CheckoutButton />
+            <CheckoutButton navigation={navigation} />
         </View>
     );
 }

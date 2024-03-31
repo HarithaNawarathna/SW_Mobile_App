@@ -27,6 +27,7 @@ import Favourite from './src/screens/Favourite';
 import Profile from './src/screens/Profile';
 import Mytickets from './src/screens/Mytickets';
 import Paymentdetails from './src/screens/Paymentdetails';
+import Paymentverification from './src/screens/Paymentverification';
 
 export default function App() {
   return (
@@ -43,6 +44,7 @@ export default function App() {
     // <Createacc/>
     // <Editacc />
     // <Paymentdetails />
+    // <Paymentverification />
 
     // <Changepass/>
     // <Dashboard />

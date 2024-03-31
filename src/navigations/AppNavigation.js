@@ -24,6 +24,7 @@ import Selecttickets from '../screens/Selecttickets';
 import Splash from '../screens/Splash';
 import Updatedpass from '../screens/Updatedpass';
 import Paymentdetails from '../screens/Paymentdetails';
+import Paymentverification from '../screens/Paymentverification';
 
 
 const Stack = createStackNavigator();
@@ -133,6 +134,11 @@ const AppNavigation = () => {
                     }
                 }/>
                 <Stack.Screen name="Paymentdetails" component={Paymentdetails} options={
+                    {
+                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
+                    }
+                }/>
+                <Stack.Screen name="Paymentverification" component={Paymentverification} options={
                     {
                         cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
                     }

@@ -12,20 +12,8 @@ function BuyTicketsButton(propsbuyticketsbutton) {
 
     return (
         <TouchableOpacity onPress={gotoselecttickets}>
-            <View style={{
-                backgroundColor: '#F6BD0F',
-                height: 40,
-                width: 300,
-                justifyContent: 'center',
-                borderRadius: 20,
-                marginTop: 50,
-            }}>
-                <Text style={{
-                    fontSize: 20,
-                    color: '#000000',
-                    textAlign: 'center',
-                    fontWeight: 'bold',
-                }}>
+            <View style={styles.buyTicketsButton}>
+                <Text style={styles.buyTicketsButtonText}>
                     Buy Tickets
                 </Text>
             </View>
@@ -44,8 +32,7 @@ function BackButton(propsbackbutton) {
 
     return (
         <TouchableOpacity onPress={gotopopularevents}>
-            <Icon style={{
-            }} name="chevron-back-circle" size={40} color="#FFB300" />
+            <Icon style={styles.backButton} name="chevron-back-circle" size={40} color="#FFB300" />
         </TouchableOpacity>
     );
 }
@@ -59,9 +46,7 @@ function BookMarkButton(propsbookmarkbutton) {
     }
     return (
         <TouchableOpacity onPress={gotofavourite}>
-            <Icon style={{
-                marginTop: 5,
-            }} name="bookmarks" size={30} color="#FFB300" />
+            <Icon style={styles.bookmarkButton} name="bookmarks" size={30} color="#FFB300" />
         </TouchableOpacity>
     )
 }
@@ -74,17 +59,9 @@ const Eventdetails = (propseventdetails) => {
 
     return (
         <View style={styles.container}>
-            <View style={{
-                marginTop: 40,
-                flexDirection: 'row',
-            }}>
+            <View style={styles.header}>
                 <BackButton stack2={stack2} />
-                <Text style={{
-                    fontSize: 30,
-                    color: '#FFFFFF',
-                    marginHorizontal: 50,
-                    marginBottom: 10,
-                }}>
+                <Text style={styles.headerText}>
                     Event Details
                 </Text>
                 <BookMarkButton stack3={stack3} />
@@ -92,90 +69,37 @@ const Eventdetails = (propseventdetails) => {
 
             <Image
                 source={require('../../assets/img/festive.jpg')}
-                style={{
-                    width: 350,
-                    height: 200,
-                    borderRadius: 20,
-                    marginVertical: 10,
-                    marginHorizontal: 10,
-                }}
+                style={styles.eventImage}
             />
 
-            <View style={{
-                marginTop: 10,
-                marginRight: 140,
-            }}>
-                <Text style={{
-                    fontSize: 28,
-                    color: '#FFFFFF',
-
-                }}>
+            <View style={styles.eventInfoContainer}>
+                <Text style={styles.eventName}>
                     Event Name
                 </Text>
-                <Text style={{
-                    fontSize: 25,
-                    color: '#C7ADCE',
-
-                }}>
+                <Text style={styles.eventLocation}>
                     Event Location
                 </Text>
             </View>
 
-            <View style={{
-                marginTop: 50,
-                marginRight: 170,
-            }}>
-                <Text style={{
-                    fontSize: 23,
-                    color: '#FFFFFF',
-
-                }}>
+            <View style={styles.aboutContainer}>
+                <Text style={styles.aboutHeader}>
                     About
                 </Text>
-                <Text style={{
-                    fontSize: 20,
-                    color: '#C7ADCE',
-                }}>
-                    ---discription---
+                <Text style={styles.aboutDescription}>
+                    ---description---
                 </Text>
             </View>
 
-            <View style={{
-                marginTop: 30,
-                marginRight: 170,
-
-            }}>
-                <View style={{
-                    flexDirection: 'row',
-                }}>
-                    <Icon style={{
-                    }} name="location-sharp" size={30} color="#FFB300" />
-                    <Text style={{
-                        fontSize: 23,
-                        color: '#FFFFFF',
-                        marginLeft: 10,
-                    }}>Location</Text>
+            <View style={styles.detailsContainer}>
+                <View style={styles.detailItem}>
+                    <Icon style={styles.detailIcon} name="location-sharp" size={30} color="#FFB300" />
+                    <Text style={styles.detailText}>Location</Text>
                 </View>
-                <View style={{
-                    flexDirection: 'row',
-                    marginTop: 20,
-                }}>
-                    <Icon style={{
-                    }} name="calendar-clear" size={30} color="#FFB300" />
-                    <Text style={{
-                        fontSize: 20,
-                        color: '#FFFFFF',
-                        marginLeft: 10,
-                        marginTop: -5,
-                    }}>Date</Text>
-
+                <View style={styles.detailItem}>
+                    <Icon style={styles.detailIcon} name="calendar-clear" size={30} color="#FFB300" />
+                    <Text style={styles.detailText}>Date</Text>
                 </View>
-                <Text style={{
-                    fontSize: 20,
-                    color: '#FFFFFF',
-                    marginLeft: 40,
-                    marginTop: -12,
-                }}>Time</Text>
+                <Text style={[styles.detailText, styles.detailTime]}>Time</Text>
             </View>
             <BuyTicketsButton stack={stack} stack2={stack2} stack3={stack3} />
         </View>
@@ -190,4 +114,82 @@ const styles = StyleSheet.create({
         backgroundColor: '#401971',
         alignItems: 'center',
     },
-})
+    header: {
+        marginTop: 40,
+        flexDirection: 'row',
+    },
+    headerText: {
+        fontSize: 30,
+        color: '#FFFFFF',
+        marginLeft: 20,
+        marginBottom: 10,
+    },
+    backButton: {
+    },
+    buyTicketsButton: {
+        backgroundColor: '#F6BD0F',
+        height: 40,
+        width: 300,
+        justifyContent: 'center',
+        borderRadius: 20,
+        marginTop: 50,
+    },
+    buyTicketsButtonText: {
+        fontSize: 20,
+        color: '#000000',
+        textAlign: 'center',
+        fontWeight: 'bold',
+    },
+    bookmarkButton: {
+        marginTop: 5,
+    },
+    eventImage: {
+        width: 350,
+        height: 200,
+        borderRadius: 20,
+        marginVertical: 10,
+        marginHorizontal: 10,
+    },
+    eventInfoContainer: {
+        marginTop: 10,
+        marginRight: 140,
+    },
+    eventName: {
+        fontSize: 28,
+        color: '#FFFFFF',
+    },
+    eventLocation: {
+        fontSize: 25,
+        color: '#C7ADCE',
+    },
+    aboutContainer: {
+        marginTop: 50,
+        marginRight: 170,
+    },
+    aboutHeader: {
+        fontSize: 23,
+        color: '#FFFFFF',
+    },
+    aboutDescription: {
+        fontSize: 20,
+        color: '#C7ADCE',
+    },
+    detailsContainer: {
+        marginTop: 30,
+        marginRight: 170,
+    },
+    detailItem: {
+        flexDirection: 'row',
+    },
+    detailIcon: {
+    },
+    detailText: {
+        fontSize: 23,
+        color: '#FFFFFF',
+        marginLeft: 10,
+    },
+    detailTime: {
+        marginLeft: 40,
+        marginTop: -12,
+    },
+});

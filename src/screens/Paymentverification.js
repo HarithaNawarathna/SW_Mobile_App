@@ -1,8 +1,7 @@
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native'
 import React from 'react'
 
-function Verificationcodefield(props_v_codef) {
-    const stack = props_v_codef.stack
+function Verificationcodefield() {
 
     return (
         <View style={styles.inputContainer}>
@@ -18,25 +17,24 @@ function Verificationcodefield(props_v_codef) {
     );
 }
 
-function VerifyButton(propsverify) {
-    const stack = propsverify.stack;
-
-    function gotoVerify(){
-        stack.navigate('Newpass')
+function VerifyButton({ navigation }) {
+    const gotoVerify = () => {
+        navigation.navigate('Paymentverification')
     }
 
     return (
         <TouchableOpacity onPress={gotoVerify}>
             <View style={styles.verifyButton}>
-                <Text style={styles.verifyButtonText}>Verify</Text>
+                <Text style={styles.verifyButtonText}>
+                    Verify
+                </Text>
             </View>
         </TouchableOpacity>
     );
 }
 
-const Resetpass2 = (propsresetpass2) => {
-    const stack = propsresetpass2.navigation;
 
+const Paymentverification = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Text style={styles.headerText}>
@@ -51,13 +49,22 @@ const Resetpass2 = (propsresetpass2) => {
             <Text style={styles.description}>
                 In order to verify your identity, enter the verification code that was sent to your mail
             </Text>
+            <View style={styles.inputContainer}>
+            <View style={styles.inputField}>
+                <TextInput
+                    placeholder='Enter Verification Code'
+                    placeholderTextColor={'#000000'}
+                    style={styles.textInput}
+                />
+            </View>
+            </View>
 
-            <Verificationcodefield stack={stack} />
+            <VerifyButton navigation={navigation} />
         </View>
     )
 }
 
-export default Resetpass2
+export default Paymentverification
 
 const styles = StyleSheet.create({
     container: {
@@ -117,4 +124,4 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontWeight: 'bold',
     },
-});
+})

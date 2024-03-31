@@ -3,9 +3,13 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image } from 'reac
 import Icon from 'react-native-vector-icons/Ionicons';
 import { StripeProvider, CardField } from '@stripe/stripe-react-native';
 
-function ConfirmButton() {
+function ConfirmButton({ navigation }) {
+    const gotoVerify = () => {
+        navigation.navigate('Paymentverification');
+    }
+
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={gotoVerify}>
             <View style={styles.confirmButton}>
                 <Text style={styles.confirmButtonText}>
                     Confirm
@@ -90,7 +94,7 @@ const Paymentdetails = ({ navigation }) => {
                         }}
                     />
                 </View>
-                <ConfirmButton />
+                <ConfirmButton navigation={navigation} />
             </View>
         </StripeProvider>
     );
