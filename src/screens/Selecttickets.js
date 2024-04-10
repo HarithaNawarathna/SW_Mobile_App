@@ -1,13 +1,11 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import Icon from 'react-native-vector-icons/Ionicons'
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
 
-function CheckoutButton({ navigation}) {
-    const gotoPaymentdetails = () => {
-        navigation.navigate('Paymentdetails')
-    }
+function CheckoutButton({ onPress }) {
     return (
-        <TouchableOpacity onPress={gotoPaymentdetails}>
+        <TouchableOpacity onPress={onPress}>
             <View style={styles.checkoutButton}>
                 <Text style={styles.checkoutButtonText}>
                     Checkout
@@ -17,34 +15,28 @@ function CheckoutButton({ navigation}) {
     );
 }
 
-function BackButton({ navigation }) {
-    const gotoeventdetails = () => {
-        navigation.goBack();
-    }
-
+function BackButton({ onPress }) {
     return (
-        <TouchableOpacity onPress={gotoeventdetails}>
+        <TouchableOpacity onPress={onPress}>
             <Icon name="chevron-back-circle" size={40} color="#FFB300" />
         </TouchableOpacity>
     );
 }
 
-const TicketType = ({ price, ticketPrice, updateOrderSummary }) => {
+const TicketType = ({ price, onUpdate }) => {
     const [quantity, setQuantity] = useState(0);
 
     const decreaseQuantity = () => {
         if (quantity > 0) {
-            setQuantity(prevQuantity => prevQuantity - 1); // Corrected the decrement logic
+            setQuantity(quantity - 1);
+            onUpdate(price, -1);
         }
     };
 
     const increaseQuantity = () => {
-        setQuantity(prevQuantity => prevQuantity + 1);
+        setQuantity(quantity + 1);
+        onUpdate(price, 1);
     };
-
-    useEffect(() => {
-        updateOrderSummary(price, quantity);
-    }, [quantity]); // Update order summary whenever quantity changes
 
     return (
         <View style={styles.ticketType}>
@@ -60,27 +52,30 @@ const TicketType = ({ price, ticketPrice, updateOrderSummary }) => {
             </View>
         </View>
     );
-}
+};
 
-const Selecttickets = ({ navigation }) => {
-    const [orderSummary, setOrderSummary] = useState({
-        totalQuantity: 0,
-        totalPrice: 0,
-    });
-    const ticketPrice = 1000; // replace with the actual ticket price
+const Selecttickets = () => {
+    const navigation = useNavigation();
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [quantity, setQuantity] = useState(0);
 
-    const updateOrderSummary = (price, quantity) => {
-        const totalPrice = orderSummary.totalPrice + (quantity * ticketPrice);
-        const totalQuantity = orderSummary.totalQuantity + quantity;
-        setOrderSummary({ totalQuantity, totalPrice });
+    const gotoPaymentdetails = () => {
+        navigation.navigate('Paymentdetails');
     };
 
-    const ticketTypes = ["Price 01", "Price 02", "Price 03"];
+    const gotoeventdetails = () => {
+        navigation.goBack();
+    };
+
+    const updateSummary = (price, quantityToAdd) => {
+        setTotalPrice(totalPrice + (price * quantityToAdd));
+        setQuantity(quantity + quantityToAdd);
+    };
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-            <BackButton navigation={navigation} />
+                <BackButton onPress={gotoeventdetails} />
                 <Text style={styles.headerText}>Select Tickets</Text>
             </View>
 
@@ -95,29 +90,29 @@ const Selecttickets = ({ navigation }) => {
             <Text style={styles.ticketTypetext}>Ticket Type</Text>
 
             <View style={styles.ticketTypeTitle}>
-                {ticketTypes.map((price, index) => (
-                    <TicketType key={index} price={price} ticketPrice={ticketPrice} updateOrderSummary={updateOrderSummary} />
+                {[1000, 2000, 3000].map((price, index) => (
+                    <TicketType price={price} key={index} onUpdate={updateSummary} />
                 ))}
             </View>
 
             <View style={styles.orderSummaryContainer}>
-                <Text style={styles.orderSummaryTitle}>Order Summary</Text>
+                <Text style={styles.orderSummaryTitle}>Payment Summary</Text>
                 <View style={styles.orderSummaryItem}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
                         <Text style={styles.orderSummaryText}>Quantity</Text>
-                        <Text style={styles.orderSummaryText}>{orderSummary.totalQuantity}</Text>
+                        <Text style={styles.orderSummaryText}>{quantity}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
                         <Text style={styles.orderSummaryText}>Total</Text>
-                        <Text style={styles.orderSummaryText}>{orderSummary.totalPrice}</Text>
+                        <Text style={styles.orderSummaryText}>{totalPrice}</Text>
                     </View>
                 </View>
             </View>
 
-            <CheckoutButton navigation={navigation} />
+            <CheckoutButton onPress={gotoPaymentdetails} />
         </View>
     );
-}
+};
 
 export default Selecttickets;
 

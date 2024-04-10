@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, StatusBar, TextInput, TouchableOpacity } from '
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string()
@@ -18,7 +19,9 @@ const LoginSchema = Yup.object().shape({
     ),
 });
 
-const Login = ({ navigation }) => {
+const Login = () => {
+  const navigation = useNavigation(); // Use useNavigation hook
+
   const handleLogin = (values) => {
     navigation.navigate('Dashboard');
   };
@@ -88,8 +91,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     color: '#FFFFFF',
-    marginBottom: 100,
-    marginTop: 70,
+    marginBottom: 80,
+    marginTop: 100,
   },
   logo: {
     fontSize: 60,
@@ -133,7 +136,7 @@ const styles = StyleSheet.create({
     color: '#C69CD1',
     marginTop: 10,
     textAlign: 'center',
-    marginBottom: 123,
+    marginBottom: 113,
   },
   error: {
     fontSize: 14,

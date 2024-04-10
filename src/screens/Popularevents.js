@@ -1,46 +1,35 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import Icon from 'react-native-vector-icons/Fontisto'
+import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-const Popularevents = ({ navigation }) => {
-    function gotoeventdetails() {
+const Popularevents = () => {
+    const navigation = useNavigation();
+
+    function gotoSelectTickets() {
         navigation.navigate('Eventdetails');
     }
 
-    // Array of popular event names
     const popularEvents = [
         { name: "Event 1", date: "Date 1" },
         { name: "Event 2", date: "Date 2" },
         { name: "Event 3", date: "Date 3" },
         { name: "Event 4", date: "Date 4" },
-        // Add more events as needed
     ];
 
     return (
         <View style={styles.container}>
-            <View style={{
-                flexDirection: 'row',
-
-            }}>
-                <Text style={{
-                    fontSize: 30,
-                    color: '#FFFFFF',
-                    marginLeft: 10,
-                    marginTop: 50,
-                    marginBottom: 10,
-                }}>
+            <View style={styles.headerContainer}>
+                <Text style={styles.headerText}>
                     Popular Events
                 </Text>
-                <Icon style={{
-                    marginTop: 53,
-                    marginLeft: 10,
-                }} name="fire" size={30} color="#FFB300" />
+                <Icon style={styles.icon} name="fire" size={30} color="#FFB300" />
             </View>
 
             <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
                 {popularEvents.map((event, index) => (
-                    <TouchableOpacity key={index} onPress={gotoeventdetails}>
+                    <TouchableOpacity key={index} onPress={gotoSelectTickets}>
                         <View style={styles.containerbox}>
                             <Image
                                 source={require('../../assets/img/festive.jpg')}
@@ -68,52 +57,61 @@ const Popularevents = ({ navigation }) => {
             <View style={{
                 marginTop: 10,
                 marginBottom: 10,
-
             }}>
-                <Text style={{
-                    color: '#FFFFFF',
-                }}>--here comes the bottom tab navigation--</Text>
+                <Text style={{ color: '#FFFFFF' }}>--here comes the bottom tab navigation--</Text>
             </View>
-
         </View>
     )
 }
 
-export default Popularevents
-
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#401971',
-        alignItems: 'center',
+      flex: 1,
+      backgroundColor: '#401971',
+      alignItems: 'center',
+    },
+    headerContainer: {
+      flexDirection: 'row',
+    },
+    headerText: {
+      fontSize: 30,
+      color: '#FFFFFF',
+      marginLeft: 10,
+      marginTop: 50,
+      marginBottom: 10,
+    },
+    icon: {
+      marginTop: 53,
+      marginLeft: 10,
     },
     containerbox: {
-        backgroundColor: '#C7ADCE',
-        flexDirection: 'row',
-        width: 340,
-        height: 180,
-        borderRadius: 20,
-        marginTop: 20,
+      backgroundColor: '#C7ADCE',
+      flexDirection: 'row',
+      width: 340,
+      height: 180,
+      borderRadius: 20,
+      marginTop: 20,
     },
     eventDetails: {
-        marginLeft: 10,
-        marginTop: 20,
+      marginLeft: 10,
+      marginTop: 20,
     },
     eventDetailText1: {
-        fontSize: 20,
-        color: '#000000',
-        fontWeight: 'bold',
-
+      fontSize: 20,
+      color: '#000000',
+      fontWeight: 'bold',
     },
     eventDetailText2: {
-        fontSize: 15,
-        color: '#000000',
-        marginTop: 20,
+      fontSize: 15,
+      color: '#000000',
+      marginTop: 20,
     },
     eventDetailText3: {
-        fontSize: 15,
-        color: '#000000',
-        fontWeight: 'bold',
-        marginTop: 20,
+      fontSize: 15,
+      color: '#000000',
+      fontWeight: 'bold',
+      marginTop: 20,
     },
-})
+});
+
+export default Popularevents;

@@ -35,23 +35,28 @@ export default function App() {
       <AppNavigation />
       // <BottomTabNavigatoion />
 
-     // <Splash />
+    // <Splash />
     // <Login />
     // <Resetpass1 />
     // <Resetpass2 />
     // <Newpass />
     // <Updatedpass />
+
     // <Createacc/>
     // <Editacc />
-    // <Paymentdetails />
-    // <Paymentverification />
-
     // <Changepass/>
-    // <Dashboard />
-    // <Popularevents />
+
     // <Search />
+    // <Dashboard /> 
+    // <Popularevents />
     // <Eventdetails />
     // <Selecttickets />
+    // <Paymentdetails />
+    
+    // <Paymentverification />
+    
+    
+
     // <Notifications />
     // <Chats />
     // <Eventchat />

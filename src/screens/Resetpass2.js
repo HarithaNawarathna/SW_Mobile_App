@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
 
-function Verificationcodefield(props_v_codef) {
-    const stack = props_v_codef.stack
+function Verificationcodefield() {
+    const navigation = useNavigation(); // Use useNavigation hook
 
     return (
         <View style={styles.inputContainer}>
@@ -13,16 +14,14 @@ function Verificationcodefield(props_v_codef) {
                     style={styles.textInput}
                 />
             </View>
-            <VerifyButton stack={stack}/>
+            <VerifyButton navigation={navigation} />
         </View>
     );
 }
 
-function VerifyButton(propsverify) {
-    const stack = propsverify.stack;
-
-    function gotoVerify(){
-        stack.navigate('Newpass')
+function VerifyButton({ navigation }) {
+    function gotoVerify() {
+        navigation.navigate('Newpass');
     }
 
     return (
@@ -34,8 +33,8 @@ function VerifyButton(propsverify) {
     );
 }
 
-const Resetpass2 = (propsresetpass2) => {
-    const stack = propsresetpass2.navigation;
+const Resetpass2 = () => {
+    const navigation = useNavigation(); // Use useNavigation hook to get navigation object
 
     return (
         <View style={styles.container}>
@@ -52,12 +51,12 @@ const Resetpass2 = (propsresetpass2) => {
                 In order to verify your identity, enter the verification code that was sent to your mail
             </Text>
 
-            <Verificationcodefield stack={stack} />
+            <Verificationcodefield navigation={navigation} />
         </View>
     )
 }
 
-export default Resetpass2
+export default Resetpass2;
 
 const styles = StyleSheet.create({
     container: {

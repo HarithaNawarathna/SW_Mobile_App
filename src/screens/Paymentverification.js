@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React from 'react';
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; // Import the useNavigation hook
 
 function Verificationcodefield() {
-
     return (
         <View style={styles.inputContainer}>
             <View style={styles.inputField}>
@@ -12,14 +12,16 @@ function Verificationcodefield() {
                     style={styles.textInput}
                 />
             </View>
-            <VerifyButton stack={stack}/>
+            <VerifyButton />
         </View>
     );
 }
 
-function VerifyButton({ navigation }) {
+function VerifyButton() {
+    const navigation = useNavigation(); // Use the useNavigation hook to access navigation
+
     const gotoVerify = () => {
-        navigation.navigate('Paymentverification')
+        navigation.navigate('Paymentverification');
     }
 
     return (
@@ -33,8 +35,9 @@ function VerifyButton({ navigation }) {
     );
 }
 
+const Paymentverification = () => {
+    const navigation = useNavigation(); // Use the useNavigation hook to access navigation
 
-const Paymentverification = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Text style={styles.headerText}>
@@ -50,21 +53,21 @@ const Paymentverification = ({ navigation }) => {
                 In order to verify your identity, enter the verification code that was sent to your mail
             </Text>
             <View style={styles.inputContainer}>
-            <View style={styles.inputField}>
-                <TextInput
-                    placeholder='Enter Verification Code'
-                    placeholderTextColor={'#000000'}
-                    style={styles.textInput}
-                />
-            </View>
+                <View style={styles.inputField}>
+                    <TextInput
+                        placeholder='Enter Verification Code'
+                        placeholderTextColor={'#000000'}
+                        style={styles.textInput}
+                    />
+                </View>
             </View>
 
-            <VerifyButton navigation={navigation} />
+            <VerifyButton />
         </View>
-    )
+    );
 }
 
-export default Paymentverification
+export default Paymentverification;
 
 const styles = StyleSheet.create({
     container: {
@@ -124,4 +127,4 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontWeight: 'bold',
     },
-})
+});

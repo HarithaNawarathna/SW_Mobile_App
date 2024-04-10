@@ -1,10 +1,12 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ImageBackground } from 'react-native';
 import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const navigation = useNavigation(); // Use useNavigation hook to get navigation object
 
   const handleSearch = (text) => {
     setSearchQuery(text);
@@ -54,15 +56,17 @@ const Search = () => {
 
       <KeyboardAwareScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
         {eventNames.map((eventName, index) => (
-          <View key={index} style={styles.imageContainer}>
-            <ImageBackground
-              source={require('../../assets/img/festive.jpg')}
-              style={styles.imageBackground}
-              imageStyle={styles.imageStyle}
-            >
-              <Text style={styles.eventName}>{eventName}</Text>
-            </ImageBackground>
-          </View>
+          <TouchableOpacity key={index} onPress={() => navigation.navigate('EventDetails', { eventName })}>
+            <View style={styles.imageContainer}>
+              <ImageBackground
+                source={require('../../assets/img/festive.jpg')}
+                style={styles.imageBackground}
+                imageStyle={styles.imageStyle}
+              >
+                <Text style={styles.eventName}>{eventName}</Text>
+              </ImageBackground>
+            </View>
+          </TouchableOpacity>
         ))}
       </KeyboardAwareScrollView>
 

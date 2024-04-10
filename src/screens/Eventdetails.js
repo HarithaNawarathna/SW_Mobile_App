@@ -1,13 +1,13 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
-import Icon from 'react-native-vector-icons/Ionicons'
+import React from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-function BuyTicketsButton(propsbuyticketsbutton) {
-
-    const stack = propsbuyticketsbutton.stack;
+function BuyTicketsButton() {
+    const navigation = useNavigation();
 
     function gotoselecttickets() {
-        stack.navigate('Selecttickets')
+        navigation.navigate('Selecttickets');
     }
 
     return (
@@ -18,16 +18,14 @@ function BuyTicketsButton(propsbuyticketsbutton) {
                 </Text>
             </View>
         </TouchableOpacity>
-
     );
 }
 
-function BackButton(propsbackbutton) {
-
-    const stack2 = propsbackbutton.stack2;
+function BackButton() {
+    const navigation = useNavigation();
 
     function gotopopularevents() {
-        stack2.navigate('Popularevents')
+        navigation.navigate('Popularevents');
     }
 
     return (
@@ -37,34 +35,31 @@ function BackButton(propsbackbutton) {
     );
 }
 
-function BookMarkButton(propsbookmarkbutton) {
-
-    const stack3 = propsbookmarkbutton.stack3;
+function BookMarkButton() {
+    const navigation = useNavigation();
 
     function gotofavourite() {
-        stack3.navigate('Favourite')
+        navigation.navigate('Favourite');
     }
+
     return (
         <TouchableOpacity onPress={gotofavourite}>
             <Icon style={styles.bookmarkButton} name="bookmarks" size={30} color="#FFB300" />
         </TouchableOpacity>
-    )
+    );
 }
 
-const Eventdetails = (propseventdetails) => {
-
-    const stack = propseventdetails.navigation;
-    const stack2 = propseventdetails.navigation;
-    const stack3 = propseventdetails.navigation;
+const Eventdetails = () => {
+    const navigation = useNavigation();
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <BackButton stack2={stack2} />
+                <BackButton />
                 <Text style={styles.headerText}>
                     Event Details
                 </Text>
-                <BookMarkButton stack3={stack3} />
+                <BookMarkButton />
             </View>
 
             <Image
@@ -101,12 +96,12 @@ const Eventdetails = (propseventdetails) => {
                 </View>
                 <Text style={[styles.detailText, styles.detailTime]}>Time</Text>
             </View>
-            <BuyTicketsButton stack={stack} stack2={stack2} stack3={stack3} />
+            <BuyTicketsButton />
         </View>
-    )
-}
+    );
+};
 
-export default Eventdetails
+export default Eventdetails;
 
 const styles = StyleSheet.create({
     container: {

@@ -1,264 +1,114 @@
-import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native';
+import React from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
 
-function Createprofilefield(propscreateprofilef) {
-
-    const stack = propscreateprofilef.stack;
-    const stack2 = propscreateprofilef.stack2;
+function Createprofilefield() {
+    const navigation = useNavigation(); // Use useNavigation hook to get navigation object
 
     return (
         <View>
-
-            <View style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: 10,
-                height: 35,
-                width: 350,
-                marginHorizontal: 20,
-                justifyContent: 'center',
-                paddingLeft: 20,
-
-            }}>
+            <View style={styles.inputContainer}>
                 <TextInput
                     placeholder='Enter First Name'
                     placeholderTextColor={'#000000'}
-                    style={{
-                        fontSize: 18,
-                        opacity: 0.5
-                    }}
+                    style={styles.input}
                 />
             </View>
-
-            <View style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: 10,
-                height: 35,
-                width: 350,
-                marginHorizontal: 20,
-                justifyContent: 'center',
-                paddingLeft: 20,
-                marginTop: 30,
-            }}>
+            <View style={[styles.inputContainer, { marginTop: 30 }]}>
                 <TextInput
                     placeholder='Enter Last Name'
                     placeholderTextColor={'#000000'}
-                    style={{
-                        fontSize: 18,
-                        opacity: 0.5
-                    }}
+                    style={styles.input}
                 />
             </View>
-
-            <View style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: 10,
-                height: 35,
-                width: 350,
-                marginHorizontal: 20,
-                justifyContent: 'center',
-                paddingLeft: 20,
-                marginTop: 30,
-
-            }}>
+            <View style={[styles.inputContainer, { marginTop: 30 }]}>
                 <TextInput
                     placeholder='Enter Email Address'
                     placeholderTextColor={'#000000'}
-                    style={{
-                        fontSize: 18,
-                        opacity: 0.5
-                    }}
+                    style={styles.input}
                 />
             </View>
-
-            <View style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: 10,
-                height: 35,
-                width: 350,
-                marginHorizontal: 20,
-                justifyContent: 'center',
-                paddingLeft: 20,
-                marginTop: 30,
-            }}>
+            <View style={[styles.inputContainer, { marginTop: 30 }]}>
                 <TextInput
                     placeholder='Enter Contact No'
                     placeholderTextColor={'#000000'}
-                    style={{
-                        fontSize: 18,
-                        opacity: 0.5
-                    }}
+                    style={styles.input}
                 />
             </View>
-
-            <View style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: 10,
-                height: 35,
-                width: 350,
-                marginHorizontal: 20,
-                justifyContent: 'center',
-                paddingLeft: 20,
-                marginTop: 30,
-
-            }}>
+            <View style={[styles.inputContainer, { marginTop: 30 }]}>
                 <TextInput
                     placeholder='Enter NIC'
                     placeholderTextColor={'#000000'}
-                    style={{
-                        fontSize: 18,
-                        opacity: 0.5
-                    }}
+                    style={styles.input}
                 />
             </View>
-
-            <View style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: 10,
-                height: 35,
-                width: 350,
-                marginHorizontal: 20,
-                justifyContent: 'center',
-                paddingLeft: 20,
-                marginTop: 30,
-            }}>
+            <View style={[styles.inputContainer, { marginTop: 30 }]}>
                 <TextInput
                     placeholder='Enter New Password '
                     placeholderTextColor={'#000000'}
-                    style={{
-                        fontSize: 18,
-                        opacity: 0.5
-                    }}
+                    style={styles.input}
                 />
             </View>
-
-            <View style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: 10,
-                height: 35,
-                width: 350,
-                marginHorizontal: 20,
-                justifyContent: 'center',
-                paddingLeft: 20,
-                marginTop: 30,
-
-            }}>
+            <View style={[styles.inputContainer, { marginTop: 30 }]}>
                 <TextInput
                     placeholder='Confirm Password'
                     placeholderTextColor={'#000000'}
-                    style={{
-                        fontSize: 18,
-                        opacity: 0.5
-                    }}
+                    style={styles.input}
                 />
             </View>
-            <BottomButtons stack={stack} stack2={stack2}/>
+            <BottomButtons />
         </View>
     );
 }
 
-function BottomButtons(propsbottombuttons) {
+function BottomButtons() {
+    const navigation = useNavigation(); // Use useNavigation hook to get navigation object
 
-    const stack = propsbottombuttons.stack;
-    const stack2 = propsbottombuttons.stack;
-
-    function gobacktologin(){
-        stack2.navigate('Login')
+    function gobacktologin() {
+        navigation.navigate('Login');
     }
 
-    function gotodashboard(){
-        stack.navigate('Dashboard')
+    function gotodashboard() {
+        navigation.navigate('Dashboard');
     }
-
 
     return (
-        <View style={{
-            flexDirection: 'row',
-            marginHorizontal: 20,
-            marginTop: 40,
-            marginBottom: 56,
-        }}>
+        <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={gobacktologin}>
-            <View style={{
-                backgroundColor: '#F6BD0F',
-                height: 40,
-                width: 150,
-                justifyContent: 'center',
-                borderRadius: 20,
-                marginHorizontal: 10,
-                marginTop: 20,
-
-            }}>
-                <Text style={{
-                    fontSize: 25,
-                    color: '#000000',
-                    textAlign: 'center'
-                }}>
-                    Cancel
-                </Text>
-            </View>
+                <View style={styles.button}>
+                    <Text style={styles.buttonText}>
+                        Cancel
+                    </Text>
+                </View>
             </TouchableOpacity>
-
             <TouchableOpacity onPress={gotodashboard}>
-            <View style={{
-                backgroundColor:'#F6BD0F',
-                height: 40,
-                width: 150,
-                justifyContent: 'center',
-                borderRadius: 20,
-                marginHorizontal: 20,
-                marginTop: 20,
-
-            }}>
-                <Text style={{
-                    fontSize: 25,
-                    color: '#000000',
-                    textAlign: 'center'
-                }}>
-                    Create
-                </Text>
-            </View>
+                <View style={[styles.button, { marginLeft: 20 }]}>
+                    <Text style={styles.buttonText}>
+                        Create
+                    </Text>
+                </View>
             </TouchableOpacity>
-
         </View>
     );
 }
 
-const Createacc = (propscreateacc) => {
-
-const stack = propscreateacc.navigation;
-const stack2 = propscreateacc.navigation;
-
+const Createacc = () => {
     return (
         <KeyboardAwareScrollView>
             <View style={styles.container}>
-
-                <Text style={{
-                    fontSize: 30,
-                    color: '#FFFFFF',
-                    marginBottom: 20,
-                    marginTop: 30,
-                }}>
+                <Text style={styles.title}>
                     User Profile
                 </Text>
                 <Image
                     source={require('../../assets/img/userprofile.png')}
-                    style={{
-                        width: 80,
-                        height: 80,
-                        borderRadius: 50,
-                        borderWidth: 4,
-                        borderColor: '#F6BD0F',
-                        marginBottom: 30,
-                    }}
+                    style={styles.profileImage}
                 />
-                <Createprofilefield stack={stack} stack2={stack2}/>
+                <Createprofilefield />
             </View>
         </KeyboardAwareScrollView>
     )
 }
-
-export default Createacc
 
 const styles = StyleSheet.create({
     container: {
@@ -266,4 +116,52 @@ const styles = StyleSheet.create({
         backgroundColor: '#401971',
         alignItems: 'center',
     },
-})
+    title: {
+        fontSize: 30,
+        color: '#FFFFFF',
+        marginBottom: 20,
+        marginTop: 30,
+    },
+    profileImage: {
+        width: 80,
+        height: 80,
+        borderRadius: 50,
+        borderWidth: 4,
+        borderColor: '#F6BD0F',
+        marginBottom: 30,
+    },
+    inputContainer: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: 10,
+        height: 35,
+        width: 350,
+        marginHorizontal: 20,
+        justifyContent: 'center',
+        paddingLeft: 20,
+    },
+    input: {
+        fontSize: 18,
+        opacity: 0.5
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        marginHorizontal: 20,
+        marginTop: 40,
+        marginBottom: 56,
+    },
+    button: {
+        backgroundColor: '#F6BD0F',
+        height: 40,
+        width: 150,
+        justifyContent: 'center',
+        borderRadius: 20,
+        marginHorizontal: 10,
+        marginTop: 20,
+    },
+    buttonText: {
+        fontSize: 25,
+        color: '#000000',
+        textAlign: 'center'
+    }
+});
+export default Createacc;
