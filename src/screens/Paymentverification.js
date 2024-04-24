@@ -41,7 +41,7 @@ const Paymentverification = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.headerText}>
-                Reset Password Verification
+                Payment Verification
             </Text>
 
             <Image

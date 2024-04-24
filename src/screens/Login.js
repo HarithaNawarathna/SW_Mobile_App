@@ -3,24 +3,24 @@ import { StyleSheet, Text, View, StatusBar, TextInput, TouchableOpacity } from '
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
+import { useNavigation } from '@react-navigation/native'; 
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string()
     .email('Invalid email')
     .required('Username is required')
-    .matches(/^[a-zA-Z0-9._-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,4}$/, 'Invalid email'),
+    .matches(/^[a-zA-Z0-9._-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,4}$/, 
+      'Invalid email'),
   password: Yup.string()
     .required('Password is required')
     .min(8, 'Password must be at least 8 characters')
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
       'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
     ),
 });
 
 const Login = () => {
-  const navigation = useNavigation(); // Use useNavigation hook
+  const navigation = useNavigation(); 
 
   const handleLogin = (values) => {
     navigation.navigate('Dashboard');
@@ -29,7 +29,7 @@ const Login = () => {
   return (
     <KeyboardAwareScrollView keyboardShouldPersistTaps="never">
       <View style={styles.container}>
-        <Text style={styles.title}>Welcome!</Text>
+        <Text style={styles.title}>Welcome</Text>
         <Text style={styles.logo}>{'Epic\nEventify'}</Text>
 
         <Formik

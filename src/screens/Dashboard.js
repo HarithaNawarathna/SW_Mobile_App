@@ -3,6 +3,7 @@ import React from 'react'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useNavigation } from '@react-navigation/native';
 
+
 const Dashboard = () => {
   const navigation = useNavigation(); // Use useNavigation hook to get navigation object
 

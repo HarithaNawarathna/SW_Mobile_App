@@ -75,11 +75,7 @@ const Search = () => {
         marginBottom: 10,
         
       }}>
-        <Text style={{
-          color: '#FFFFFF',
-        }}>--here comes the bottom tab navigation--</Text>
       </View>
-
     </View>
   );
 };
