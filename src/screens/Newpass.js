@@ -1,10 +1,10 @@
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
 import React from 'react';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
+import { useNavigation } from '@react-navigation/native'; 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 function Passwordfield() {
-    const navigation = useNavigation(); // Use useNavigation hook
+    const navigation = useNavigation(); 
 
     return (
         <View style={{ marginTop: 20 }}>
@@ -33,6 +33,7 @@ function CreateButton({ navigation }) {
     }
 
     return (
+        // TouchableOpacity containing the create button
         <TouchableOpacity onPress={gotoCreateButton}>
             <View style={styles.button}>
                 <Text style={styles.buttonText}>
@@ -44,9 +45,10 @@ function CreateButton({ navigation }) {
 }
 
 const Newpass = () => {
-    const navigation = useNavigation(); // Use useNavigation hook to get navigation object
+    const navigation = useNavigation(); 
 
     return (
+        // ScrollView to handle keyboard and avoid tap events
         <KeyboardAwareScrollView keyboardShouldPersistTaps={'never'}>
             <View style={styles.container}>
                 <Text style={styles.title}>
@@ -76,6 +78,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#401971',
         alignItems: 'center',
         justifyContent: 'center',
+        height: 781,
     },
     title: {
         fontSize: 22,

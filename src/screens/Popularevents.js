@@ -11,6 +11,7 @@ const Popularevents = () => {
         navigation.navigate('Eventdetails');
     }
 
+    // Array containing popular events data
     const popularEvents = [
         { name: "Event 1", date: "Date 1" },
         { name: "Event 2", date: "Date 2" },
@@ -58,7 +59,7 @@ const Popularevents = () => {
                 marginTop: 10,
                 marginBottom: 10,
             }}>
-                <Text style={{ color: '#FFFFFF' }}>--here comes the bottom tab navigation--</Text>
+                <Text style={{ color: '#FFFFFF' }}></Text>
             </View>
         </View>
     )

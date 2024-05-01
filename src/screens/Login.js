@@ -3,12 +3,14 @@ import { StyleSheet, Text, View, StatusBar, TextInput, TouchableOpacity } from '
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { useNavigation } from '@react-navigation/native'; 
+import { useNavigation } from '@react-navigation/native';
 
+
+// Validation using Yup
 const LoginSchema = Yup.object().shape({
   username: Yup.string()
     .email('Invalid email')
-    .required('Username is required')
+    .required('Email is required')
     .matches(/^[a-zA-Z0-9._-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,4}$/, 
       'Invalid email'),
   password: Yup.string()
@@ -20,10 +22,10 @@ const LoginSchema = Yup.object().shape({
 });
 
 const Login = () => {
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
 
   const handleLogin = (values) => {
-    navigation.navigate('Dashboard');
+    navigation.navigate('Dashboard'); 
   };
 
   return (
@@ -32,10 +34,11 @@ const Login = () => {
         <Text style={styles.title}>Welcome</Text>
         <Text style={styles.logo}>{'Epic\nEventify'}</Text>
 
+        {/* Formik form for handling form inputs and validation */}
         <Formik
-          initialValues={{ username: '', password: '' }}
-          validationSchema={LoginSchema}
-          onSubmit={handleLogin}
+          initialValues={{ username: '', password: '' }} // Initial form values
+          validationSchema={LoginSchema} // Validation for form inputs
+          onSubmit={handleLogin} 
         >
           {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
             <View style={styles.form}>
@@ -43,20 +46,20 @@ const Login = () => {
                 placeholder="Email"
                 placeholderTextColor="#000000"
                 style={styles.input}
-                onChangeText={handleChange('username')}
-                onBlur={handleBlur('username')}
-                value={values.username}
+                onChangeText={handleChange('username')} // Update username value on change
+                onBlur={handleBlur('username')} // Handle blur event when user moves focus away from username input
+                value={values.username} // Current value of username input
               />
               {touched.username && errors.username && <Text style={styles.error}>{errors.username}</Text>}
 
               <TextInput
                 placeholder="Password"
                 placeholderTextColor="#000000"
-                secureTextEntry={true}
+                secureTextEntry={true} // Hide password characters
                 style={styles.input}
-                onChangeText={handleChange('password')}
-                onBlur={handleBlur('password')}
-                value={values.password}
+                onChangeText={handleChange('password')} // Update password value on change
+                onBlur={handleBlur('password')} // Handle blur event when user moves focus away from password input
+                value={values.password} // Current value of password input
               />
               {touched.password && errors.password && <Text style={styles.error}>{errors.password}</Text>}
 
@@ -87,6 +90,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#401971',
     alignItems: 'center',
     justifyContent: 'center',
+    height: 887,
   },
   title: {
     fontSize: 30,

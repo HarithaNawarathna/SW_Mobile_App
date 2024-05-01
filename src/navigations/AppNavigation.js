@@ -3,6 +3,7 @@ import React from 'react'
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 
+// Importing screens
 import Changepass from '../screens/Changepass';
 import Chats from '../screens/Chats';
 import Createacc from '../screens/Createacc';
@@ -26,7 +27,6 @@ import Updatedpass from '../screens/Updatedpass';
 import Paymentdetails from '../screens/Paymentdetails';
 import Paymentverification from '../screens/Paymentverification';
 
-
 const Stack = createStackNavigator();
 
 const AppNavigation = () => {
@@ -34,13 +34,14 @@ const AppNavigation = () => {
         <NavigationContainer>
             <Stack.Navigator screenOptions={
                 {
-                    headerShown: false
+                    headerShown: false // Hide the header by default for all screens
                 }
             }>
+                {/* Define each screen in the stack navigator */}
                 <Stack.Screen name="Splash" component={Splash} />
                 <Stack.Screen name="Login" component={Login} options={
                     {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
+                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid // Animation effect for screen transitions
                     }
                 }/>
                 <Stack.Screen name="Resetpass1" component={Resetpass1} options={
@@ -145,7 +146,6 @@ const AppNavigation = () => {
                 }/>
             </Stack.Navigator>
         </NavigationContainer>
-
     )
 }
 

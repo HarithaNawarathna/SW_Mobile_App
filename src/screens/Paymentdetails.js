@@ -3,20 +3,25 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image } from 'reac
 import Icon from 'react-native-vector-icons/Ionicons';
 import { StripeProvider, CardField, useConfirmPayment } from '@stripe/stripe-react-native';
 import axios from 'axios';
-import { useNavigation } from '@react-navigation/native'; // Import the useNavigation hook
+import { useNavigation, useRoute } from '@react-navigation/native'; 
 
-const API_URL = 'http://10.0.2.2:3000/create-payment-intent'; // Update this with your backend API URL
+const API_URL = 'http://10.0.2.2:3000'; 
 
 const Paymentdetails = () => {
   const [cardHolderEmail, setCardHolderEmail] = useState('');
   const { confirmPayment, loading } = useConfirmPayment();
   const [cardDetails, setCardDetails] = useState(null);
-  const navigation = useNavigation(); // Use the useNavigation hook to access navigation
+  const navigation = useNavigation();
+
+  const route = useRoute(); 
+  const totalPrice = route.params?.totalPrice || 0;
+  
 
   const fetchPaymentIntentClientSecret = async () => {
     try {
-      const response = await axios.post(API_URL, {
+      const response = await axios.post(`${API_URL}/create-payment-intent`, {
         currency: 'usd',
+        amount: totalPrice,
       });
       const data = response.data;
       const { clientSecret } = data;
@@ -47,8 +52,7 @@ const Paymentdetails = () => {
 
           console.log('Success from promise', paymentIntent);
 
-          
-
+          // Data to be sent to server to save payment
           const paymentData = {
             payment_id: paymentIntent.id,
             user_id: 456,
@@ -56,7 +60,8 @@ const Paymentdetails = () => {
             amount: paymentIntent.amount
           };
 
-          axios.post('http://10.0.2.2:3000/savepayment', paymentData)
+          // Send payment data to server
+          axios.post(`${API_URL}/savepayment`, paymentData)
             .then(response => {
               console.log('Response:', response.data);
             })
@@ -64,9 +69,7 @@ const Paymentdetails = () => {
               console.error('Error:', error);
             });
 
-
-
-          navigation.navigate('Paymentverification'); // Navigate using the navigation object
+          navigation.navigate('Paymentverification'); 
         }
       }
     } catch (error) {
@@ -74,7 +77,6 @@ const Paymentdetails = () => {
     }
   };
 
-  // Define BackButton component here
   const BackButton = () => {
     const navigation = useNavigation();
 
@@ -140,7 +142,6 @@ const Paymentdetails = () => {
             }}
             onCardChange={(cardDetails) => setCardDetails(cardDetails)}
             onFocus={(focusedField) => {
-              console.log('focusField', focusedField);
             }}
           />
         </View>

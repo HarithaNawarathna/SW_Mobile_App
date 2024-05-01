@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
 import React from 'react';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
+import { useNavigation } from '@react-navigation/native'; 
 
 function Verificationcodefield() {
-    const navigation = useNavigation(); // Use useNavigation hook
+    const navigation = useNavigation();
 
     return (
         <View style={styles.inputContainer}>
@@ -25,6 +25,7 @@ function VerifyButton({ navigation }) {
     }
 
     return (
+        // TouchableOpacity containing the verify button
         <TouchableOpacity onPress={gotoVerify}>
             <View style={styles.verifyButton}>
                 <Text style={styles.verifyButtonText}>Verify</Text>
@@ -34,7 +35,7 @@ function VerifyButton({ navigation }) {
 }
 
 const Resetpass2 = () => {
-    const navigation = useNavigation(); // Use useNavigation hook to get navigation object
+    const navigation = useNavigation(); 
 
     return (
         <View style={styles.container}>

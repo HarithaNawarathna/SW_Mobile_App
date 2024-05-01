@@ -1,17 +1,17 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ImageBackground } from 'react-native';
 import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
+import { useNavigation } from '@react-navigation/native'; 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const navigation = useNavigation(); // Use useNavigation hook to get navigation object
+  const navigation = useNavigation(); 
 
   const handleSearch = (text) => {
     setSearchQuery(text);
-    // You can perform any filtering or searching logic here based on the 'text'
-    // For now, let's just log the text
+    //perform searching logic here based on the 'text'
+    // For now, console log is used for the text
     console.log('Search Query:', text);
   };
 

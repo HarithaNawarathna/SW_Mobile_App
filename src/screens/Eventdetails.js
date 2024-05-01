@@ -54,6 +54,7 @@ const Eventdetails = () => {
 
     return (
         <View style={styles.container}>
+            
             <View style={styles.header}>
                 <BackButton />
                 <Text style={styles.headerText}>
@@ -96,12 +97,11 @@ const Eventdetails = () => {
                 </View>
                 <Text style={[styles.detailText, styles.detailTime]}>Time</Text>
             </View>
+
             <BuyTicketsButton />
         </View>
     );
 };
-
-export default Eventdetails;
 
 const styles = StyleSheet.create({
     container: {
@@ -116,8 +116,8 @@ const styles = StyleSheet.create({
     headerText: {
         fontSize: 30,
         color: '#FFFFFF',
-        marginLeft: 20,
         marginBottom: 10,
+        marginHorizontal: 40,
     },
     backButton: {
     },
@@ -188,3 +188,5 @@ const styles = StyleSheet.create({
         marginTop: -12,
     },
 });
+
+export default Eventdetails;

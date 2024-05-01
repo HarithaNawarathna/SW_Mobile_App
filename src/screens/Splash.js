@@ -1,13 +1,14 @@
 import { StyleSheet, Text, View, Image, StatusBar } from 'react-native'
 import React, { useEffect } from 'react'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native'; 
 
 const Splash = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation(); 
 
+  // useEffect hook to handle navigation after a certain time delay
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigateToLogin();
+      navigateToLogin(); 
     }, 1500);
 
     return () => clearTimeout(timer);

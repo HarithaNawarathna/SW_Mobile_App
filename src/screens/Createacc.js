@@ -1,23 +1,16 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native';
 import React from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
+import { useNavigation } from '@react-navigation/native'; 
 
 function Createprofilefield() {
-    const navigation = useNavigation(); // Use useNavigation hook to get navigation object
+    
 
     return (
         <View>
             <View style={styles.inputContainer}>
                 <TextInput
-                    placeholder='Enter First Name'
-                    placeholderTextColor={'#000000'}
-                    style={styles.input}
-                />
-            </View>
-            <View style={[styles.inputContainer, { marginTop: 30 }]}>
-                <TextInput
-                    placeholder='Enter Last Name'
+                    placeholder='Enter Full Name'
                     placeholderTextColor={'#000000'}
                     style={styles.input}
                 />
@@ -31,14 +24,14 @@ function Createprofilefield() {
             </View>
             <View style={[styles.inputContainer, { marginTop: 30 }]}>
                 <TextInput
-                    placeholder='Enter Contact No'
+                    placeholder='Enter NIC'
                     placeholderTextColor={'#000000'}
                     style={styles.input}
                 />
             </View>
             <View style={[styles.inputContainer, { marginTop: 30 }]}>
                 <TextInput
-                    placeholder='Enter NIC'
+                    placeholder='Enter Contact No'
                     placeholderTextColor={'#000000'}
                     style={styles.input}
                 />
@@ -63,8 +56,7 @@ function Createprofilefield() {
 }
 
 function BottomButtons() {
-    const navigation = useNavigation(); // Use useNavigation hook to get navigation object
-
+    const navigation = useNavigation(); 
     function gobacktologin() {
         navigation.navigate('Login');
     }
@@ -115,6 +107,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#401971',
         alignItems: 'center',
+        height: 781,
     },
     title: {
         fontSize: 30,

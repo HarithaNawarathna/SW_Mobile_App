@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from 'react-native'
 import React from 'react'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native'; 
 
 
 const Dashboard = () => {
-  const navigation = useNavigation(); // Use useNavigation hook to get navigation object
+  const navigation = useNavigation(); 
 
   function viewMore() {
     navigation.navigate('Popularevents');
@@ -18,6 +18,14 @@ const Dashboard = () => {
   function navigateToSearch() {
     navigation.navigate('Search');
   }
+
+  // Array of upcoming events
+  const upcomingEvents = [
+    { name: 'Event 1', date: 'May 1, 2024', imageSource: require('../../assets/img/festive.jpg') },
+    { name: 'Event 2', date: 'May 5, 2024', imageSource: require('../../assets/img/festive.jpg') },
+    { name: 'Event 3', date: 'May 10, 2024', imageSource: require('../../assets/img/festive.jpg') },
+    { name: 'Event 4', date: 'May 15, 2024', imageSource: require('../../assets/img/festive.jpg') },
+  ];
 
   return (
     <View style={styles.container}>
@@ -32,7 +40,7 @@ const Dashboard = () => {
       <Text style={styles.subTitle}>
         Let's find a good event!
       </Text>
-
+      {/* Button to navigate to Search Screen */}
       <TouchableOpacity onPress={navigateToSearch} style={styles.searchButton}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={{ color: '#C7ADCE', fontSize: 18, marginRight: 150 }}>
@@ -76,24 +84,17 @@ const Dashboard = () => {
         </Text>
       </View>
 
+      {/* Horizontal ScrollView for Upcoming Events */}
       <ScrollView horizontal={true}>
         <View style={{ flexDirection: 'row', marginTop: 20 }}>
-          <Image
-            source={require('../../assets/img/festive.jpg')}
-            style={{ width: 150, height: 160, borderRadius: 20, marginVertical: 10, marginHorizontal: 10 }}
-          />
-          <Image
-            source={require('../../assets/img/festive.jpg')}
-            style={{ width: 150, height: 160, borderRadius: 20, marginVertical: 10, marginHorizontal: 10 }}
-          />
-          <Image
-            source={require('../../assets/img/festive.jpg')}
-            style={{ width: 150, height: 160, borderRadius: 20, marginVertical: 10, marginHorizontal: 10 }}
-          />
-          <Image
-            source={require('../../assets/img/festive.jpg')}
-            style={{ width: 150, height: 160, borderRadius: 20, marginVertical: 10, marginHorizontal: 10 }}
-          />
+          {/* Render each upcoming event */}
+          {upcomingEvents.map((event, index) => (
+            <Image
+              key={index}
+              source={event.imageSource}
+              style={{ width: 150, height: 160, borderRadius: 20, marginVertical: 10, marginHorizontal: 10 }}
+            />
+          ))}
         </View>
       </ScrollView>
 
@@ -146,11 +147,14 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: '#FFFFFF',
     marginTop: 50,
-    marginRight: 100,
+    marginRight: 110,
+  },
+  titleContainer: {
+    flexDirection: 'row',
   },
   waveIcon: {
-    marginTop: 8,
-    marginLeft: 10,
+    marginTop: 60,
+    marginLeft: 1,
   },
   subTitle: {
     fontSize: 20,

@@ -15,6 +15,7 @@ function CheckoutButton({ onPress }) {
     );
 }
 
+
 function BackButton({ onPress }) {
     return (
         <TouchableOpacity onPress={onPress}>
@@ -24,12 +25,14 @@ function BackButton({ onPress }) {
 }
 
 const TicketType = ({ price, onUpdate }) => {
+    // State to manage the quantity of this ticket type
     const [quantity, setQuantity] = useState(0);
 
     const decreaseQuantity = () => {
+
         if (quantity > 0) {
             setQuantity(quantity - 1);
-            onUpdate(price, -1);
+            onUpdate(price, -1); 
         }
     };
 
@@ -56,17 +59,19 @@ const TicketType = ({ price, onUpdate }) => {
 
 const Selecttickets = () => {
     const navigation = useNavigation();
+    // State variables to track total price and quantity
     const [totalPrice, setTotalPrice] = useState(0);
     const [quantity, setQuantity] = useState(0);
 
     const gotoPaymentdetails = () => {
-        navigation.navigate('Paymentdetails');
+        navigation.navigate('Paymentdetails', { totalPrice});
     };
 
     const gotoeventdetails = () => {
         navigation.goBack();
     };
 
+    //update the total price and quantity based on ticket selection
     const updateSummary = (price, quantityToAdd) => {
         setTotalPrice(totalPrice + (price * quantityToAdd));
         setQuantity(quantity + quantityToAdd);
@@ -90,6 +95,10 @@ const Selecttickets = () => {
             <Text style={styles.ticketTypetext}>Ticket Type</Text>
 
             <View style={styles.ticketTypeTitle}>
+                {/* 
+                Mapping through an array of ticket prices.
+                Each TicketType component receives the price and updateSummary function as props.
+                */}
                 {[1000, 2000, 3000].map((price, index) => (
                     <TicketType price={price} key={index} onUpdate={updateSummary} />
                 ))}
@@ -109,7 +118,7 @@ const Selecttickets = () => {
                 </View>
             </View>
 
-            <CheckoutButton onPress={gotoPaymentdetails} />
+            <CheckoutButton onPress={gotoPaymentdetails}  />
         </View>
     );
 };

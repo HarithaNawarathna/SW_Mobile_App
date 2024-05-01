@@ -1,15 +1,16 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
+import { useNavigation } from '@react-navigation/native'; 
 
 function LoginButton() {
-    const navigation = useNavigation(); // Use useNavigation hook
+    const navigation = useNavigation(); 
 
     function gotoLogin() {
         navigation.navigate('Login');
     }
 
     return (
+        // TouchableOpacity containing the login button
         <TouchableOpacity onPress={gotoLogin}>
             <View style={styles.button}>
                 <Text style={styles.buttonText}>
@@ -21,7 +22,7 @@ function LoginButton() {
 }
 
 const Updatedpass = () => {
-    const navigation = useNavigation(); // Use useNavigation hook to get navigation object
+    const navigation = useNavigation(); 
 
     return (
         <View style={styles.container}>

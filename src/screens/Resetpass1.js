@@ -3,10 +3,12 @@ import React from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+// Function for Email field component
 function Emailfield() {
     const navigation = useNavigation();
     
     return (
+        // Email input field
         <View style={{ marginTop: 10 }}>
             <View style={styles.inputContainer}>
                 <TextInput
@@ -28,6 +30,7 @@ function SendVerificationButton() {
     }
 
     return (
+        // TouchableOpacity containing the button to send verification code
         <TouchableOpacity onPress={gotoResetpass2}>
             <View style={styles.button}>
                 <Text style={styles.buttonText}>
