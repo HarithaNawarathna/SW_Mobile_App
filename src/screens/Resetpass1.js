@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 // Function for Email field component
 function Emailfield() {
@@ -97,7 +96,7 @@ const styles = StyleSheet.create({
     },
     input: {
         opacity: 0.6,
-        fontSize: 15,
+        fontSize: 18,
     },
     button: {
         backgroundColor: '#F6BD0F',
@@ -106,8 +105,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 20,
         marginHorizontal: 20,
-        marginTop: 40,
-        marginBottom: 80,
+        marginVertical: 50,
+        alignSelf: 'center',
     },
     buttonText: {
         fontSize: 20,

@@ -26,7 +26,7 @@ import Splash from '../screens/Splash';
 import Updatedpass from '../screens/Updatedpass';
 import Paymentdetails from '../screens/Paymentdetails';
 import Paymentverification from '../screens/Paymentverification';
-
+import BottomTabNavigation from './BottomTabNavigation';
 const Stack = createStackNavigator();
 
 const AppNavigation = () => {
@@ -140,6 +140,11 @@ const AppNavigation = () => {
                     }
                 }/>
                 <Stack.Screen name="Paymentverification" component={Paymentverification} options={
+                    {
+                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
+                    }
+                }/>
+                <Stack.Screen name="BottomTabNavigation" component={BottomTabNavigation} options={
                     {
                         cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
                     }

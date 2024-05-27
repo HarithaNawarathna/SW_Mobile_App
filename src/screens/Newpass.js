@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#401971',
         alignItems: 'center',
         justifyContent: 'center',
-        height: 781,
+        height: 887,
     },
     title: {
         fontSize: 22,
@@ -127,12 +127,13 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#F6BD0F',
         height: 40,
-        width: 300,
+        width: 250,
         justifyContent: 'center',
         borderRadius: 20,
         marginHorizontal: 20,
         marginTop: 40,
         marginBottom: 116,
+        alignSelf: 'center',
     },
     buttonText: {
         fontSize: 20,

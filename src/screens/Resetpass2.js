@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         marginBottom: 5,
         fontWeight: 'bold',
+        marginTop: 50,
     },
     image: {
         width: 240,
@@ -84,6 +85,7 @@ const styles = StyleSheet.create({
         marginTop: 5,
         marginBottom: 20,
         textAlign: 'center',
+        marginHorizontal: 10,
     },
     inputContainer: {
         marginTop: 10,
@@ -104,12 +106,13 @@ const styles = StyleSheet.create({
     verifyButton: {
         backgroundColor: '#F6BD0F',
         height: 40,
-        width: 300,
+        width: 250,
         justifyContent: 'center',
         borderRadius: 20,
         marginHorizontal: 20,
         marginTop: 40,
         marginBottom: 80,
+        alignSelf: 'center',
     },
     verifyButtonText: {
         fontSize: 20,

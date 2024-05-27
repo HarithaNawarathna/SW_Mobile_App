@@ -62,7 +62,7 @@ function BottomButtons() {
     }
 
     function gotodashboard() {
-        navigation.navigate('Dashboard');
+        navigation.navigate('BottomTabNavigation');
     }
 
     return (
@@ -107,13 +107,13 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#401971',
         alignItems: 'center',
-        height: 781,
+        height: 887,
     },
     title: {
         fontSize: 30,
         color: '#FFFFFF',
         marginBottom: 20,
-        marginTop: 30,
+        marginTop: 80,
     },
     profileImage: {
         width: 80,

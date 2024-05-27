@@ -25,7 +25,7 @@ const Login = () => {
   const navigation = useNavigation();
 
   const handleLogin = (values) => {
-    navigation.navigate('Dashboard'); 
+    navigation.navigate('BottomTabNavigation'); 
   };
 
   return (
@@ -121,9 +121,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#F6BD0F',
     borderRadius: 20,
     height: 40,
+    width: 250,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 50,
+    alignSelf: 'center',
+    marginTop: 40,
   },
   buttonText: {
     fontSize: 25,

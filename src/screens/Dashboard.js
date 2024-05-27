@@ -85,7 +85,7 @@ const Dashboard = () => {
       </View>
 
       {/* Horizontal ScrollView for Upcoming Events */}
-      <ScrollView horizontal={true}>
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         <View style={{ flexDirection: 'row', marginTop: 20 }}>
           {/* Render each upcoming event */}
           {upcomingEvents.map((event, index) => (
