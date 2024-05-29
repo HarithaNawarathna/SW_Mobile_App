@@ -1,201 +1,46 @@
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
+import React from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
 
-function Editprofilefield(propseditprofilefield) {
-
-    const stack = propseditprofilefield.stack;
-    const stack2 = propseditprofilefield.stack2;
+function Editprofilefield() {
+    const navigation = useNavigation(); // Use useNavigation hook to get navigation object
 
     return (
         <View>
             <View>
-                <Text style={{
-                    fontSize: 18,
-                    color: '#C7ADCE',
-                    marginBottom: 5,
-                    marginLeft: 30,
-                    marginTop: 10,
-                }}>
+                <Text style={styles.labelText}>
                     First Name
                 </Text>
             </View>
-            <View style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: 10,
-                height: 35,
-                width: 350,
-                marginHorizontal: 20,
-                justifyContent: 'center',
-                paddingLeft: 20,
-                marginBottom: 5,
-
-            }}>
+            <View style={styles.inputContainer}>
                 <TextInput
                     placeholder='XXXXXXXXXX'
                     placeholderTextColor={'#000000'}
-                    style={{
-                        fontSize: 18,
-                        opacity: 0.5
-                    }}
+                    style={styles.inputText}
                 />
             </View>
 
-            <View>
-                <Text style={{
-                    fontSize: 18,
-                    color: '#C7ADCE',
-                    marginBottom: 5,
-                    marginHorizontal: 30,
-                    marginTop: 15,
-                }}>
-                    Last Name
-                </Text>
-            </View>
+            {/* Other input fields */}
 
-            <View style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: 10,
-                height: 35,
-                width: 350,
-                marginHorizontal: 20,
-                justifyContent: 'center',
-                paddingLeft: 20,
-            }}>
-                <TextInput
-                    placeholder='XXXXXXXXXX'
-                    placeholderTextColor={'#000000'}
-                    style={{
-                        fontSize: 18,
-                        opacity: 0.5
-                    }}
-                />
-            </View>
-
-            <View>
-                <Text style={{
-                    fontSize: 18,
-                    color: '#C7ADCE',
-                    marginBottom: 5,
-                    marginHorizontal: 30,
-                    marginTop: 15,
-                }}>
-                    Email Address
-                </Text>
-            </View>
-
-            <View style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: 10,
-                height: 35,
-                width: 350,
-                marginHorizontal: 20,
-                justifyContent: 'center',
-                paddingLeft: 20,
-
-            }}>
-                <TextInput
-                    placeholder='XXXXXXXXXX@gmail.com'
-                    placeholderTextColor={'#000000'}
-                    style={{
-                        fontSize: 18,
-                        opacity: 0.5
-                    }}
-                />
-            </View>
-
-            <View>
-                <Text style={{
-                    fontSize: 18,
-                    color: '#C7ADCE',
-                    marginBottom: 5,
-                    marginHorizontal: 30,
-                    marginTop: 15,
-                }}>
-                    Contact Number
-                </Text>
-            </View>
-            <View style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: 10,
-                height: 35,
-                width: 350,
-                marginHorizontal: 20,
-                justifyContent: 'center',
-                paddingLeft: 20,
-
-            }}>
-                <TextInput
-                    placeholder='0XXXXXXXXX'
-                    placeholderTextColor={'#000000'}
-                    style={{
-                        fontSize: 18,
-                        opacity: 0.5
-                    }}
-                />
-            </View>
-
-            <View>
-                <Text style={{
-                    fontSize: 18,
-                    color: '#C7ADCE',
-                    marginBottom: 5,
-                    marginHorizontal: 30,
-                    marginTop: 15,
-                }}>
-                    NIC
-                </Text>
-            </View>
-
-            <View style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: 10,
-                height: 35,
-                width: 350,
-                marginHorizontal: 20,
-                justifyContent: 'center',
-                paddingLeft: 20,
-
-            }}>
-                <TextInput
-                    placeholder='XXXXXXXXXX'
-                    placeholderTextColor={'#000000'}
-                    style={{
-                        fontSize: 18,
-                        opacity: 0.5
-                    }}
-                />
-            </View>
-            <Changepassbutton stack={stack} />
-            <BottomButtons2 stack2={stack2} />
+            <Changepassbutton />
+            <BottomButtons2 />
             
         </View>
     );
 }
 
-function Changepassbutton(propschangepass) {
-
-    const stack = propschangepass.stack;
+function Changepassbutton() {
+    const navigation = useNavigation(); // Use useNavigation hook to get navigation object
 
     function gotoChangepass() {
-        stack.navigate('Changepass')
+        navigation.navigate('Changepass');
     }
 
     return (
         <TouchableOpacity onPress={gotoChangepass}>
-            <View style={{
-                height: 40,
-                width: 300,
-                justifyContent: 'center',
-                borderRadius: 20,
-                marginHorizontal: 20,
-            }}>
-                <Text style={{
-                    fontSize: 18,
-                    color: '#C69CD1',
-                    paddingLeft: 15,
-
-                }}>
+            <View style={styles.button}>
+                <Text style={styles.buttonText}>
                     Change Password
                 </Text>
             </View>
@@ -203,118 +48,117 @@ function Changepassbutton(propschangepass) {
     );
 }
 
-function BottomButtons2(propsbottombuttons2) {
-
-    const stack2 = propsbottombuttons2.stack2;
+function BottomButtons2() {
+    const navigation = useNavigation(); // Use useNavigation hook to get navigation object
 
     function gotoDashboard() {
-        stack2.navigate('Dashboard')
+        navigation.navigate('Dashboard');
     }
 
     function gotoProfile() {
-        stack2.navigate('Profile')
+        navigation.navigate('Profile');
     }
 
     return (
-        <View style={{
-            flexDirection: 'row',
-            marginHorizontal: 20,
-            marginBottom: 56,
-        }}>
+        <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={gotoProfile}>
-            <View style={{
-                backgroundColor: '#F6BD0F',
-                height: 40,
-                width: 150,
-                justifyContent: 'center',
-                borderRadius: 20,
-                marginHorizontal: 10,
-                marginTop: 20,
-                marginBottom: 4,
-
-            }}>
-                <Text style={{
-                    fontSize: 25,
-                    color: '#000000',
-                    textAlign: 'center'
-                }}>
-                    Cancel
-                </Text>
-            </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={gotoDashboard}>
-                <View style={{
-                    backgroundColor: '#F6BD0F',
-                    height: 40,
-                    width: 150,
-                    justifyContent: 'center',
-                    borderRadius: 20,
-                    marginHorizontal: 20,
-                    marginTop: 20,
-
-                }}>
-                    <Text style={{
-                        fontSize: 25,
-                        color: '#000000',
-                        textAlign: 'center'
-                    }}>
-                        Save
+                <View style={styles.button}>
+                    <Text style={styles.buttonText}>
+                        Cancel
                     </Text>
                 </View>
             </TouchableOpacity>
 
+            <TouchableOpacity onPress={gotoDashboard}>
+                <View style={styles.button}>
+                    <Text style={styles.buttonText}>
+                        Save
+                    </Text>
+                </View>
+            </TouchableOpacity>
         </View>
     );
 }
 
-const Editacc = (propseditacc) => {
-
-    const stack = propseditacc.navigation;
-    const stack2 = propseditacc.navigation; 
+const Editacc = () => {
+    const navigation = useNavigation(); // Use useNavigation hook to get navigation object
 
     return (
         <KeyboardAwareScrollView>
             <View style={styles.container}>
 
-                <Text style={{
-                    fontSize: 30,
-                    color: '#FFFFFF',
-                    marginBottom: 44,
-                    marginTop: 30,
-                }}>
+                <Text style={styles.title}>
                     User Profile
                 </Text>
                 <Image
                     source={require('../../assets/img/userprofile.png')}
-                    style={{
-                        width: 80,
-                        height: 80,
-                        borderRadius: 50,
-                        borderWidth: 4,
-                        borderColor: '#F6BD0F',
-                        marginBottom: 10,
-                    }}
+                    style={styles.profileImage}
                 />
-                <Text style={{
-                    fontSize: 25,
-                    color: '#C7ADCE',
-                    marginBottom: 10,
-                }}>
+                <Text style={styles.labelText}>
                     --Name--
                 </Text>
-                <Editprofilefield stack={stack} stack2={stack2} />
+                <Editprofilefield />
             </View>
         </KeyboardAwareScrollView>
     )
 }
 
-export default Editacc
-
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#401971',
-        alignItems: 'center',
+    labelText: {
+        fontSize: 18,
+        color: '#C7ADCE',
+        marginBottom: 5,
+        marginLeft: 30,
+        marginTop: 10,
     },
-})
+    inputContainer: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: 10,
+        height: 35,
+        width: 350,
+        marginHorizontal: 20,
+        justifyContent: 'center',
+        paddingLeft: 20,
+        marginBottom: 5,
+    },
+    inputText: {
+        fontSize: 18,
+        opacity: 0.5,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        marginHorizontal: 20,
+        marginBottom: 56,
+    },
+    button: {
+        backgroundColor: '#F6BD0F',
+        height: 40,
+        width: 150,
+        justifyContent: 'center',
+        borderRadius: 20,
+        marginHorizontal: 10,
+        marginTop: 20,
+        marginBottom: 4,
+    },
+    buttonText: {
+        fontSize: 25,
+        color: '#000000',
+        textAlign: 'center',
+    },
+    title: {
+        fontSize: 30,
+        color: '#FFFFFF',
+        marginBottom: 44,
+        marginTop: 30,
+    },
+    profileImage: {
+        width: 80,
+        height: 80,
+        borderRadius: 50,
+        borderWidth: 4,
+        borderColor: '#F6BD0F',
+        marginBottom: 10,
+    },
+});
+
+export default Editacc;

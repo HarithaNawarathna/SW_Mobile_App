@@ -5,20 +5,11 @@ import Icon from 'react-native-vector-icons/Ionicons'
 const Mytickets = () => {
     return (
         <View style={styles.container}>
-            <View style={{
-                marginTop: 50,
-                flexDirection: 'row',
-            }}>
-                <Icon style={{
-                }} name="chevron-back-circle" size={40} color="#FFB300" />
-                <Text style={{
-                    fontSize: 30,
-                    color: '#FFFFFF',
-                    marginHorizontal: 70,
-                }}>
+            <View style={styles.header}>
+                <Icon name="chevron-back-circle" size={40} color="#FFB300" />
+                <Text style={styles.title}>
                     My Tickets
                 </Text>
-                
             </View>
         </View>
     )
@@ -31,5 +22,15 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#401971',
         alignItems: 'center',
+    },
+    header: {
+        marginTop: 50,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    title: {
+        fontSize: 30,
+        color: '#FFFFFF',
+        marginLeft: 70,
     },
 })

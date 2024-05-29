@@ -1,10 +1,8 @@
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
 import React from 'react';
-import { useNavigation } from '@react-navigation/native'; 
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; // Import the useNavigation hook
 
 function Verificationcodefield() {
-    const navigation = useNavigation();
-
     return (
         <View style={styles.inputContainer}>
             <View style={styles.inputField}>
@@ -14,33 +12,36 @@ function Verificationcodefield() {
                     style={styles.textInput}
                 />
             </View>
-            <VerifyButton navigation={navigation} />
+            <VerifyButton />
         </View>
     );
 }
 
-function VerifyButton({ navigation }) {
-    function gotoVerify() {
-        navigation.navigate('Newpass');
+function VerifyButton() {
+    const navigation = useNavigation(); // Use the useNavigation hook to access navigation
+
+    const gotoVerify = () => {
+        navigation.navigate('Paymentverification');
     }
 
     return (
-        // TouchableOpacity containing the verify button
         <TouchableOpacity onPress={gotoVerify}>
             <View style={styles.verifyButton}>
-                <Text style={styles.verifyButtonText}>Verify</Text>
+                <Text style={styles.verifyButtonText}>
+                    Verify
+                </Text>
             </View>
         </TouchableOpacity>
     );
 }
 
-const Resetpass2 = () => {
-    const navigation = useNavigation(); 
+const Paymentverification = () => {
+    const navigation = useNavigation(); // Use the useNavigation hook to access navigation
 
     return (
         <View style={styles.container}>
             <Text style={styles.headerText}>
-                Reset Password Verification
+                Payment Verification
             </Text>
 
             <Image
@@ -51,13 +52,22 @@ const Resetpass2 = () => {
             <Text style={styles.description}>
                 In order to verify your identity, enter the verification code that was sent to your mail
             </Text>
+            <View style={styles.inputContainer}>
+                <View style={styles.inputField}>
+                    <TextInput
+                        placeholder='Enter Verification Code'
+                        placeholderTextColor={'#000000'}
+                        style={styles.textInput}
+                    />
+                </View>
+            </View>
 
-            <Verificationcodefield navigation={navigation} />
+            <VerifyButton />
         </View>
-    )
+    );
 }
 
-export default Resetpass2;
+export default Paymentverification;
 
 const styles = StyleSheet.create({
     container: {
@@ -71,7 +81,6 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         marginBottom: 5,
         fontWeight: 'bold',
-        marginTop: 50,
     },
     image: {
         width: 240,
@@ -85,7 +94,6 @@ const styles = StyleSheet.create({
         marginTop: 5,
         marginBottom: 20,
         textAlign: 'center',
-        marginHorizontal: 10,
     },
     inputContainer: {
         marginTop: 10,
@@ -106,13 +114,12 @@ const styles = StyleSheet.create({
     verifyButton: {
         backgroundColor: '#F6BD0F',
         height: 40,
-        width: 250,
+        width: 300,
         justifyContent: 'center',
         borderRadius: 20,
         marginHorizontal: 20,
         marginTop: 40,
         marginBottom: 80,
-        alignSelf: 'center',
     },
     verifyButtonText: {
         fontSize: 20,

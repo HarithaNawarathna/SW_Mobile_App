@@ -26,6 +26,8 @@ import Eventchat from './src/screens/Eventchat';
 import Favourite from './src/screens/Favourite';
 import Profile from './src/screens/Profile';
 import Mytickets from './src/screens/Mytickets';
+import Paymentdetails from './src/screens/Paymentdetails';
+import Paymentverification from './src/screens/Paymentverification';
 
 export default function App() {
   return (
@@ -33,21 +35,28 @@ export default function App() {
       <AppNavigation />
       // <BottomTabNavigatoion />
 
-     // <Splash />
+    // <Splash />
     // <Login />
     // <Resetpass1 />
     // <Resetpass2 />
     // <Newpass />
     // <Updatedpass />
+
     // <Createacc/>
     // <Editacc />
-
     // <Changepass/>
-    // <Dashboard />
-    // <Popularevents />
+
     // <Search />
+    // <Dashboard /> 
+    // <Popularevents />
     // <Eventdetails />
     // <Selecttickets />
+    // <Paymentdetails />
+    
+    // <Paymentverification />
+    
+    
+
     // <Notifications />
     // <Chats />
     // <Eventchat />
