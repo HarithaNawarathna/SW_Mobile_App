@@ -1,10 +1,11 @@
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
+import { useNavigation } from '@react-navigation/native';
+
 
 function Changepassfield(propschangepassfield) {
-  const navigation = useNavigation(); // Use useNavigation hook to get navigation object
+  const navigation = useNavigation();
 
   return (
     <View>
@@ -12,10 +13,7 @@ function Changepassfield(propschangepassfield) {
         <TextInput
           placeholder='Enter Old Password'
           placeholderTextColor={'#000000'}
-          style={{
-            fontSize: 18,
-            opacity: 0.5
-          }}
+          style={styles.inputText}
         />
       </View>
 
@@ -23,10 +21,7 @@ function Changepassfield(propschangepassfield) {
         <TextInput
           placeholder='Enter New Password'
           placeholderTextColor={'#000000'}
-          style={{
-            fontSize: 18,
-            opacity: 0.5
-          }}
+          style={styles.inputText}
         />
       </View>
 
@@ -34,10 +29,7 @@ function Changepassfield(propschangepassfield) {
         <TextInput
           placeholder='Confirm Password'
           placeholderTextColor={'#000000'}
-          style={{
-            fontSize: 18,
-            opacity: 0.5
-          }}
+          style={styles.inputText}
         />
       </View>
       <BottomButtons3 navigation={navigation} />
@@ -50,12 +42,12 @@ function BottomButtons3({ navigation }) {
     navigation.navigate('Editacc');
   }
 
+  function gotoLogin(){
+    navigation.navigate('Login');
+  }
+
   return (
-    <View style={{
-      flexDirection: 'row',
-      marginHorizontal: 20,
-      marginBottom: 112,
-    }}>
+    <View style={styles.buttonRow}>
 
       <TouchableOpacity onPress={gotoEditAcc}>
         <View style={styles.button}>
@@ -65,7 +57,7 @@ function BottomButtons3({ navigation }) {
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={gotoEditAcc}>
+      <TouchableOpacity onPress={gotoLogin}>
         <View style={styles.button}>
           <Text style={styles.buttonText}>
             Save
@@ -78,43 +70,43 @@ function BottomButtons3({ navigation }) {
 }
 
 const Changepass = () => {
-  const navigation = useNavigation(); // Use useNavigation hook to get navigation object
+  const navigation = useNavigation();
 
   return (
     <KeyboardAwareScrollView>
       <View style={styles.container}>
-
-        <Text style={{
-          fontSize: 30,
-          color: '#FFFFFF',
-          marginBottom: 20,
-          marginTop: 80,
-        }}>
+        <Text style={styles.title}>
           Change Password
         </Text>
         <Image
           source={require('../../assets/img/userprofile.png')}
-          style={{
-            width: 150,
-            height: 150,
-            borderRadius: 100,
-            borderWidth: 4,
-            borderColor: '#F6BD0F',
-            marginBottom: 30,
-          }}
+          style={styles.profileImage}
         />
         <Changepassfield />
       </View>
-
     </KeyboardAwareScrollView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#401971',
     alignItems: 'center',
+    height: 887,
+  },
+  title: {
+    fontSize: 30,
+    color: '#FFFFFF',
+    marginBottom: 20,
+    marginTop: 80,
+  },
+  profileImage: {
+    width: 150,
+    height: 150,
+    borderRadius: 100,
+    borderWidth: 4,
+    borderColor: '#F6BD0F',
+    marginBottom: 30,
   },
   inputField: {
     backgroundColor: '#FFFFFF',
@@ -126,6 +118,15 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     marginTop: 20,
     marginBottom: 40,
+  },
+  inputText: {
+    fontSize: 18,
+    opacity: 0.5,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    marginHorizontal: 20,
+    marginBottom: 112,
   },
   buttonText: {
     fontSize: 25,

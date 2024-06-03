@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Alert } from 'react-native';
+import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -15,24 +15,14 @@ function CheckoutButton({ onPress }) {
     );
 }
 
-
-function BackButton({ onPress }) {
-    return (
-        <TouchableOpacity onPress={onPress}>
-            <Icon name="chevron-back-circle" size={40} color="#FFB300" />
-        </TouchableOpacity>
-    );
-}
-
 const TicketType = ({ price, onUpdate }) => {
     // State to manage the quantity of this ticket type
     const [quantity, setQuantity] = useState(0);
 
     const decreaseQuantity = () => {
-
         if (quantity > 0) {
             setQuantity(quantity - 1);
-            onUpdate(price, -1); 
+            onUpdate(price, -1);
         }
     };
 
@@ -64,14 +54,18 @@ const Selecttickets = () => {
     const [quantity, setQuantity] = useState(0);
 
     const gotoPaymentdetails = () => {
-        navigation.navigate('Paymentdetails', { totalPrice});
+        if (quantity === 0) {
+            Alert.alert("No Tickets Selected", "Please select at least one ticket before proceeding to checkout.");
+        } else {
+            navigation.navigate('Paymentdetails', { totalPrice });
+        }
     };
 
     const gotoeventdetails = () => {
         navigation.goBack();
     };
 
-    //update the total price and quantity based on ticket selection
+    // Update the total price and quantity based on ticket selection
     const updateSummary = (price, quantityToAdd) => {
         setTotalPrice(totalPrice + (price * quantityToAdd));
         setQuantity(quantity + quantityToAdd);
@@ -80,7 +74,6 @@ const Selecttickets = () => {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <BackButton onPress={gotoeventdetails} />
                 <Text style={styles.headerText}>Select Tickets</Text>
             </View>
 
@@ -95,10 +88,6 @@ const Selecttickets = () => {
             <Text style={styles.ticketTypetext}>Ticket Type</Text>
 
             <View style={styles.ticketTypeTitle}>
-                {/* 
-                Mapping through an array of ticket prices.
-                Each TicketType component receives the price and updateSummary function as props.
-                */}
                 {[1000, 2000, 3000].map((price, index) => (
                     <TicketType price={price} key={index} onUpdate={updateSummary} />
                 ))}
@@ -118,7 +107,7 @@ const Selecttickets = () => {
                 </View>
             </View>
 
-            <CheckoutButton onPress={gotoPaymentdetails}  />
+            <CheckoutButton onPress={gotoPaymentdetails} />
         </View>
     );
 };

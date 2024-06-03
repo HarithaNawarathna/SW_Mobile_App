@@ -1,23 +1,30 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Icon from 'react-native-vector-icons/Fontisto'
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import axios from 'axios';
 
 const Popularevents = () => {
     const navigation = useNavigation();
+    const [events, setEvents] = useState([]);
 
-    function gotoSelectTickets() {
-        navigation.navigate('Eventdetails');
+    useEffect(() => {
+      
+        axios.get('http://192.168.77.240:3000/getallevents')
+            .then(response => {
+                console.log(response.data);
+                setEvents(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching events data:', error);
+            });
+    }, []);
+
+    function gotoEventDetails(eventId) {
+      console.log(eventId)
+        navigation.navigate('Eventdetails', { eventId });
     }
-
-    // Array containing popular events data
-    const popularEvents = [
-        { name: "Event 1", date: "Date 1" },
-        { name: "Event 2", date: "Date 2" },
-        { name: "Event 3", date: "Date 3" },
-        { name: "Event 4", date: "Date 4" },
-    ];
 
     return (
         <View style={styles.container}>
@@ -29,11 +36,11 @@ const Popularevents = () => {
             </View>
 
             <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
-                {popularEvents.map((event, index) => (
-                    <TouchableOpacity key={index} onPress={gotoSelectTickets}>
+                {events.map((event, index) => (
+                    <TouchableOpacity key={index} onPress={() => gotoEventDetails(event.id)}>
                         <View style={styles.containerbox}>
                             <Image
-                                source={require('../../assets/img/festive.jpg')}
+                                source={{ uri: event.image_url }}
                                 style={{
                                     width: 150,
                                     height: 160,
@@ -43,8 +50,9 @@ const Popularevents = () => {
                                 }}
                             />
                             <View style={styles.eventDetails}>
-                                <Text style={styles.eventDetailText1}>{event.name}</Text>
+                                <Text style={styles.eventDetailText1}>{event.event_name}</Text>
                                 <Text style={styles.eventDetailText2}>{event.date}</Text>
+                                <Text style={styles.eventDetailText2}>{event.time}</Text>
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <Text style={styles.eventDetailText3}>More</Text>
                                     <Icon style={{ marginTop: 20, }} name="angle-right" size={15} color="#000000" />
@@ -95,7 +103,7 @@ const styles = StyleSheet.create({
     },
     eventDetails: {
       marginLeft: 10,
-      marginTop: 20,
+      marginTop: 15,
     },
     eventDetailText1: {
       fontSize: 20,

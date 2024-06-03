@@ -1,31 +1,49 @@
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from 'react-native'
-import React from 'react'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native'; 
-
+import axios from 'axios';
 
 const Dashboard = () => {
   const navigation = useNavigation(); 
+  const [popularEvents, setPopularEvents] = useState([]);
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
+
+  useEffect(() => {
+    // Fetch popular events from the backend API
+    axios.get('http://192.168.77.240:3000/getmostpopularevent')
+      .then(response => {
+        setPopularEvents(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching popular events:', error);
+      });
+
+    // Fetch upcoming events from the backend API
+    axios.get('http://192.168.77.240:3000/getupcomingeventdata')
+      .then(response => {
+        setUpcomingEvents(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching upcoming events:', error);
+      });
+  }, []);
 
   function viewMore() {
     navigation.navigate('Popularevents');
   }
 
-  function more() {
-    navigation.navigate('Eventdetails');
+  function navigateToEventDetails(eventId) {
+    navigation.navigate('Eventdetails', { eventId });
   }
 
   function navigateToSearch() {
     navigation.navigate('Search');
   }
 
-  // Array of upcoming events
-  const upcomingEvents = [
-    { name: 'Event 1', date: 'May 1, 2024', imageSource: require('../../assets/img/festive.jpg') },
-    { name: 'Event 2', date: 'May 5, 2024', imageSource: require('../../assets/img/festive.jpg') },
-    { name: 'Event 3', date: 'May 10, 2024', imageSource: require('../../assets/img/festive.jpg') },
-    { name: 'Event 4', date: 'May 15, 2024', imageSource: require('../../assets/img/festive.jpg') },
-  ];
+  function navigateToUpcomingEventDetails(eventId) {
+    navigation.navigate('Upcomingeventdetails', { eventId });
+  }
 
   return (
     <View style={styles.container}>
@@ -61,22 +79,25 @@ const Dashboard = () => {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.containerbox}>
-        <Image
-          source={require('../../assets/img/festive.jpg')}
-          style={{ width: 150, height: 160, borderRadius: 20, marginVertical: 10, marginHorizontal: 10 }}
-        />
-        <View style={styles.eventDetails}>
-          <Text style={styles.eventDetailText1}>Event Name</Text>
-          <Text style={styles.eventDetailText2}>Event Date</Text>
-          <TouchableOpacity onPress={more}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={styles.eventDetailText3}>More</Text>
-              <Icon style={{ marginTop: 20 }} name="chevron-right" size={20} color="#000000" />
+      {/* Render the popular events */}
+      {popularEvents.map((event, index) => (
+        <TouchableOpacity key={index} onPress={() => navigateToEventDetails(event.id)}>
+          <View style={styles.containerbox}>
+            <Image
+              source={{ uri: event.image_url }}
+              style={{ width: 150, height: 160, borderRadius: 20, marginVertical: 10, marginHorizontal: 10 }}
+            />
+            <View style={styles.eventDetails}>
+              <Text style={styles.eventDetailText1}>{event.event_name}</Text>
+              <Text style={styles.eventDetailText2}>{new Date(event.date).toDateString()}</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={styles.eventDetailText3}>More</Text>
+                <Icon style={{ marginTop: 20 }} name="chevron-right" size={20} color="#000000" />
+              </View>
             </View>
-          </TouchableOpacity>
-        </View>
-      </View>
+          </View>
+        </TouchableOpacity>
+      ))}
 
       <View style={{ flexDirection: 'row', marginTop: 20 }}>
         <Text style={styles.upcomingEventsText}>
@@ -84,22 +105,21 @@ const Dashboard = () => {
         </Text>
       </View>
 
-      {/* Horizontal ScrollView for Upcoming Events */}
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        <View style={{ flexDirection: 'row', marginTop: 20 }}>
-          {/* Render each upcoming event */}
+        <View style={{ flexDirection: 'row', marginTop: 20, marginHorizontal: 20 }}>
           {upcomingEvents.map((event, index) => (
-            <Image
-              key={index}
-              source={event.imageSource}
-              style={{ width: 150, height: 160, borderRadius: 20, marginVertical: 10, marginHorizontal: 10 }}
-            />
+            <TouchableOpacity key={index} onPress={() => navigateToUpcomingEventDetails(event.id)}>
+              <Image
+                source={{ uri: event.image_url }}
+                style={{ width: 200, height: 200, borderRadius: 20, marginVertical: 10, marginHorizontal: 10 }}
+              />
+            </TouchableOpacity>
           ))}
         </View>
       </ScrollView>
 
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -147,7 +167,8 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: '#FFFFFF',
     marginTop: 50,
-    marginRight: 110,
+    marginHorizontal: 70,
+    marginLeft: -20,
   },
   titleContainer: {
     flexDirection: 'row',
@@ -174,4 +195,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Dashboard
+export default Dashboard;

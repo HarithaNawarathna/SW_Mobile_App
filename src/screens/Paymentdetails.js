@@ -5,7 +5,8 @@ import { StripeProvider, CardField, useConfirmPayment } from '@stripe/stripe-rea
 import axios from 'axios';
 import { useNavigation, useRoute } from '@react-navigation/native'; 
 
-const API_URL = 'http://10.0.2.2:3000'; 
+const API_URL = 'http://192.168.77.240:3000';
+;
 
 const Paymentdetails = () => {
   const [cardHolderEmail, setCardHolderEmail] = useState('');
@@ -77,27 +78,12 @@ const Paymentdetails = () => {
     }
   };
 
-  const BackButton = () => {
-    const navigation = useNavigation();
-
-    const handleBackPress = () => {
-      navigation.goBack();
-    }
-
-    return (
-      <TouchableOpacity onPress={handleBackPress}>
-        <Icon name="chevron-back-circle" size={40} color="#F6BD0F" />
-      </TouchableOpacity>
-    );
-  }
-
   return (
     <StripeProvider
       publishableKey="pk_test_51ObQ74EVdCsIjFayjxfFn84AgbNhpwKqQjOVfmGQGscgNz7NuGC5zqyku85cWRZRvjm74My2vPJTYu28fdszWl4600rUJdhZuh"
     >
       <View style={styles.container}>
         <View style={styles.header}>
-          <BackButton />
           <Text style={styles.headerText}>Payment Details</Text>
         </View>
         <View>

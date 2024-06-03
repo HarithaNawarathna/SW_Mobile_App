@@ -27,6 +27,8 @@ import Updatedpass from '../screens/Updatedpass';
 import Paymentdetails from '../screens/Paymentdetails';
 import Paymentverification from '../screens/Paymentverification';
 import BottomTabNavigation from './BottomTabNavigation';
+import Upcomingeventdetails from '../screens/Upcomingeventdetails';
+
 const Stack = createStackNavigator();
 
 const AppNavigation = () => {
@@ -34,14 +36,13 @@ const AppNavigation = () => {
         <NavigationContainer>
             <Stack.Navigator screenOptions={
                 {
-                    headerShown: false // Hide the header by default for all screens
+                    headerShown: false
                 }
             }>
-                {/* Define each screen in the stack navigator */}
                 <Stack.Screen name="Splash" component={Splash} />
                 <Stack.Screen name="Login" component={Login} options={
                     {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid // Animation effect for screen transitions
+                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid 
                     }
                 }/>
                 <Stack.Screen name="Resetpass1" component={Resetpass1} options={
@@ -140,6 +141,11 @@ const AppNavigation = () => {
                     }
                 }/>
                 <Stack.Screen name="Paymentverification" component={Paymentverification} options={
+                    {
+                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
+                    }
+                }/>
+                <Stack.Screen name="Upcomingeventdetails" component={Upcomingeventdetails} options={
                     {
                         cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
                     }

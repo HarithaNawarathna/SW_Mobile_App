@@ -1,37 +1,51 @@
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
+import { useNavigation } from '@react-navigation/native';
 
 function Editprofilefield() {
-    const navigation = useNavigation(); // Use useNavigation hook to get navigation object
+    const navigation = useNavigation();
 
     return (
         <View>
-            <View>
-                <Text style={styles.labelText}>
-                    First Name
-                </Text>
-            </View>
             <View style={styles.inputContainer}>
                 <TextInput
-                    placeholder='XXXXXXXXXX'
+                    placeholder='Enter Full Name'
                     placeholderTextColor={'#000000'}
-                    style={styles.inputText}
+                    style={styles.input}
+                />
+            </View>
+            <View style={[styles.inputContainer, { marginTop: 30 }]}>
+                <TextInput
+                    placeholder='Enter Email Address'
+                    placeholderTextColor={'#000000'}
+                    style={styles.input}
+                />
+            </View>
+            <View style={[styles.inputContainer, { marginTop: 30 }]}>
+                <TextInput
+                    placeholder='Enter NIC'
+                    placeholderTextColor={'#000000'}
+                    style={styles.input}
+                />
+            </View>
+            <View style={[styles.inputContainer, { marginTop: 30 }]}>
+                <TextInput
+                    placeholder='Enter Contact No'
+                    placeholderTextColor={'#000000'}
+                    style={styles.input}
                 />
             </View>
 
-            {/* Other input fields */}
-
             <Changepassbutton />
             <BottomButtons2 />
-            
+
         </View>
     );
 }
 
 function Changepassbutton() {
-    const navigation = useNavigation(); // Use useNavigation hook to get navigation object
+    const navigation = useNavigation();
 
     function gotoChangepass() {
         navigation.navigate('Changepass');
@@ -39,8 +53,8 @@ function Changepassbutton() {
 
     return (
         <TouchableOpacity onPress={gotoChangepass}>
-            <View style={styles.button}>
-                <Text style={styles.buttonText}>
+            <View>
+                <Text style={styles.changePasswordText}>
                     Change Password
                 </Text>
             </View>
@@ -49,10 +63,10 @@ function Changepassbutton() {
 }
 
 function BottomButtons2() {
-    const navigation = useNavigation(); // Use useNavigation hook to get navigation object
+    const navigation = useNavigation();
 
-    function gotoDashboard() {
-        navigation.navigate('Dashboard');
+    function gotoLogin() {
+        navigation.navigate('Login');
     }
 
     function gotoProfile() {
@@ -69,7 +83,7 @@ function BottomButtons2() {
                 </View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={gotoDashboard}>
+            <TouchableOpacity onPress={gotoLogin}>
                 <View style={styles.button}>
                     <Text style={styles.buttonText}>
                         Save
@@ -81,14 +95,14 @@ function BottomButtons2() {
 }
 
 const Editacc = () => {
-    const navigation = useNavigation(); // Use useNavigation hook to get navigation object
+    const navigation = useNavigation();
 
     return (
         <KeyboardAwareScrollView>
             <View style={styles.container}>
 
                 <Text style={styles.title}>
-                    User Profile
+                    Edit Profile
                 </Text>
                 <Image
                     source={require('../../assets/img/userprofile.png')}
@@ -104,12 +118,16 @@ const Editacc = () => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        backgroundColor: '#401971',
+        alignItems: 'center',
+        height: 887,
+    },
     labelText: {
-        fontSize: 18,
+        fontSize: 30,
         color: '#C7ADCE',
-        marginBottom: 5,
-        marginLeft: 30,
-        marginTop: 10,
+        marginBottom: 30,
+        marginTop: 20,
     },
     inputContainer: {
         backgroundColor: '#FFFFFF',
@@ -128,7 +146,7 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: 'row',
         marginHorizontal: 20,
-        marginBottom: 56,
+        marginTop: 20,
     },
     button: {
         backgroundColor: '#F6BD0F',
@@ -145,11 +163,17 @@ const styles = StyleSheet.create({
         color: '#000000',
         textAlign: 'center',
     },
+    changePasswordText: {
+        fontSize: 18,
+        color: '#C69CD1',
+        marginHorizontal: 25,
+        marginTop: 30,
+    },
     title: {
         fontSize: 30,
         color: '#FFFFFF',
         marginBottom: 44,
-        marginTop: 30,
+        marginTop: 80,
     },
     profileImage: {
         width: 80,

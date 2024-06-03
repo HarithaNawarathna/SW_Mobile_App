@@ -6,7 +6,6 @@ const Mytickets = () => {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Icon name="chevron-back-circle" size={40} color="#FFB300" />
                 <Text style={styles.title}>
                     My Tickets
                 </Text>
@@ -31,6 +30,6 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 30,
         color: '#FFFFFF',
-        marginLeft: 70,
+        marginHorizontal: 70,
     },
 })

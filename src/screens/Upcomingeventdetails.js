@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image,TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
-import { useNavigation } from '@react-navigation/native'; 
+import { useNavigation } from '@react-navigation/native';
 
-const Eventdetails = () => {
+const Upcomingeventdetails = () => {
     const route = useRoute();
     const id = route.params?.eventId || null;
     const [event, setEvent] = useState(null);
 
     function BuyTicketsButton() {
         const navigation = useNavigation();
-    
+
         function gotoselecttickets() {
             navigation.navigate('Selecttickets');
         }
-    
+
         return (
             <TouchableOpacity onPress={gotoselecttickets}>
                 <View style={styles.buyTicketsButton}>
@@ -30,11 +30,11 @@ const Eventdetails = () => {
 
     function BookMarkButton() {
         const navigation = useNavigation();
-    
+
         function gotofavourite() {
             navigation.navigate('Favourite');
         }
-    
+
         return (
             <TouchableOpacity onPress={gotofavourite}>
                 <Icon style={styles.bookmarkButton} name="bookmarks" size={30} color="#FFB300" />
@@ -55,8 +55,6 @@ const Eventdetails = () => {
     if (!event) {
         return <Text>Loading...</Text>;
     }
-
-    
 
     return (
         <View style={styles.container}>
@@ -183,4 +181,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Eventdetails;
+export default Upcomingeventdetails;

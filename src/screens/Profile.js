@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
-import Icon from 'react-native-vector-icons/Ionicons'
+import React from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
 
 const CircleWithText = ({ number }) => {
   return (
@@ -10,46 +11,60 @@ const CircleWithText = ({ number }) => {
   );
 }
 
-const TicketsButton = ({ stack }) => {
+const TicketsButton = () => {
+  const navigation = useNavigation();
+
   function gotoMytickets() {
-    stack.navigate('Mytickets');
+    navigation.navigate('Mytickets');
   }
 
   return (
-    <TouchableOpacity onPress={gotoMytickets} style={styles.buttonContainer}>
+    <TouchableOpacity onPress={gotoMytickets} style={styles.ticketsbuttonContainer}>
       <Icon name="ticket" size={40} color="#FFB300" />
       <Text style={styles.buttonText}>Tickets</Text>
     </TouchableOpacity>
   );
 }
 
-const EditProfileButton = ({ stack2 }) => {
+const EditProfileButton = () => {
+  const navigation = useNavigation();
+
   function gotoEditacc() {
-    stack2.navigate('Editacc');
+    navigation.navigate('Editacc');
   }
 
   return (
     <TouchableOpacity onPress={gotoEditacc} style={styles.buttonContainer}>
-      <Icon name="pencil-sharp" size={30} color="#C7ADCE" />
+      <Icon name="pencil-sharp" size={25} color="#C7ADCE" />
       <Text style={styles.buttonTextSmall}>Edit Profile</Text>
     </TouchableOpacity>
   );
 }
 
-const LogoutButton = ({ stack3 }) => {
-  function gotologin() {
-    stack3.navigate('Login');
+const LogoutButton = () => {
+  const navigation = useNavigation();
+
+  function confirmLogout() {
+    Alert.alert(
+      'Logout',
+      'Are you sure you want to logout?',
+      [
+        { text: 'No', style: 'cancel' },
+        { text: 'Yes', onPress: () => navigation.navigate('Login') },
+      ],
+      { cancelable: false }
+    );
   }
 
   return (
-    <TouchableOpacity onPress={gotologin} style={[styles.buttonContainer, styles.logoutButtonContainer]}>
-      <Icon name="log-out-outline" size={40} color="#C7ADCE" />
+    <TouchableOpacity onPress={confirmLogout} style={[styles.buttonContainer, styles.logoutButtonContainer]}>
+      <Icon name="log-out-outline" size={30} color="#C7ADCE" />
       <Text style={[styles.buttonText, styles.buttonTextSmall]}>Logout</Text>
     </TouchableOpacity>
   );
 }
 
-const Profile = ({ stack, stack2, stack3 }) => {
+const Profile = () => {
   return (
     <View style={styles.container}>
       <Image
@@ -70,9 +85,9 @@ const Profile = ({ stack, stack2, stack3 }) => {
         <Text style={styles.statsText}>Upcoming</Text>
       </View>
 
-      <TicketsButton stack={stack} />
-      <EditProfileButton stack2={stack2} />
-      <LogoutButton stack3={stack3} />
+      <TicketsButton />
+      <EditProfileButton />
+      <LogoutButton />
     </View>
   );
 }
@@ -126,22 +141,26 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 40,
+    alignItems: 'center', 
+  },
+  ticketsbuttonContainer: {
+    marginTop: 40,
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   buttonText: {
-    fontSize: 25,
+    fontSize: 30,
     color: '#FFFFFF',
-    marginHorizontal: 45,
-    marginTop: -33,
+    marginHorizontal: 10,
   },
   buttonTextSmall: {
     fontSize: 20,
     color: '#C7ADCE',
-    marginHorizontal: 30,
-    marginTop: -25,
+    marginTop: -5, 
   },
   logoutButtonContainer: {
-    marginTop: 20,
-    marginLeft: 47,
+    marginTop: 30,
+    alignItems: 'center', 
   },
 });
 

@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/native';
 
 function Createprofilefield() {
     
-
     return (
         <View>
             <View style={styles.inputContainer}>
@@ -75,7 +74,7 @@ function BottomButtons() {
                 </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={gotodashboard}>
-                <View style={[styles.button, { marginLeft: 20 }]}>
+                <View style={styles.button}>
                     <Text style={styles.buttonText}>
                         Create
                     </Text>
@@ -104,7 +103,6 @@ const Createacc = () => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         backgroundColor: '#401971',
         alignItems: 'center',
         height: 887,
