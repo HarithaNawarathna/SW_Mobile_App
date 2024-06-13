@@ -5,15 +5,16 @@ import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import axios from 'axios';
 
+const API_URL = 'http://192.168.182.240:3000';
+
 const Popularevents = () => {
     const navigation = useNavigation();
     const [events, setEvents] = useState([]);
 
     useEffect(() => {
       
-        axios.get('http://192.168.77.240:3000/getallevents')
+        axios.get(`${API_URL}/getallevents`)
             .then(response => {
-                console.log(response.data);
                 setEvents(response.data);
             })
             .catch(error => {
@@ -22,7 +23,6 @@ const Popularevents = () => {
     }, []);
 
     function gotoEventDetails(eventId) {
-      console.log(eventId)
         navigation.navigate('Eventdetails', { eventId });
     }
 
@@ -103,17 +103,18 @@ const styles = StyleSheet.create({
     },
     eventDetails: {
       marginLeft: 10,
-      marginTop: 15,
+      marginTop: 10,
     },
     eventDetailText1: {
       fontSize: 20,
       color: '#000000',
       fontWeight: 'bold',
+      width: 150,
     },
     eventDetailText2: {
       fontSize: 15,
       color: '#000000',
-      marginTop: 20,
+      marginTop: 15,
     },
     eventDetailText3: {
       fontSize: 15,

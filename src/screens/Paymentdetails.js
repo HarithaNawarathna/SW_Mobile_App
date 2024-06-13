@@ -5,8 +5,7 @@ import { StripeProvider, CardField, useConfirmPayment } from '@stripe/stripe-rea
 import axios from 'axios';
 import { useNavigation, useRoute } from '@react-navigation/native'; 
 
-const API_URL = 'http://192.168.77.240:3000';
-;
+const API_URL = 'http://192.168.182.240:3000';
 
 const Paymentdetails = () => {
   const [cardHolderEmail, setCardHolderEmail] = useState('');

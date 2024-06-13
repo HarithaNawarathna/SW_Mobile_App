@@ -3,7 +3,6 @@ import React from 'react'
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 
-// Importing screens
 import Changepass from '../screens/Changepass';
 import Chats from '../screens/Chats';
 import Createacc from '../screens/Createacc';

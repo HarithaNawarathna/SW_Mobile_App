@@ -1,18 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const API_URL = 'http://192.168.182.240:3000';
 
-// Validation using Yup
 const LoginSchema = Yup.object().shape({
-  username: Yup.string()
+  email: Yup.string()
     .email('Invalid email')
-    .required('Email is required')
-    .matches(/^[a-zA-Z0-9._-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,4}$/, 
-      'Invalid email'),
+    .required('Email is required'),
   password: Yup.string()
     .required('Password is required')
     .min(8, 'Password must be at least 8 characters')
@@ -24,8 +24,27 @@ const LoginSchema = Yup.object().shape({
 const Login = () => {
   const navigation = useNavigation();
 
-  const handleLogin = (values) => {
-    navigation.navigate('BottomTabNavigation'); 
+  const handleLogin = async (values) => {
+    try {
+      const response = await axios.post(`${API_URL}/signin`, {
+        email: values.email,
+        password: values.password
+      });
+      
+      if (response.status === 200) {
+        await AsyncStorage.setItem('accessToken', response.data.accessToken);
+        await AsyncStorage.setItem('refreshToken', response.data.refreshToken);
+        await AsyncStorage.setItem('username', response.data.username);
+        navigation.navigate('BottomTabNavigation');
+      }
+    } catch (error) {
+      if (error.response && error.response.data) {
+        Alert.alert("Error", error.response.data);
+      } else {
+        console.error(error);
+        Alert.alert("Error", "Failed to login");
+      }
+    }
   };
 
   return (
@@ -36,9 +55,9 @@ const Login = () => {
 
         {/* Formik form for handling form inputs and validation */}
         <Formik
-          initialValues={{ username: '', password: '' }} // Initial form values
+          initialValues={{ email: '', password: '' }} // Initial form values
           validationSchema={LoginSchema} // Validation for form inputs
-          onSubmit={handleLogin} 
+          onSubmit={handleLogin}
         >
           {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
             <View style={styles.form}>
@@ -46,20 +65,22 @@ const Login = () => {
                 placeholder="Email"
                 placeholderTextColor="#000000"
                 style={styles.input}
-                onChangeText={handleChange('username')} // Update username value on change
-                onBlur={handleBlur('username')} // Handle blur event when user moves focus away from username input
-                value={values.username} // Current value of username input
+                onChangeText={handleChange('email')}
+                onBlur={handleBlur('email')}
+                value={values.email}
+                keyboardType="email-address" // Set keyboard type to email
+                autoCapitalize="none" // Disable auto-capitalization
               />
-              {touched.username && errors.username && <Text style={styles.error}>{errors.username}</Text>}
+              {touched.email && errors.email && <Text style={styles.error}>{errors.email}</Text>}
 
               <TextInput
                 placeholder="Password"
                 placeholderTextColor="#000000"
                 secureTextEntry={true} // Hide password characters
                 style={styles.input}
-                onChangeText={handleChange('password')} // Update password value on change
-                onBlur={handleBlur('password')} // Handle blur event when user moves focus away from password input
-                value={values.password} // Current value of password input
+                onChangeText={handleChange('password')}
+                onBlur={handleBlur('password')}
+                value={values.password}
               />
               {touched.password && errors.password && <Text style={styles.error}>{errors.password}</Text>}
 
@@ -68,7 +89,7 @@ const Login = () => {
               </TouchableOpacity>
 
               <TouchableOpacity onPress={() => navigation.navigate('Resetpass1')}>
-                <Text style={styles.forgotPassword}>Forget Password</Text>
+                <Text style={styles.forgotPassword}>Forgot Password</Text>
               </TouchableOpacity>
 
               <TouchableOpacity onPress={() => navigation.navigate('Createacc')}>

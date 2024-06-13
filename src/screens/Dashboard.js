@@ -3,15 +3,23 @@ import React, { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native'; 
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const API_URL = 'http://192.168.182.240:3000';
 
 const Dashboard = () => {
   const navigation = useNavigation(); 
   const [popularEvents, setPopularEvents] = useState([]);
   const [upcomingEvents, setUpcomingEvents] = useState([]);
-
+  const [username, setUsername] = useState('');
   useEffect(() => {
+    // Fetch username from AsyncStorage
+    AsyncStorage.getItem('username')
+      .then((value) => setUsername(value)) // Set the username state
+      .catch((error) => console.error('Error fetching username:', error));
+
     // Fetch popular events from the backend API
-    axios.get('http://192.168.77.240:3000/getmostpopularevent')
+    axios.get(`${API_URL}/getmostpopularevent`)
       .then(response => {
         setPopularEvents(response.data);
       })
@@ -20,7 +28,7 @@ const Dashboard = () => {
       });
 
     // Fetch upcoming events from the backend API
-    axios.get('http://192.168.77.240:3000/getupcomingeventdata')
+    axios.get(`${API_URL}/getupcomingeventdata`)
       .then(response => {
         setUpcomingEvents(response.data);
       })
@@ -28,6 +36,7 @@ const Dashboard = () => {
         console.error('Error fetching upcoming events:', error);
       });
   }, []);
+
 
   function viewMore() {
     navigation.navigate('Popularevents');
@@ -50,7 +59,7 @@ const Dashboard = () => {
 
       <View style={styles.titleContainer}>
         <Text style={styles.title}>
-          Hello, --Name--
+          Welcome, {username}!
         </Text>
         <Icon style={styles.waveIcon} name="hand-wave" size={30} color="#F6BD0F" />
       </View>
@@ -151,6 +160,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#000000',
     fontWeight: 'bold',
+    width: 150,
   },
   eventDetailText2: {
     fontSize: 15,

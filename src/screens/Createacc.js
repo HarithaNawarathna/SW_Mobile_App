@@ -1,83 +1,90 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, Alert } from 'react-native';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useNavigation } from '@react-navigation/native'; 
+import { useNavigation } from '@react-navigation/native';
 
-function Createprofilefield() {
-    
+const API_URL = 'http://192.168.182.240:3000';
+
+function Createprofilefield({ formData, handleChange }) {
     return (
         <View>
-            <View style={styles.inputContainer}>
-                <TextInput
-                    placeholder='Enter Full Name'
-                    placeholderTextColor={'#000000'}
-                    style={styles.input}
-                />
-            </View>
-            <View style={[styles.inputContainer, { marginTop: 30 }]}>
-                <TextInput
-                    placeholder='Enter Email Address'
-                    placeholderTextColor={'#000000'}
-                    style={styles.input}
-                />
-            </View>
-            <View style={[styles.inputContainer, { marginTop: 30 }]}>
-                <TextInput
-                    placeholder='Enter NIC'
-                    placeholderTextColor={'#000000'}
-                    style={styles.input}
-                />
-            </View>
-            <View style={[styles.inputContainer, { marginTop: 30 }]}>
-                <TextInput
-                    placeholder='Enter Contact No'
-                    placeholderTextColor={'#000000'}
-                    style={styles.input}
-                />
-            </View>
-            <View style={[styles.inputContainer, { marginTop: 30 }]}>
-                <TextInput
-                    placeholder='Enter New Password '
-                    placeholderTextColor={'#000000'}
-                    style={styles.input}
-                />
-            </View>
-            <View style={[styles.inputContainer, { marginTop: 30 }]}>
-                <TextInput
-                    placeholder='Confirm Password'
-                    placeholderTextColor={'#000000'}
-                    style={styles.input}
-                />
-            </View>
-            <BottomButtons />
+            {["name", "email", "nic", "contact_number", "password", "confirmPassword"].map((placeholder, index) => (
+                <View key={index} style={[styles.inputContainer, { marginTop: index === 0 ? 0 : 32 }]}>
+                    <TextInput
+                        placeholder={
+                            placeholder === "confirmPassword"
+                                ? "CONFIRM PASSWORD"
+                                : `Enter ${placeholder.split('_').join(' ').toUpperCase()}`
+                        }
+                        placeholderTextColor={'#000000'}
+                        style={styles.input}
+                        secureTextEntry={placeholder.toLowerCase().includes("password")}
+                        value={formData[placeholder]}
+                        onChangeText={text => handleChange(placeholder, text)}
+                    />
+                </View>
+            ))}
         </View>
     );
 }
 
-function BottomButtons() {
-    const navigation = useNavigation(); 
-    function gobacktologin() {
-        navigation.navigate('Login');
-    }
+function BottomButtons({ formData, handleChange }) {
+    const navigation = useNavigation();
 
-    function gotodashboard() {
-        navigation.navigate('BottomTabNavigation');
-    }
+    const handleCreate = async () => {
+        // Validation
+        if (!formData.name || !formData.email || !formData.nic || !formData.contact_number || !formData.password || !formData.confirmPassword) {
+            Alert.alert("Error", "All fields are required");
+            return;
+        }
+        if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            Alert.alert("Error", "Invalid email format");
+            return;
+        }
+        if (formData.password !== formData.confirmPassword) {
+            Alert.alert("Error", "Passwords do not match");
+            return;
+        }
+
+        try {
+            const response = await axios.post(`${API_URL}/signup`, {
+                name: formData.name,
+                email: formData.email,
+                nic: formData.nic,
+                contact_number: formData.contact_number,
+                password: formData.password
+            });
+
+            if (response.status === 201) {
+                await AsyncStorage.setItem('accessToken', response.data.accessToken);
+                await AsyncStorage.setItem('refreshToken', response.data.refreshToken);
+                await AsyncStorage.setItem('username', response.data.username);
+                Alert.alert("Success", "Account created successfully", [
+                    { text: "OK", onPress: () => navigation.navigate('BottomTabNavigation') }
+                ]);
+            }
+        } catch (error) {
+            if (error.response && error.response.status === 409) {
+                Alert.alert("Error", "User already exists");
+            } else {
+                console.error(error);
+                Alert.alert("Error", "Failed to create account");
+            }
+        }
+    };
 
     return (
         <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={gobacktologin}>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                 <View style={styles.button}>
-                    <Text style={styles.buttonText}>
-                        Cancel
-                    </Text>
+                    <Text style={styles.buttonText}>Cancel</Text>
                 </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={gotodashboard}>
+            <TouchableOpacity onPress={handleCreate}>
                 <View style={styles.button}>
-                    <Text style={styles.buttonText}>
-                        Create
-                    </Text>
+                    <Text style={styles.buttonText}>Create</Text>
                 </View>
             </TouchableOpacity>
         </View>
@@ -85,20 +92,35 @@ function BottomButtons() {
 }
 
 const Createacc = () => {
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        nic: '',
+        contact_number: '',
+        password: '',
+        confirmPassword: ''
+    });
+
+    const handleChange = (name, value) => {
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
     return (
         <KeyboardAwareScrollView>
             <View style={styles.container}>
-                <Text style={styles.title}>
-                    User Profile
-                </Text>
+                <Text style={styles.title}>User Profile</Text>
                 <Image
                     source={require('../../assets/img/userprofile.png')}
                     style={styles.profileImage}
                 />
-                <Createprofilefield />
+                <Createprofilefield formData={formData} handleChange={handleChange} />
+                <BottomButtons formData={formData} handleChange={handleChange} />
             </View>
         </KeyboardAwareScrollView>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -124,7 +146,7 @@ const styles = StyleSheet.create({
     inputContainer: {
         backgroundColor: '#FFFFFF',
         borderRadius: 10,
-        height: 35,
+        height: 37, // Increased height by 2px
         width: 350,
         marginHorizontal: 20,
         justifyContent: 'center',
@@ -155,4 +177,5 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     }
 });
+
 export default Createacc;

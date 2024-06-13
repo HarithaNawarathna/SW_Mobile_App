@@ -5,6 +5,8 @@ import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native'; 
 
+const API_URL = 'http://192.168.182.240:3000';
+
 const Eventdetails = () => {
     const route = useRoute();
     const id = route.params?.eventId || null;
@@ -43,7 +45,7 @@ const Eventdetails = () => {
     }
 
     useEffect(() => {
-        axios.get(`http://192.168.77.240:3000/geteventdatabyid/${id}`)
+        axios.get(`${API_URL}/geteventdatabyid/${id}`)
             .then(response => {
                 setEvent(response.data[0]);
             })
