@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Dimensions } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native'; 
@@ -12,6 +12,7 @@ const Dashboard = () => {
   const [popularEvents, setPopularEvents] = useState([]);
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [username, setUsername] = useState('');
+
   useEffect(() => {
     // Fetch username from AsyncStorage
     AsyncStorage.getItem('username')
@@ -37,7 +38,6 @@ const Dashboard = () => {
       });
   }, []);
 
-
   function viewMore() {
     navigation.navigate('Popularevents');
   }
@@ -56,7 +56,6 @@ const Dashboard = () => {
 
   return (
     <View style={styles.container}>
-
       <View style={styles.titleContainer}>
         <Text style={styles.title}>
           Welcome, {username}!
@@ -67,18 +66,18 @@ const Dashboard = () => {
       <Text style={styles.subTitle}>
         Let's find a good event!
       </Text>
-      {/* Button to navigate to Search Screen */}
+
       <TouchableOpacity onPress={navigateToSearch} style={styles.searchButton}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={{ color: '#C7ADCE', fontSize: 18, marginRight: 150 }}>
+        <View style={styles.searchButtonContent}>
+          <Text style={styles.searchButtonText}>
             Search Events
           </Text>
           <Icon name="magnify" size={24} color="#C7ADCE" />
         </View>
       </TouchableOpacity>
 
-      <View style={{ flexDirection: 'row', marginTop: 20 }}>
-        <Text style={{ fontSize: 25, color: '#FFFFFF' }}>
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionTitle}>
           Popular Events
         </Text>
         <TouchableOpacity onPress={viewMore}>
@@ -88,45 +87,41 @@ const Dashboard = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Render the popular events */}
       {popularEvents.map((event, index) => (
         <TouchableOpacity key={index} onPress={() => navigateToEventDetails(event.id)}>
           <View style={styles.containerbox}>
             <Image
               source={{ uri: event.image_url }}
-              style={{ width: 150, height: 160, borderRadius: 20, marginVertical: 10, marginHorizontal: 10 }}
+              style={styles.eventImage}
             />
             <View style={styles.eventDetails}>
               <Text style={styles.eventDetailText1}>{event.event_name}</Text>
               <Text style={styles.eventDetailText2}>{new Date(event.date).toDateString()}</Text>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={styles.moreContainer}>
                 <Text style={styles.eventDetailText3}>More</Text>
-                <Icon style={{ marginTop: 20 }} name="chevron-right" size={20} color="#000000" />
+                <Icon style={styles.chevronIcon} name="chevron-right" size={20} color="#000000" />
               </View>
             </View>
           </View>
         </TouchableOpacity>
       ))}
 
-      <View style={{ flexDirection: 'row', marginTop: 20 }}>
-        <Text style={styles.upcomingEventsText}>
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionTitle}>
           Upcoming Events
         </Text>
       </View>
 
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        <View style={{ flexDirection: 'row', marginTop: 20, marginHorizontal: 20 }}>
-          {upcomingEvents.map((event, index) => (
-            <TouchableOpacity key={index} onPress={() => navigateToUpcomingEventDetails(event.id)}>
-              <Image
-                source={{ uri: event.image_url }}
-                style={{ width: 200, height: 200, borderRadius: 20, marginVertical: 10, marginHorizontal: 10 }}
-              />
-            </TouchableOpacity>
-          ))}
-        </View>
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollContainer}>
+        {upcomingEvents.map((event, index) => (
+          <TouchableOpacity key={index} onPress={() => navigateToUpcomingEventDetails(event.id)}>
+            <Image
+              source={{ uri: event.image_url }}
+              style={styles.upcomingEventImage}
+            />
+          </TouchableOpacity>
+        ))}
       </ScrollView>
-
     </View>
   );
 }
@@ -136,11 +131,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#401971',
     alignItems: 'center',
+    padding: 10,
   },
   containerbox: {
     backgroundColor: '#C7ADCE',
     flexDirection: 'row',
-    width: 340,
+    width: '90%',
     height: 180,
     borderRadius: 20,
     marginTop: 20,
@@ -148,60 +144,100 @@ const styles = StyleSheet.create({
   searchButton: {
     backgroundColor: '#FFFFFF',
     borderRadius: 15,
-    paddingVertical: 6,
+    paddingVertical: 10,
     paddingHorizontal: 20,
     marginTop: 20,
+    width: '90%',
+  },
+  searchButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  searchButtonText: {
+    color: '#C7ADCE',
+    fontSize: 18,
+  },
+  eventImage: {
+    width: 150,
+    height: 160,
+    borderRadius: 20,
+    margin: 10,
   },
   eventDetails: {
+    flex: 1,
+    justifyContent: 'center',
     marginLeft: 10,
-    marginTop: 20,
   },
   eventDetailText1: {
     fontSize: 20,
     color: '#000000',
     fontWeight: 'bold',
+    flexWrap: 'wrap',
     width: 150,
   },
   eventDetailText2: {
     fontSize: 15,
     color: '#000000',
-    marginTop: 20,
+    marginTop: 10,
   },
   eventDetailText3: {
     fontSize: 15,
     color: '#000000',
     fontWeight: 'bold',
-    marginTop: 20,
+    marginTop: 10,
   },
   title: {
     fontSize: 30,
     color: '#FFFFFF',
-    marginTop: 50,
-    marginHorizontal: 70,
-    marginLeft: -20,
   },
   titleContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 50,
+    width: '90%',
+    justifyContent: 'flex-start',
   },
   waveIcon: {
-    marginTop: 60,
-    marginLeft: 1,
+    marginLeft: 10,
   },
   subTitle: {
     fontSize: 20,
     color: '#C7ADCE',
-    marginRight: 130,
     marginTop: 10,
+    width: '90%',
+    textAlign: 'left',
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '90%',
+    marginTop: 20,
+  },
+  sectionTitle: {
+    fontSize: 25,
+    color: '#FFFFFF',
   },
   viewMoreText: {
     fontSize: 15,
     color: '#FFFFFF',
-    marginLeft: 90,
   },
-  upcomingEventsText: {
-    fontSize: 25,
-    color: '#FFFFFF',
-    marginRight: 130,
+  scrollContainer: {
+    paddingVertical: 10,
+  },
+  upcomingEventImage: {
+    width: 200,
+    height: 200,
+    borderRadius: 20,
+    marginVertical: 10,
+    marginHorizontal: 10,
+  },
+  moreContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  chevronIcon: {
+    marginLeft: 5,
   },
 });
 

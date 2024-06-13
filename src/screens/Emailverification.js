@@ -14,8 +14,113 @@ function Verificationcodefield() {
                     style={styles.textInput}
                 />
             </View>
-            <VerifyButton navigation={navigation} />
+            <Verify navigation={navigation} />
         </View>
     );
 }
+
+function Verify({ navigation }) {
+    function gotoVerify() {
+        navigation.navigate('BottomTabNavigation');
+    }
+
+    return (
+        <TouchableOpacity onPress={gotoVerify}>
+            <View style={styles.verifyButton}>
+                <Text style={styles.verifyButtonText}>Verify</Text>
+            </View>
+        </TouchableOpacity>
+    );
+}
+
+const Emailverification = () => {
+    const navigation = useNavigation();
+
+    return (
+        <View style={styles.container}>
+            <Text style={styles.headerText}>
+                Email Verification
+            </Text>
+
+            <Image
+                source={require('../../assets/img/forgotpass2.png')}
+                style={styles.image}
+            />
+
+            <Text style={styles.description}>
+                In order to verify your email, enter the verification code that was sent to your mail
+            </Text>
+
+            <Verificationcodefield navigation={navigation} />
+        </View>
+    )
+
+}
+
+export default Emailverification;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#401971',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    headerText: {
+        fontSize: 25,
+        color: '#FFFFFF',
+        marginBottom: 5,
+        fontWeight: 'bold',
+        marginTop: 50,
+    },
+    image: {
+        width: 240,
+        height: 250,
+        alignContent: 'center',
+        marginBottom: 20,
+    },
+    description: {
+        fontSize: 16,
+        color: '#BBBBC4',
+        marginTop: 5,
+        marginBottom: 20,
+        textAlign: 'center',
+        marginHorizontal: 10,
+        width: 370,
+    },
+    inputContainer: {
+        marginTop: 10,
+    },
+    inputField: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: 20,
+        height: 40,
+        width: 300,
+        marginHorizontal: 20,
+        justifyContent: 'center',
+        paddingLeft: 20,
+    },
+    textInput: {
+        opacity: 0.6,
+        fontSize: 18,
+    },
+    verifyButton: {
+        backgroundColor: '#F6BD0F',
+        height: 40,
+        width: 250,
+        justifyContent: 'center',
+        borderRadius: 20,
+        marginHorizontal: 20,
+        marginTop: 40,
+        marginBottom: 80,
+        alignSelf: 'center',
+    },
+    verifyButtonText: {
+        fontSize: 20,
+        color: '#000000',
+        textAlign: 'center',
+        fontWeight: 'bold',
+    },
+})
+
 

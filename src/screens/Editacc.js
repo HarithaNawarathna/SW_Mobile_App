@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Editprofilefield() {
     const navigation = useNavigation();
@@ -96,6 +97,13 @@ function BottomButtons2() {
 
 const Editacc = () => {
     const navigation = useNavigation();
+    const [username, setUsername] = useState('');
+    
+    useEffect(() => {
+        AsyncStorage.getItem('username')
+            .then((value) => setUsername(value)) // Set the username state
+            .catch((error) => console.error('Error fetching username:', error));
+    }, []);
 
     return (
         <KeyboardAwareScrollView>
@@ -109,7 +117,7 @@ const Editacc = () => {
                     style={styles.profileImage}
                 />
                 <Text style={styles.labelText}>
-                    --Name--
+                    {username}
                 </Text>
                 <Editprofilefield />
             </View>
@@ -125,7 +133,7 @@ const styles = StyleSheet.create({
     },
     labelText: {
         fontSize: 30,
-        color: '#C7ADCE',
+        color: '#FFFFFF',
         marginBottom: 30,
         marginTop: 20,
     },

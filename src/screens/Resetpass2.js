@@ -25,7 +25,6 @@ function VerifyButton({ navigation }) {
     }
 
     return (
-        // TouchableOpacity containing the verify button
         <TouchableOpacity onPress={gotoVerify}>
             <View style={styles.verifyButton}>
                 <Text style={styles.verifyButtonText}>Verify</Text>
@@ -67,7 +66,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     headerText: {
-        fontSize: 22,
+        fontSize: 25,
         color: '#FFFFFF',
         marginBottom: 5,
         fontWeight: 'bold',

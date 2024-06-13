@@ -3,12 +3,12 @@ import React from 'react'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const Eventchat = () => {
+    
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Icon style={styles.icon} name="chevron-back-circle" size={40} color="#FFB300" />
                 <Text style={styles.headerText}>
-                    Event Details
+                    Event Chat
                 </Text>
             </View>
         </View>

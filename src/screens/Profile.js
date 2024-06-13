@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const CircleWithText = ({ number }) => {
   return (
@@ -10,6 +12,7 @@ const CircleWithText = ({ number }) => {
     </View>
   );
 }
+
 
 const TicketsButton = () => {
   const navigation = useNavigation();
@@ -65,6 +68,14 @@ const LogoutButton = () => {
 }
 
 const Profile = () => {
+  const [username, setUsername] = React.useState('');
+
+  useEffect(() => {
+    AsyncStorage.getItem('username')
+    .then((value) => setUsername(value))
+    .catch((error) => console.error('Error fetching username:', error));
+  }, []);
+
   return (
     <View style={styles.container}>
       <Image
@@ -72,7 +83,7 @@ const Profile = () => {
         style={styles.profileImage}
       />
       <Text style={styles.profileName}>
-        --Name--
+        {username}
       </Text>
 
       <View style={styles.circleRow}>

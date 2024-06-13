@@ -62,7 +62,7 @@ function BottomButtons({ formData, handleChange }) {
                 await AsyncStorage.setItem('refreshToken', response.data.refreshToken);
                 await AsyncStorage.setItem('username', response.data.username);
                 Alert.alert("Success", "Account created successfully", [
-                    { text: "OK", onPress: () => navigation.navigate('BottomTabNavigation') }
+                    { text: "OK", onPress: () => navigation.navigate('Emailverification') }
                 ]);
             }
         } catch (error) {

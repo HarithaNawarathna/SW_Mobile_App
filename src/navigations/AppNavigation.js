@@ -25,8 +25,9 @@ import Splash from '../screens/Splash';
 import Updatedpass from '../screens/Updatedpass';
 import Paymentdetails from '../screens/Paymentdetails';
 import Paymentverification from '../screens/Paymentverification';
-import BottomTabNavigation from './BottomTabNavigation';
 import Upcomingeventdetails from '../screens/Upcomingeventdetails';
+import Emailverification from '../screens/Emailverification';
+import BottomTabNavigation from './BottomTabNavigation';
 
 const Stack = createStackNavigator();
 
@@ -145,6 +146,11 @@ const AppNavigation = () => {
                     }
                 }/>
                 <Stack.Screen name="Upcomingeventdetails" component={Upcomingeventdetails} options={
+                    {
+                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
+                    }
+                }/>
+                <Stack.Screen name="Emailverification" component={Emailverification} options={
                     {
                         cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
                     }
