@@ -1,12 +1,11 @@
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as ImagePicker from 'expo-image-picker';
 
 function Editprofilefield() {
-    const navigation = useNavigation();
-
     return (
         <View>
             <View style={styles.inputContainer}>
@@ -40,7 +39,6 @@ function Editprofilefield() {
 
             <Changepassbutton />
             <BottomButtons2 />
-
         </View>
     );
 }
@@ -98,6 +96,7 @@ function BottomButtons2() {
 const Editacc = () => {
     const navigation = useNavigation();
     const [username, setUsername] = useState('');
+    const [profileImage, setProfileImage] = useState(null);
     
     useEffect(() => {
         AsyncStorage.getItem('username')
@@ -105,25 +104,41 @@ const Editacc = () => {
             .catch((error) => console.error('Error fetching username:', error));
     }, []);
 
+    const selectImage = async () => {
+        let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (permissionResult.granted === false) {
+            alert('Permission to access camera roll is required!');
+            return;
+        }
+
+        let pickerResult = await ImagePicker.launchImageLibraryAsync();
+        if (pickerResult.cancelled === true) {
+            return;
+        }
+
+        setProfileImage({ uri: pickerResult.uri });
+    };
+
     return (
         <KeyboardAwareScrollView>
             <View style={styles.container}>
-
                 <Text style={styles.title}>
                     Edit Profile
                 </Text>
-                <Image
-                    source={require('../../assets/img/userprofile.png')}
-                    style={styles.profileImage}
-                />
+                <TouchableOpacity onPress={selectImage}>
+                    <Image
+                        source={profileImage ? profileImage : require('../../assets/img/userprofile.png')}
+                        style={styles.profileImage}
+                    />
+                </TouchableOpacity>
                 <Text style={styles.labelText}>
                     {username}
                 </Text>
                 <Editprofilefield />
             </View>
         </KeyboardAwareScrollView>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
