@@ -4,20 +4,26 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useNavigation } from '@react-navigation/native';
+import * as ImagePicker from 'expo-image-picker';
 
 const API_URL = 'http://192.168.182.240:3000';
 
 function Createprofilefield({ formData, handleChange }) {
+    const placeholders = {
+        name: "Enter FULL NAME",
+        email: "Enter EMAIL ADDRESS",
+        nic: "Enter NIC",
+        contact_number: "Enter CONTACT NUMBER",
+        password: "Enter PASSWORD",
+        confirmPassword: "CONFIRM PASSWORD"
+    };
+
     return (
         <View>
-            {["name", "email", "nic", "contact_number", "password", "confirmPassword"].map((placeholder, index) => (
+            {Object.keys(placeholders).map((placeholder, index) => (
                 <View key={index} style={[styles.inputContainer, { marginTop: index === 0 ? 0 : 32 }]}>
                     <TextInput
-                        placeholder={
-                            placeholder === "confirmPassword"
-                                ? "CONFIRM PASSWORD"
-                                : `Enter ${placeholder.split('_').join(' ').toUpperCase()}`
-                        }
+                        placeholder={placeholders[placeholder]}
                         placeholderTextColor={'#000000'}
                         style={styles.input}
                         secureTextEntry={placeholder.toLowerCase().includes("password")}
@@ -30,50 +36,8 @@ function Createprofilefield({ formData, handleChange }) {
     );
 }
 
-function BottomButtons({ formData, handleChange }) {
+function BottomButtons({ formData, handleChange, handleCreate }) {
     const navigation = useNavigation();
-
-    const handleCreate = async () => {
-        // Validation
-        if (!formData.name || !formData.email || !formData.nic || !formData.contact_number || !formData.password || !formData.confirmPassword) {
-            Alert.alert("Error", "All fields are required");
-            return;
-        }
-        if (!/\S+@\S+\.\S+/.test(formData.email)) {
-            Alert.alert("Error", "Invalid email format");
-            return;
-        }
-        if (formData.password !== formData.confirmPassword) {
-            Alert.alert("Error", "Passwords do not match");
-            return;
-        }
-
-        try {
-            const response = await axios.post(`${API_URL}/signup`, {
-                name: formData.name,
-                email: formData.email,
-                nic: formData.nic,
-                contact_number: formData.contact_number,
-                password: formData.password
-            });
-
-            if (response.status === 201) {
-                await AsyncStorage.setItem('accessToken', response.data.accessToken);
-                await AsyncStorage.setItem('refreshToken', response.data.refreshToken);
-                await AsyncStorage.setItem('username', response.data.username);
-                Alert.alert("Success", "Account created successfully", [
-                    { text: "OK", onPress: () => navigation.navigate('Emailverification') }
-                ]);
-            }
-        } catch (error) {
-            if (error.response && error.response.status === 409) {
-                Alert.alert("Error", "User already exists");
-            } else {
-                console.error(error);
-                Alert.alert("Error", "Failed to create account");
-            }
-        }
-    };
 
     return (
         <View style={styles.buttonContainer}>
@@ -92,6 +56,7 @@ function BottomButtons({ formData, handleChange }) {
 }
 
 const Createacc = () => {
+    const navigation = useNavigation();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -100,6 +65,7 @@ const Createacc = () => {
         password: '',
         confirmPassword: ''
     });
+    const [profileImage, setProfileImage] = useState(null); // State for the profile image
 
     const handleChange = (name, value) => {
         setFormData(prevState => ({
@@ -108,16 +74,84 @@ const Createacc = () => {
         }));
     };
 
+    const handleImagePick = async () => {
+        let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (permissionResult.granted === false) {
+            alert('Permission to access camera roll is required!');
+            return;
+        }
+
+        let pickerResult = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            aspect: [4, 4],
+            quality: 1,
+        });
+
+        if (!pickerResult.cancelled) {
+            setProfileImage({ uri: pickerResult.uri });
+        }
+    };
+
+    const handleCreate = async () => {
+        // Validation
+        if (!formData.name || !formData.email || !formData.nic || !formData.contact_number || !formData.password || !formData.confirmPassword) {
+            Alert.alert('Error', 'All fields are required');
+            return;
+        }
+        if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            Alert.alert('Error', 'Invalid email format');
+            return;
+        }
+        if (formData.password !== formData.confirmPassword) {
+            Alert.alert('Error', 'Passwords do not match');
+            return;
+        }
+    
+        try {
+            const formDataToSend = {
+                name: formData.name,
+                email: formData.email,
+                nic: formData.nic,
+                contact_number: formData.contact_number,
+                password: formData.password,
+            };
+            if (profileImage) {
+                formDataToSend.profile_image = profileImage.uri;
+            }
+    
+            const response = await axios.post(`${API_URL}/signup`, formDataToSend);
+    
+            if (response.status === 201) {
+                await AsyncStorage.setItem('accessToken', response.data.accessToken);
+                await AsyncStorage.setItem('refreshToken', response.data.refreshToken);
+                await AsyncStorage.setItem('username', response.data.username);
+                await AsyncStorage.setItem('email', response.data.email)
+                Alert.alert('Success', 'Account created successfully', [
+                    { text: 'OK', onPress: () => navigation.navigate('Emailverification') },
+                ]);
+            }
+        } catch (error) {
+            if (error.response && error.response.status === 409) {
+                Alert.alert('Error', 'User already exists');
+            } else {
+                console.error(error);
+                Alert.alert('Error', 'Failed to create account');
+            }
+        }
+    };
+    
     return (
         <KeyboardAwareScrollView>
             <View style={styles.container}>
                 <Text style={styles.title}>User Profile</Text>
-                <Image
-                    source={require('../../assets/img/userprofile.png')}
-                    style={styles.profileImage}
-                />
+                <TouchableOpacity onPress={handleImagePick}>
+                    <Image
+                        source={profileImage ? { uri: profileImage.uri } : require('../../assets/img/userprofile.png')}
+                        style={styles.profileImage}
+                    />
+                </TouchableOpacity>
                 <Createprofilefield formData={formData} handleChange={handleChange} />
-                <BottomButtons formData={formData} handleChange={handleChange} />
+                <BottomButtons formData={formData} handleChange={handleChange} handleCreate={handleCreate} />
             </View>
         </KeyboardAwareScrollView>
     );

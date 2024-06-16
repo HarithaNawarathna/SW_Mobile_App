@@ -1,10 +1,12 @@
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
-import React from 'react';
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
+import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function Verificationcodefield() {
-    const navigation = useNavigation();
+const API_URL = 'http://192.168.182.240:3000';
 
+function Verificationcodefield({ otp, setOtp, setIsButtonDisabled }) {
     return (
         <View style={styles.inputContainer}>
             <View style={styles.inputField}>
@@ -12,29 +14,62 @@ function Verificationcodefield() {
                     placeholder='Enter Verification Code'
                     placeholderTextColor={'#000000'}
                     style={styles.textInput}
+                    value={otp}
+                    onChangeText={(text) => {
+                        setOtp(text);
+                        setIsButtonDisabled(text.length !== 6);
+                    }}
+                    keyboardType='numeric'
                 />
             </View>
-            <Verify navigation={navigation} />
         </View>
     );
 }
 
-function Verify({ navigation }) {
-    function gotoVerify() {
-        navigation.navigate('BottomTabNavigation');
-    }
+function Verify({ otp, isButtonDisabled }) {
+    const navigation = useNavigation();
+
+    const handleVerify = async () => {
+        try {
+            const email = await AsyncStorage.getItem('email');
+            const response = await axios.post(`${API_URL}/verify-otp`, { email: email, otp });
+
+            if (response.status === 200) {
+                navigation.navigate('BottomTabNavigation');
+            }
+        } catch (error) {
+            if (error.response) {
+                switch (error.response.status) {
+                    case 404:
+                        Alert.alert("Error", "OTP not found for this email.");
+                        break;
+                    case 408:
+                        Alert.alert("Error", "OTP has expired.");
+                        break;
+                    case 400:
+                        Alert.alert("Error", "Invalid OTP.");
+                        break;
+                    default:
+                        Alert.alert("Error", "Error verifying OTP.");
+                }
+            } else {
+                Alert.alert("Error", "Network error. Please try again.");
+            }
+        }
+    };
 
     return (
-        <TouchableOpacity onPress={gotoVerify}>
-            <View style={styles.verifyButton}>
-                <Text style={styles.verifyButtonText}>Verify</Text>
+        <TouchableOpacity onPress={handleVerify} disabled={isButtonDisabled}>
+            <View style={[styles.verifyButton, isButtonDisabled && styles.verifyButtonDisabled]}>
+                <Text style={[styles.verifyButtonText, isButtonDisabled && styles.verifyButtonTextDisabled]}>Verify</Text>
             </View>
         </TouchableOpacity>
     );
 }
 
 const Emailverification = () => {
-    const navigation = useNavigation();
+    const [otp, setOtp] = useState('');
+    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
     return (
         <View style={styles.container}>
@@ -51,10 +86,10 @@ const Emailverification = () => {
                 In order to verify your email, enter the verification code that was sent to your mail
             </Text>
 
-            <Verificationcodefield navigation={navigation} />
+            <Verificationcodefield otp={otp} setOtp={setOtp} setIsButtonDisabled={setIsButtonDisabled} />
+            <Verify otp={otp} isButtonDisabled={isButtonDisabled} />
         </View>
-    )
-
+    );
 }
 
 export default Emailverification;
@@ -115,12 +150,16 @@ const styles = StyleSheet.create({
         marginBottom: 80,
         alignSelf: 'center',
     },
+    verifyButtonDisabled: {
+        backgroundColor: '#BEBEBE',
+    },
     verifyButtonText: {
         fontSize: 20,
         color: '#000000',
         textAlign: 'center',
         fontWeight: 'bold',
     },
-})
-
-
+    verifyButtonTextDisabled: {
+        color: '#A9A9A9',
+    },
+});

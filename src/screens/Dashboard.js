@@ -58,7 +58,7 @@ const Dashboard = () => {
     <View style={styles.container}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>
-          Welcome, {username}!
+          Hello, {username}!
         </Text>
         <Icon style={styles.waveIcon} name="hand-wave" size={30} color="#F6BD0F" />
       </View>

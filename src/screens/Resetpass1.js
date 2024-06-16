@@ -1,47 +1,38 @@
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
-// Function for Email field component
-function Emailfield() {
-    const navigation = useNavigation();
-    
-    return (
-        // Email input field
-        <View style={{ marginTop: 10 }}>
-            <View style={styles.inputContainer}>
-                <TextInput
-                    placeholder='Enter Your Email'
-                    placeholderTextColor={'#000000'}
-                    style={styles.input}
-                />
-            </View>
-            <SendVerificationButton />
-        </View>
-    );
-}
-
-function SendVerificationButton() {
-    const navigation = useNavigation();
-
-    function gotoResetpass2(){
-        navigation.navigate('Resetpass2')
-    }
-
-    return (
-        // TouchableOpacity containing the button to send verification code
-        <TouchableOpacity onPress={gotoResetpass2}>
-            <View style={styles.button}>
-                <Text style={styles.buttonText}>
-                    Send Verification Code
-                </Text>
-            </View>
-        </TouchableOpacity>
-    );
-}
+const API_URL = 'http://192.168.182.240:3000';
 
 const Resetpass1 = () => {
     const navigation = useNavigation();
+    const [email, setEmail] = useState('');
+
+    const handleSendVerification = async () => {
+        if (!email) {
+            Alert.alert('Error', 'Please enter your email.');
+            return;
+        }
+
+        try {
+            const response = await axios.post(`${API_URL}/reset-password-verification`, { email });
+            Alert.alert('Success', response.data);
+            navigation.navigate('Resetpass2'); // Navigate to the next screen after sending email
+        } catch (error) {
+            console.error('Error sending verification email:', error);
+            if (error.response) {
+                // Server responded with a non-2xx status code
+                Alert.alert('Error', `Server responded with status ${error.response.status}`);
+            } else if (error.request) {
+                // Request was made but no response was received
+                Alert.alert('Error', 'No response received from server.');
+            } else {
+                // Something else happened in making the request
+                Alert.alert('Error', 'Failed to send verification email. Please try again later.');
+            }
+        }
+    };
 
     return (
         <View style={styles.container}>
@@ -55,10 +46,29 @@ const Resetpass1 = () => {
             <Text style={styles.description}>
                 Enter your email starting with john******.com to continue
             </Text>
-            <Emailfield />
+            <View style={{ marginTop: 10 }}>
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        placeholder='Enter Your Email'
+                        placeholderTextColor={'#000000'}
+                        style={styles.input}
+                        value={email}
+                        onChangeText={setEmail}
+                        autoCapitalize='none'
+                        keyboardType='email-address'
+                    />
+                </View>
+                <TouchableOpacity onPress={handleSendVerification}>
+                    <View style={styles.button}>
+                        <Text style={styles.buttonText}>
+                            Send Verification Code
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
         </View>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
