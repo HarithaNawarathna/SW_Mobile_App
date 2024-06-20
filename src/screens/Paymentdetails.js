@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { StripeProvider, CardField, useConfirmPayment } from '@stripe/stripe-react-native';
 import axios from 'axios';
@@ -12,10 +12,8 @@ const Paymentdetails = () => {
   const { confirmPayment, loading } = useConfirmPayment();
   const [cardDetails, setCardDetails] = useState(null);
   const navigation = useNavigation();
-
   const route = useRoute(); 
   const totalPrice = route.params?.totalPrice || 0;
-  
 
   const fetchPaymentIntentClientSecret = async () => {
     try {
@@ -32,48 +30,61 @@ const Paymentdetails = () => {
     }
   };
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handlePayPress = async () => {
+    if (!cardHolderEmail || !validateEmail(cardHolderEmail)) {
+      Alert.alert('Invalid Email', 'Please enter a valid email address.');
+      return;
+    }
+
+    if (!cardDetails?.complete) {
+      Alert.alert('Incomplete Card Details', 'Please enter complete card details.');
+      return;
+    }
+
     try {
-      if (cardDetails) {
-        const clientSecret = await fetchPaymentIntentClientSecret();
-        const billingDetails = {
-          email: cardHolderEmail,
+      const clientSecret = await fetchPaymentIntentClientSecret();
+      const billingDetails = {
+        email: cardHolderEmail,
+      };
+      const { paymentIntent, error } = await confirmPayment(clientSecret, {
+        paymentMethodType: 'Card',
+        paymentMethodData: {
+          billingDetails,
+          card: cardDetails,
+        },
+      });
+
+      if (error) {
+        console.error('Payment confirmation error', error);
+        Alert.alert('Payment Error', error.message);
+      } else if (paymentIntent) {
+
+
+        const paymentData = {
+          payment_id: paymentIntent.id,
+          user_id: 456,
+          Email: cardHolderEmail,
+          amount: paymentIntent.amount
         };
-        const { paymentIntent, error } = await confirmPayment(clientSecret, {
-          paymentMethodType: 'Card',
-          paymentMethodData: {
-            billingDetails,
-            card: cardDetails,
-          },
-        });
-        if (error) {
-          console.error('Payment confirmation error', error);
-        } else if (paymentIntent) {
 
-          console.log('Success from promise', paymentIntent);
+        axios.post(`${API_URL}/savepayment`, paymentData)
+          .then(response => {
+            console.log('Response:', response.data);
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
 
-          // Data to be sent to server to save payment
-          const paymentData = {
-            payment_id: paymentIntent.id,
-            user_id: 456,
-            Email: cardHolderEmail,
-            amount: paymentIntent.amount
-          };
-
-          // Send payment data to server
-          axios.post(`${API_URL}/savepayment`, paymentData)
-            .then(response => {
-              console.log('Response:', response.data);
-            })
-            .catch(error => {
-              console.error('Error:', error);
-            });
-
-          navigation.navigate('Paymentverification'); 
-        }
+        navigation.navigate('Paymentverification'); 
       }
     } catch (error) {
       console.error('Error handling payment:', error);
+      Alert.alert('Payment Error', 'An error occurred while processing the payment.');
     }
   };
 
@@ -159,7 +170,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginLeft: -60,
   },
-
   inputContainer: {
     marginTop: 20,
   },

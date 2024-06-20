@@ -1,10 +1,61 @@
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
-import React from 'react';
-import { useNavigation } from '@react-navigation/native'; 
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const API_URL = 'http://192.168.182.240:3000';
 
 function Passwordfield() {
-    const navigation = useNavigation(); 
+    const navigation = useNavigation();
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+    const handlePasswordChange = (text) => {
+        setNewPassword(text);
+        validatePasswords(text, confirmPassword);
+    };
+
+    const handleConfirmPasswordChange = (text) => {
+        setConfirmPassword(text);
+        validatePasswords(newPassword, text);
+    };
+
+    const validatePasswords = (password, confirmPassword) => {
+        if (password.length < 8 || !/(?=.*[A-Za-z])(?=.*\d)/.test(password)) {
+            setErrorMessage('Password must be at least 8 characters long and include both letters and numbers');
+            setIsButtonDisabled(true);
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            setErrorMessage('Passwords do not match');
+            setIsButtonDisabled(true);
+            return;
+        }
+
+        setErrorMessage('');
+        setIsButtonDisabled(false);
+    };
+
+    const handleCreatePassword = async () => {
+        try {
+            const email = await AsyncStorage.getItem('userEmail');
+            const response = await axios.post(`${API_URL}/reset-password`, {
+                email,
+                newPassword,
+            });
+            Alert.alert('Success', 'Password updated successfully');
+            await AsyncStorage.removeItem('userEmail');  // Remove email from AsyncStorage
+            navigation.navigate('Login');
+        } catch (error) {
+            console.error('Error updating password:', error);
+            Alert.alert('Error', 'Failed to update password. Please try again later.');
+        }
+    };
 
     return (
         <View style={{ marginTop: 20 }}>
@@ -13,6 +64,9 @@ function Passwordfield() {
                     placeholder='Enter New Password'
                     placeholderTextColor={'#000000'}
                     style={styles.input}
+                    secureTextEntry
+                    value={newPassword}
+                    onChangeText={handlePasswordChange}
                 />
             </View>
             <View style={[styles.inputContainer, { marginTop: 20 }]}>
@@ -20,22 +74,21 @@ function Passwordfield() {
                     placeholder='Confirm New Password'
                     placeholderTextColor={'#000000'}
                     style={styles.input}
+                    secureTextEntry
+                    value={confirmPassword}
+                    onChangeText={handleConfirmPasswordChange}
                 />
             </View>
-            <CreateButton navigation={navigation} />
+            {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
+            <CreateButton onPress={handleCreatePassword} disabled={isButtonDisabled} />
         </View>
     );
 }
 
-function CreateButton({ navigation }) {
-    function gotoCreateButton() {
-        navigation.navigate('Updatedpass');
-    }
-
+function CreateButton({ onPress, disabled }) {
     return (
-        // TouchableOpacity containing the create button
-        <TouchableOpacity onPress={gotoCreateButton}>
-            <View style={styles.button}>
+        <TouchableOpacity onPress={onPress} disabled={disabled}>
+            <View style={[styles.button, disabled && styles.buttonDisabled]}>
                 <Text style={styles.buttonText}>
                     Create
                 </Text>
@@ -45,10 +98,7 @@ function CreateButton({ navigation }) {
 }
 
 const Newpass = () => {
-    const navigation = useNavigation(); 
-
     return (
-        // ScrollView to handle keyboard and avoid tap events
         <KeyboardAwareScrollView keyboardShouldPersistTaps={'never'}>
             <View style={styles.container}>
                 <Text style={styles.title}>
@@ -63,13 +113,13 @@ const Newpass = () => {
                         Create New Password
                     </Text>
                     <Text style={styles.description}>
-                        Your New password must be different from the previous password
+                        Your new password must be different from the previous password
                     </Text>
                 </View>
-                <Passwordfield navigation={navigation} />
+                <Passwordfield />
             </View>
         </KeyboardAwareScrollView>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -135,11 +185,19 @@ const styles = StyleSheet.create({
         marginBottom: 116,
         alignSelf: 'center',
     },
+    buttonDisabled: {
+        backgroundColor: '#C7ADCE',
+    },
     buttonText: {
         fontSize: 20,
         color: '#000000',
         textAlign: 'center',
         fontWeight: 'bold',
+    },
+    errorText: {
+        color: 'red',
+        marginTop: 10,
+        textAlign: 'center',
     },
 });
 

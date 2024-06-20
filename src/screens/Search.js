@@ -8,36 +8,28 @@ const Search = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const navigation = useNavigation(); 
 
+  const eventNames = ["Musical", "Drama", "Event 3", "Event 4", "Event 5"];
+
   const handleSearch = (text) => {
     setSearchQuery(text);
-    //perform searching logic here based on the 'text'
-    // For now, console log is used for the text
-    console.log('Search Query:', text);
   };
 
   const handleCancel = () => {
     setSearchQuery('');
   };
 
-  // Array of event names corresponding to each image
-  const eventNames = ["Event 1", "Event 2", "Event 3", "Event 4", "Event 5"];
+  // filter events based on search query
+  const filteredEvents = eventNames.filter(eventName =>
+    eventName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <View style={styles.container}>
-      <View style={{
-        flexDirection: 'row',
-        marginTop: 50,
-      }}>
-        <Text style={{
-          fontSize: 30,
-          color: '#FFFFFF',
-        }}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>
           Events
         </Text>
-        <Icon style={{
-          marginTop: 7,
-          marginLeft: 10,
-        }} name="calendar-check" size={30} color="#FDD835" />
+        <Icon style={styles.headerIcon} name="calendar-check" size={30} color="#FDD835" />
       </View>
       <View style={styles.searchBar}>
         <Icon name="search" size={20} color="#757575" style={styles.searchIcon} />
@@ -55,7 +47,7 @@ const Search = () => {
       </View>
 
       <KeyboardAwareScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
-        {eventNames.map((eventName, index) => (
+        {filteredEvents.map((eventName, index) => (
           <TouchableOpacity key={index} onPress={() => navigation.navigate('EventDetails', { eventName })}>
             <View style={styles.imageContainer}>
               <ImageBackground
@@ -70,12 +62,7 @@ const Search = () => {
         ))}
       </KeyboardAwareScrollView>
 
-      <View style={{
-        marginTop: 10,
-        marginBottom: 10,
-        
-      }}>
-      </View>
+      <View style={styles.bottomSpacer} />
     </View>
   );
 };
@@ -87,6 +74,18 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#401971',
     alignItems: 'center',
+  },
+  header: {
+    flexDirection: 'row',
+    marginTop: 50,
+  },
+  headerText: {
+    fontSize: 30,
+    color: '#FFFFFF',
+  },
+  headerIcon: {
+    marginTop: 7,
+    marginLeft: 10,
   },
   searchBar: {
     marginTop: 20,
@@ -111,7 +110,7 @@ const styles = StyleSheet.create({
   },
   scrollViewContent: {
     flexGrow: 1,
-    paddingBottom: 10, // Adjust this value to leave space for the bottom navigation
+    paddingBottom: 10,
   },
   imageContainer: {
     marginBottom: 10,
@@ -133,5 +132,9 @@ const styles = StyleSheet.create({
     textShadowColor: '#D32F2F',
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 20,
+  },
+  bottomSpacer: {
+    marginTop: 10,
+    marginBottom: 10,
   },
 });

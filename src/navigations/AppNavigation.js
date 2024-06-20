@@ -27,7 +27,9 @@ import Paymentdetails from '../screens/Paymentdetails';
 import Paymentverification from '../screens/Paymentverification';
 import Upcomingeventdetails from '../screens/Upcomingeventdetails';
 import Emailverification from '../screens/Emailverification';
+import PaymentSuccess from '../screens/PaymentSuccess';
 import BottomTabNavigation from './BottomTabNavigation';
+import QrCode from '../screens/QrCode';
 
 const Stack = createStackNavigator();
 
@@ -151,6 +153,16 @@ const AppNavigation = () => {
                     }
                 }/>
                 <Stack.Screen name="Emailverification" component={Emailverification} options={
+                    {
+                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
+                    }
+                }/>
+                <Stack.Screen name="PaymentSuccess" component={PaymentSuccess} options={
+                    {
+                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
+                    }
+                }/>
+                <Stack.Screen name="QrCode" component={QrCode} options={
                     {
                         cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
                     }

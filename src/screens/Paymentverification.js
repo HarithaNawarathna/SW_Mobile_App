@@ -21,7 +21,7 @@ function VerifyButton() {
     const navigation = useNavigation(); // Use the useNavigation hook to access navigation
 
     const gotoVerify = () => {
-        navigation.navigate('Paymentverification');
+        navigation.navigate('QrCode'); // Navigate to PaymentSuccess
     }
 
     return (
@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         marginBottom: 5,
         fontWeight: 'bold',
+        marginTop: 50,
     },
     image: {
         width: 240,
@@ -94,6 +95,7 @@ const styles = StyleSheet.create({
         marginTop: 5,
         marginBottom: 20,
         textAlign: 'center',
+        marginHorizontal: 20,
     },
     inputContainer: {
         marginTop: 10,

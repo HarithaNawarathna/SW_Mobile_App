@@ -11,12 +11,15 @@ const Upcomingeventdetails = () => {
     const route = useRoute();
     const id = route.params?.eventId || null;
     const [event, setEvent] = useState(null);
-
     function BuyTicketsButton() {
         const navigation = useNavigation();
 
         function gotoselecttickets() {
-            navigation.navigate('Selecttickets');
+            navigation.navigate('Selecttickets',{ eventId: event.id,
+                imgUrl : event.image_url,
+                eventName: event.event_name,
+                eventDate: event.date,
+                eventTime: event.time,});
         }
 
         return (
@@ -34,6 +37,7 @@ const Upcomingeventdetails = () => {
         const navigation = useNavigation();
 
         function gotofavourite() {
+            console.log(event.event_name)
             navigation.navigate('Favourite');
         }
 

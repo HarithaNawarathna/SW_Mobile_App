@@ -1,7 +1,10 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image, Alert } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import axios from 'axios';
+
+const API_URL = 'http://192.168.182.240:3000';
 
 function CheckoutButton({ onPress }) {
     return (
@@ -16,7 +19,6 @@ function CheckoutButton({ onPress }) {
 }
 
 const TicketType = ({ price, onUpdate }) => {
-    // State to manage the quantity of this ticket type
     const [quantity, setQuantity] = useState(0);
 
     const decreaseQuantity = () => {
@@ -49,7 +51,8 @@ const TicketType = ({ price, onUpdate }) => {
 
 const Selecttickets = () => {
     const navigation = useNavigation();
-    // State variables to track total price and quantity
+    const route = useRoute();
+    const { eventId, eventName, eventDate, eventTime, imgUrl } = route.params;
     const [totalPrice, setTotalPrice] = useState(0);
     const [quantity, setQuantity] = useState(0);
 
@@ -61,11 +64,6 @@ const Selecttickets = () => {
         }
     };
 
-    const gotoeventdetails = () => {
-        navigation.goBack();
-    };
-
-    // Update the total price and quantity based on ticket selection
     const updateSummary = (price, quantityToAdd) => {
         setTotalPrice(totalPrice + (price * quantityToAdd));
         setQuantity(quantity + quantityToAdd);
@@ -78,10 +76,11 @@ const Selecttickets = () => {
             </View>
 
             <View style={styles.eventContainer}>
-                <Image source={require('../../assets/img/festive.jpg')} style={styles.eventImage} />
+                <Image source={{ uri: imgUrl }} style={styles.eventImage} />
                 <View style={styles.eventDetails}>
-                    <Text style={styles.eventName}>Event Name</Text>
-                    <Text style={styles.eventDate}>Event Date & Time</Text>
+                    <Text style={styles.eventName}>{eventName}</Text>
+                    <Text style={styles.eventDate}>{eventDate}</Text>
+                    <Text style={styles.eventDate}>{eventTime}</Text>
                 </View>
             </View>
 
@@ -132,6 +131,7 @@ const styles = StyleSheet.create({
     eventContainer: {
         flexDirection: 'row',
         marginTop: 20,
+        width: '100%',
     },
     eventImage: {
         width: 150,
@@ -140,7 +140,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
     },
     eventDetails: {
-        marginTop: 40,
+        marginTop: 20,
+        width: 210,
     },
     eventName: {
         fontSize: 25,
@@ -176,7 +177,6 @@ const styles = StyleSheet.create({
     ticketTypePrice: {
         fontSize: 20,
         color: '#000000',
-
     },
     quantityContainer: {
         flexDirection: 'row',

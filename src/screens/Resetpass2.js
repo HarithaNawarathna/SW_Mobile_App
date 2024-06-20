@@ -31,8 +31,11 @@ function Verify({ otp, isButtonDisabled }) {
 
     const handleVerify = async () => {
         try {
+            console.log("executing handleVerify")
             const email = await AsyncStorage.getItem('email');
+            console.log(email);
             const response = await axios.post(`${API_URL}/verify-otp`, { email: email, otp });
+            console.log(response);
 
             if (response.status === 200) {
                 navigation.navigate('Newpass');

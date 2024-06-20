@@ -36,7 +36,7 @@ function Createprofilefield({ formData, handleChange }) {
     );
 }
 
-function BottomButtons({ formData, handleChange, handleCreate }) {
+function BottomButtons({ handleCreate }) {
     const navigation = useNavigation();
 
     return (
@@ -65,7 +65,7 @@ const Createacc = () => {
         password: '',
         confirmPassword: ''
     });
-    const [profileImage, setProfileImage] = useState(null); // State for the profile image
+    const [profileImage, setProfileImage] = useState(null);
 
     const handleChange = (name, value) => {
         setFormData(prevState => ({
@@ -98,12 +98,24 @@ const Createacc = () => {
             Alert.alert('Error', 'All fields are required');
             return;
         }
+        if (formData.name.length > 12) {
+            Alert.alert('Error', 'Full name must be at most 12 characters long');
+            return;
+        }
         if (!/\S+@\S+\.\S+/.test(formData.email)) {
             Alert.alert('Error', 'Invalid email format');
             return;
         }
+        if (!/^(\d{12}|\d{9}v)$/i.test(formData.nic)) {
+            Alert.alert('Error', 'NIC must be either 12 digits or 9 digits followed by "v"');
+            return;
+        }
         if (formData.password !== formData.confirmPassword) {
             Alert.alert('Error', 'Passwords do not match');
+            return;
+        }
+        if (formData.password.length < 8 || !/(?=.*[A-Za-z])(?=.*\d)/.test(formData.password)) {
+            Alert.alert('Error', 'Password must be at least 8 characters long and include both letters and numbers');
             return;
         }
     
@@ -151,7 +163,7 @@ const Createacc = () => {
                     />
                 </TouchableOpacity>
                 <Createprofilefield formData={formData} handleChange={handleChange} />
-                <BottomButtons formData={formData} handleChange={handleChange} handleCreate={handleCreate} />
+                <BottomButtons handleCreate={handleCreate} />
             </View>
         </KeyboardAwareScrollView>
     );
@@ -180,7 +192,7 @@ const styles = StyleSheet.create({
     inputContainer: {
         backgroundColor: '#FFFFFF',
         borderRadius: 10,
-        height: 37, // Increased height by 2px
+        height: 37,
         width: 350,
         marginHorizontal: 20,
         justifyContent: 'center',

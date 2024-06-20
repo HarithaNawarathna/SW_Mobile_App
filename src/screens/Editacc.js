@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, SafeAreaView, Alert } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
+import { firebase } from '../../config';
+import * as FileSystem from 'expo-file-system';
+import axios, { Axios } from 'axios';
+
+const API_URL = 'http://192.168.182.240:3000';
 
 function Editprofilefield() {
     return (
@@ -96,27 +101,62 @@ function BottomButtons2() {
 const Editacc = () => {
     const navigation = useNavigation();
     const [username, setUsername] = useState('');
-    const [profileImage, setProfileImage] = useState(null);
-    
+    const [image, setImage] = useState(null);
+    const [uploading, setUploading] = useState(false);
+
     useEffect(() => {
         AsyncStorage.getItem('username')
             .then((value) => setUsername(value)) // Set the username state
             .catch((error) => console.error('Error fetching username:', error));
     }, []);
 
-    const selectImage = async () => {
-        let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (permissionResult.granted === false) {
-            alert('Permission to access camera roll is required!');
-            return;
-        }
+    // useEffect(() => {
 
-        let pickerResult = await ImagePicker.launchImageLibraryAsync();
-        if (pickerResult.cancelled === true) {
-            return;
-        }
+    //     Axios.put(`${API_URL}/upload-image`, { image })
+    // }, []);
 
-        setProfileImage({ uri: pickerResult.uri });
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        if (!result.cancelled) {
+            setImage(result.assets[0].uri);
+        }
+    };
+
+    const uploadImage = async () => {
+        setUploading(true);
+
+        try {
+            const { uri } = await FileSystem.getInfoAsync(image);
+            const blob = await new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                xhr.onload = () => {
+                    resolve(xhr.response);
+                };
+                xhr.onerror = (e) => {
+                    reject(new TypeError('Network request failed'));
+                };
+                xhr.responseType = 'blob';
+                xhr.open('GET', uri, true);
+                xhr.send(null);
+            });
+
+            const filename = image.substring(image.lastIndexOf('/') + 1);
+            const ref = firebase.storage().ref().child(filename);
+
+            await ref.put(blob);
+            setUploading(false);
+            Alert.alert('Success', 'Image uploaded successfully');
+            setImage(null);
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            setUploading(false);
+        }
     };
 
     return (
@@ -125,11 +165,16 @@ const Editacc = () => {
                 <Text style={styles.title}>
                     Edit Profile
                 </Text>
-                <TouchableOpacity onPress={selectImage}>
-                    <Image
-                        source={profileImage ? profileImage : require('../../assets/img/userprofile.png')}
-                        style={styles.profileImage}
-                    />
+                <TouchableOpacity onPress={pickImage}>
+                    <View style={styles.imageContainer}>
+                        {image && <Image
+                            source={{ uri: image }}
+                            style={{ width: 300, height: 300 }}
+                        />}
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.uploadButton} onPress={uploadImage}>
+                    <Text style={styles.buttonText}>Upload Image</Text>
                 </TouchableOpacity>
                 <Text style={styles.labelText}>
                     {username}
@@ -198,13 +243,22 @@ const styles = StyleSheet.create({
         marginBottom: 44,
         marginTop: 80,
     },
-    profileImage: {
-        width: 80,
+    uploadButton: {
+        backgroundColor: '#F6BD0F',
+        height: 40,
+        width: 150,
+        justifyContent: 'center',
+        borderRadius: 20,
+        marginHorizontal: 10,
+        marginTop: 20,
+        marginBottom: 4,
+    },
+    imageContainer: {
+        alignItems: 'center',
         height: 80,
-        borderRadius: 50,
-        borderWidth: 4,
-        borderColor: '#F6BD0F',
-        marginBottom: 10,
+        width: 100,
+        borderColor: '#FFFFFF',
+        borderWidth: 2,
     },
 });
 

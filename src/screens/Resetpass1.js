@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const API_URL = 'http://192.168.182.240:3000';
 
@@ -18,6 +19,7 @@ const Resetpass1 = () => {
         try {
             const response = await axios.post(`${API_URL}/reset-password-verification`, { email });
             Alert.alert('Success', response.data);
+            await AsyncStorage.setItem('userEmail', email);  // Save email to AsyncStorage
             navigation.navigate('Resetpass2'); // Navigate to the next screen after sending email
         } catch (error) {
             console.error('Error sending verification email:', error);
