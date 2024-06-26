@@ -106,7 +106,9 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderWidth: 4,
     borderColor: '#F6BD0F',
+    marginTop: 10,
     marginBottom: 30,
+
   },
   inputField: {
     backgroundColor: '#FFFFFF',

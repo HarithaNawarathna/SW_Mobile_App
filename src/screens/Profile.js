@@ -1,18 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from '../../App';
+import * as ImagePicker from 'expo-image-picker';
+import { firebase } from '../../config';
+import axios from 'axios';
 
-
-const CircleWithText = ({ number }) => {
-  return (
-    <View style={styles.circleContainer}>
-      <Text style={styles.circleText}>{number}</Text>
-    </View>
-  );
-}
-
+const API_URL = 'http://192.168.182.240:3000';
 
 const TicketsButton = () => {
   const navigation = useNavigation();
@@ -46,6 +42,7 @@ const EditProfileButton = () => {
 
 const LogoutButton = () => {
   const navigation = useNavigation();
+  const { signOut } = useContext(AuthContext);
 
   function confirmLogout() {
     Alert.alert(
@@ -53,7 +50,7 @@ const LogoutButton = () => {
       'Are you sure you want to logout?',
       [
         { text: 'No', style: 'cancel' },
-        { text: 'Yes', onPress: () => navigation.navigate('Login') },
+        { text: 'Yes', onPress: () => signOut() },
       ],
       { cancelable: false }
     );
@@ -86,16 +83,6 @@ const Profile = () => {
         {username}
       </Text>
 
-      <View style={styles.circleRow}>
-        <CircleWithText number="12" />
-        <CircleWithText number="10" />
-      </View>
-
-      <View style={styles.statsRow}>
-        <Text style={styles.statsText}>Attended</Text>
-        <Text style={styles.statsText}>Upcoming</Text>
-      </View>
-
       <TicketsButton />
       <EditProfileButton />
       <LogoutButton />
@@ -123,32 +110,6 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     marginBottom: 20,
     fontWeight: 'bold',
-  },
-  circleRow: {
-    flexDirection: 'row',
-  },
-  circleContainer: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: '#F6BD0F',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 40,
-  },
-  circleText: {
-    fontSize: 45,
-    fontWeight: 'bold',
-    color: 'white',
-  },
-  statsRow: {
-    flexDirection: 'row',
-  },
-  statsText: {
-    fontSize: 20,
-    color: '#FFFFFF',
-    marginBottom: 20,
-    marginHorizontal: 50,
   },
   buttonContainer: {
     marginTop: 40,

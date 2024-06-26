@@ -1,27 +1,34 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, ImageBackground } from 'react-native';
-import React, { useState } from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Keyboard } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { useNavigation } from '@react-navigation/native'; 
+import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import axios from 'axios';
+
+const API_URL = 'http://192.168.182.240:3000';
 
 const Search = () => {
+  const navigation = useNavigation();
+  const [events, setEvents] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const navigation = useNavigation(); 
 
-  const eventNames = ["Musical", "Drama", "Event 3", "Event 4", "Event 5"];
+  useEffect(() => {
+    axios.get(`${API_URL}/getallevents`)
+      .then(response => {
+        setEvents(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching events data:', error);
+      });
+  }, []);
 
-  const handleSearch = (text) => {
-    setSearchQuery(text);
-  };
-
-  const handleCancel = () => {
-    setSearchQuery('');
-  };
-
-  // filter events based on search query
-  const filteredEvents = eventNames.filter(eventName =>
-    eventName.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredEvents = events.filter(event =>
+    event.event_name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  function gotoEventDetails(eventId) {
+    navigation.navigate('Eventdetails', { eventId });
+}
 
   return (
     <View style={styles.container}>
@@ -35,33 +42,35 @@ const Search = () => {
         <Icon name="search" size={20} color="#757575" style={styles.searchIcon} />
         <TextInput
           style={styles.input}
-          placeholder="Search Events"
+          placeholder="Search by event name"
+          placeholderTextColor="#757575"
           value={searchQuery}
-          onChangeText={handleSearch}
+          onChangeText={setSearchQuery}
+          onSubmitEditing={Keyboard.dismiss}
         />
-        {searchQuery !== '' && (
-          <TouchableOpacity onPress={handleCancel}>
+        {searchQuery ? (
+          <TouchableOpacity onPress={() => setSearchQuery('')}>
             <Icon name="times" size={20} color="#757575" style={styles.cancelIcon} />
           </TouchableOpacity>
-        )}
+        ) : null}
       </View>
-
-      <KeyboardAwareScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
-        {filteredEvents.map((eventName, index) => (
-          <TouchableOpacity key={index} onPress={() => navigation.navigate('EventDetails', { eventName })}>
-            <View style={styles.imageContainer}>
-              <ImageBackground
-                source={require('../../assets/img/festive.jpg')}
-                style={styles.imageBackground}
-                imageStyle={styles.imageStyle}
-              >
-                <Text style={styles.eventName}>{eventName}</Text>
-              </ImageBackground>
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+        {filteredEvents.map((event, index) => (
+          <TouchableOpacity key={index} onPress={() => gotoEventDetails(event.id)}>
+            <View style={styles.containerbox}>
+              <Image
+                source={{ uri: event.image_url }}
+                style={styles.image}
+              />
+              <View style={styles.eventDetails}>
+                <Text style={styles.eventDetailText1}>{event.event_name}</Text>
+                <Text style={styles.eventDetailText2}>{event.date}</Text>
+                <Text style={styles.eventDetailText2}>{event.time}</Text>
+              </View>
             </View>
           </TouchableOpacity>
         ))}
       </KeyboardAwareScrollView>
-
       <View style={styles.bottomSpacer} />
     </View>
   );
@@ -77,7 +86,7 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    marginTop: 50,
+    marginTop: 30,
   },
   headerText: {
     fontSize: 30,
@@ -107,31 +116,45 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 17,
+    color: '#000000',
   },
   scrollViewContent: {
     flexGrow: 1,
     paddingBottom: 10,
   },
-  imageContainer: {
-    marginBottom: 10,
-  },
-  imageBackground: {
-    width: 300,
-    height: 150,
+  containerbox: {
+    marginVertical: 5, 
     alignItems: 'center',
-    position: 'relative',
+    backgroundColor: '#C7ADCE',
+    width: 340,
+    height: 220,
+    borderRadius: 20,
+    marginTop: 20,
+    overflow: 'hidden',
   },
-  imageStyle: {
+  image: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute', 
+  },
+  eventDetails: {
+    position: 'absolute', 
+    bottom: 10, 
+    left: 10,
+    right: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+    padding: 10,
     borderRadius: 10,
   },
-  eventName: {
-    textAlign: 'center',
-    color: '#FFFFFF',
-    fontSize: 25,
+  eventDetailText1: {
+    fontSize: 18,
     fontWeight: 'bold',
-    textShadowColor: '#D32F2F',
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 20,
+    color: '#FFFFFF',
+  },
+  eventDetailText2: {
+    fontSize: 14,
+    color: '#FFFFFF',
+    marginTop: 5,
   },
   bottomSpacer: {
     marginTop: 10,

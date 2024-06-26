@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, StatusBar, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Formik } from 'formik';
@@ -6,6 +6,10 @@ import * as Yup from 'yup';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from "expo-secure-store";
+import Icon from 'react-native-vector-icons/Feather';
+
+import { AuthContext } from '../../App';
 
 const API_URL = 'http://192.168.182.240:3000';
 
@@ -18,7 +22,9 @@ const LoginSchema = Yup.object().shape({
 });
 
 const Login = () => {
+  const { signIn } = React.useContext(AuthContext);
   const navigation = useNavigation();
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const handleLogin = async (values) => {
     try {
@@ -26,12 +32,14 @@ const Login = () => {
         email: values.email,
         password: values.password
       });
-      
+
       if (response.status === 200) {
         await AsyncStorage.setItem('accessToken', response.data.accessToken);
+        await SecureStore.setItemAsync('accessToken', response.data.accessToken);
         await AsyncStorage.setItem('refreshToken', response.data.refreshToken);
         await AsyncStorage.setItem('username', response.data.username);
-        navigation.navigate('BottomTabNavigation');
+        await AsyncStorage.setItem('user_id', String(response.data.user_id));
+        signIn();
       }
     } catch (error) {
       if (error.response && error.response.data) {
@@ -49,10 +57,9 @@ const Login = () => {
         <Text style={styles.title}>Welcome</Text>
         <Text style={styles.logo}>{'Epic\nEventify'}</Text>
 
-        {/* Formik form for handling form inputs and validation */}
         <Formik
-          initialValues={{ email: '', password: '' }} // Initial form values
-          validationSchema={LoginSchema} // Validation for form inputs
+          initialValues={{ email: '', password: '' }}
+          validationSchema={LoginSchema}
           onSubmit={handleLogin}
         >
           {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
@@ -64,20 +71,28 @@ const Login = () => {
                 onChangeText={handleChange('email')}
                 onBlur={handleBlur('email')}
                 value={values.email}
-                keyboardType="email-address" // Set keyboard type to email
-                autoCapitalize="none" // Disable auto-capitalization
+                keyboardType="email-address"
+                autoCapitalize="none"
               />
               {touched.email && errors.email && <Text style={styles.error}>{errors.email}</Text>}
 
-              <TextInput
-                placeholder="Password"
-                placeholderTextColor="#000000"
-                secureTextEntry={true} // Hide password characters
-                style={styles.input}
-                onChangeText={handleChange('password')}
-                onBlur={handleBlur('password')}
-                value={values.password}
-              />
+              <View style={styles.passwordContainer}>
+                <TextInput
+                  placeholder="Password"
+                  placeholderTextColor="#000000"
+                  secureTextEntry={!passwordVisible}
+                  style={[styles.input, styles.passwordInput]}
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  value={values.password}
+                />
+                <TouchableOpacity
+                  style={styles.icon}
+                  onPress={() => setPasswordVisible(!passwordVisible)}
+                >
+                  <Icon name={passwordVisible ? "eye-off" : "eye"} size={20} color="#000000" />
+                </TouchableOpacity>
+              </View>
               {touched.password && errors.password && <Text style={styles.error}>{errors.password}</Text>}
 
               <TouchableOpacity onPress={handleSubmit} style={styles.button}>
@@ -133,6 +148,23 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     fontSize: 18,
     color: '#000000',
+    paddingRight: 10,
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
+    height: 40,
+    marginVertical: 10,
+  },
+  passwordInput: {
+    flex: 1,
+    paddingRight: 40,
+  },
+  icon: {
+    position: 'absolute',
+    right: 10,
   },
   button: {
     backgroundColor: '#F6BD0F',

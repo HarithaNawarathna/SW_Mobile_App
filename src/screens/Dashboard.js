@@ -14,12 +14,10 @@ const Dashboard = () => {
   const [username, setUsername] = useState('');
 
   useEffect(() => {
-    // Fetch username from AsyncStorage
     AsyncStorage.getItem('username')
-      .then((value) => setUsername(value)) // Set the username state
+      .then((value) => setUsername(value))
       .catch((error) => console.error('Error fetching username:', error));
 
-    // Fetch popular events from the backend API
     axios.get(`${API_URL}/getmostpopularevent`)
       .then(response => {
         setPopularEvents(response.data);
@@ -28,7 +26,6 @@ const Dashboard = () => {
         console.error('Error fetching popular events:', error);
       });
 
-    // Fetch upcoming events from the backend API
     axios.get(`${API_URL}/getupcomingeventdata`)
       .then(response => {
         setUpcomingEvents(response.data);
@@ -237,7 +234,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   chevronIcon: {
-    marginLeft: 5,
+    marginTop: 12,
   },
 });
 

@@ -1,5 +1,5 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text } from 'react-native';
+import React from 'react';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -33,148 +33,147 @@ import QrCode from '../screens/QrCode';
 
 const Stack = createStackNavigator();
 
-const AppNavigation = () => {
+const AppNavigation = ({ userToken }) => {
     return (
         <NavigationContainer>
-            <Stack.Navigator screenOptions={
-                {
-                    headerShown: false
-                }
-            }>
-                <Stack.Screen name="Splash" component={Splash} />
-                <Stack.Screen name="Login" component={Login} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid 
-                    }
-                }/>
-                <Stack.Screen name="Resetpass1" component={Resetpass1} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
-                <Stack.Screen name="Resetpass2" component={Resetpass2} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
-                <Stack.Screen name="Newpass" component={Newpass} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
-                <Stack.Screen name="Updatedpass" component={Updatedpass} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
-                <Stack.Screen name="Createacc" component={Createacc} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
-                <Stack.Screen name="Editacc" component={Editacc} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
-                <Stack.Screen name="Changepass" component={Changepass} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
-                <Stack.Screen name="Dashboard" component={Dashboard} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
-                <Stack.Screen name="Eventdetails" component={Eventdetails} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
-                <Stack.Screen name="Popularevents" component={Popularevents} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
-                <Stack.Screen name="Profile" component={Profile} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
-                <Stack.Screen name="Selecttickets" component={Selecttickets} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
-                <Stack.Screen name="Chats" component={Chats} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
-                <Stack.Screen name="Eventchat" component={Eventchat} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
-                <Stack.Screen name="Favourite" component={Favourite} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
-                <Stack.Screen name="Mytickets" component={Mytickets} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
-                <Stack.Screen name="Notifications" component={Notifications} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
-                <Stack.Screen name="Search" component={Search} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
-                <Stack.Screen name="Paymentdetails" component={Paymentdetails} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
-                <Stack.Screen name="Paymentverification" component={Paymentverification} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
-                <Stack.Screen name="Upcomingeventdetails" component={Upcomingeventdetails} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
-                <Stack.Screen name="Emailverification" component={Emailverification} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
-                <Stack.Screen name="PaymentSuccess" component={PaymentSuccess} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
-                <Stack.Screen name="QrCode" component={QrCode} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
-                <Stack.Screen name="BottomTabNavigation" component={BottomTabNavigation} options={
-                    {
-                        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid
-                    }
-                }/>
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
+                {userToken == null ? (
+                    <>
+                        <Stack.Screen name="Splash" component={Splash} />
+                        <Stack.Screen
+                            name="Login"
+                            component={Login}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                        <Stack.Screen
+                            name="Resetpass1"
+                            component={Resetpass1}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                        <Stack.Screen
+                            name="Resetpass2"
+                            component={Resetpass2}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                        <Stack.Screen
+                            name="Newpass"
+                            component={Newpass}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                        <Stack.Screen
+                            name="Updatedpass"
+                            component={Updatedpass}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                        <Stack.Screen
+                            name="Createacc"
+                            component={Createacc}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                        <Stack.Screen
+                            name="Emailverification"
+                            component={Emailverification}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                    </>
+                ) : (
+                    <>
+                        <Stack.Screen
+                            name="BottomTabNavigation"
+                            component={BottomTabNavigation}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                        <Stack.Screen
+                            name="Dashboard"
+                            component={Dashboard}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                        <Stack.Screen
+                            name="Eventdetails"
+                            component={Eventdetails}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                        <Stack.Screen
+                            name="Popularevents"
+                            component={Popularevents}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                        <Stack.Screen
+                            name="Profile"
+                            component={Profile}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                        <Stack.Screen
+                            name="Selecttickets"
+                            component={Selecttickets}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                        <Stack.Screen
+                            name="Chats"
+                            component={Chats}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                        <Stack.Screen
+                            name="Eventchat"
+                            component={Eventchat}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                        <Stack.Screen
+                            name="Favourite"
+                            component={Favourite}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                        <Stack.Screen
+                            name="Mytickets"
+                            component={Mytickets}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                        <Stack.Screen
+                            name="Notifications"
+                            component={Notifications}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                        <Stack.Screen
+                            name="Search"
+                            component={Search}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                        <Stack.Screen
+                            name="Paymentdetails"
+                            component={Paymentdetails}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                        <Stack.Screen
+                            name="Paymentverification"
+                            component={Paymentverification}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                        <Stack.Screen
+                            name="Upcomingeventdetails"
+                            component={Upcomingeventdetails}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                        <Stack.Screen
+                            name="Editacc"
+                            component={Editacc}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                        <Stack.Screen
+                            name="PaymentSuccess"
+                            component={PaymentSuccess}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                        <Stack.Screen
+                            name="QrCode"
+                            component={QrCode}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+
+                    </>
+                )}
             </Stack.Navigator>
         </NavigationContainer>
-    )
+    );
 }
 
-export default AppNavigation
+export default AppNavigation;

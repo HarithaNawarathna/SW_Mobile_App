@@ -35,7 +35,7 @@ function Verify({ otp, isButtonDisabled }) {
             const response = await axios.post(`${API_URL}/verify-otp`, { email: email, otp });
 
             if (response.status === 200) {
-                navigation.navigate('BottomTabNavigation');
+                navigation.navigate('Login');
             }
         } catch (error) {
             if (error.response) {
