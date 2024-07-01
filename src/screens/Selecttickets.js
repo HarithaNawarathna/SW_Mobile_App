@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image, Alert } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import axios from 'axios';
 
@@ -121,7 +120,8 @@ const styles = StyleSheet.create({
     },
     header: {
         flexDirection: 'row',
-        marginTop: 30,
+        marginTop: 50,
+        marginBottom: 30,
     },
     headerText: {
         fontSize: 30,

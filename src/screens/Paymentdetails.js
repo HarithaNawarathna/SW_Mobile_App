@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, Alert } fro
 import Icon from 'react-native-vector-icons/Ionicons';
 import { StripeProvider, CardField, useConfirmPayment } from '@stripe/stripe-react-native';
 import axios from 'axios';
-import { useNavigation, useRoute } from '@react-navigation/native'; 
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const API_URL = 'http://192.168.182.240:3000';
 
@@ -12,7 +12,7 @@ const Paymentdetails = () => {
   const { confirmPayment, loading } = useConfirmPayment();
   const [cardDetails, setCardDetails] = useState(null);
   const navigation = useNavigation();
-  const route = useRoute(); 
+  const route = useRoute();
   const totalPrice = route.params?.totalPrice || 0;
 
   const fetchPaymentIntentClientSecret = async () => {
@@ -63,8 +63,6 @@ const Paymentdetails = () => {
         console.error('Payment confirmation error', error);
         Alert.alert('Payment Error', error.message);
       } else if (paymentIntent) {
-
-
         const paymentData = {
           payment_id: paymentIntent.id,
           user_id: 456,
@@ -80,7 +78,7 @@ const Paymentdetails = () => {
             console.error('Error:', error);
           });
 
-        navigation.navigate('Paymentverification'); 
+        navigation.navigate('Paymentverification');
       }
     } catch (error) {
       console.error('Error handling payment:', error);
@@ -96,20 +94,13 @@ const Paymentdetails = () => {
         <View style={styles.header}>
           <Text style={styles.headerText}>Payment Details</Text>
         </View>
-        <View>
+        <View style={styles.acceptingContainer}>
           <Text style={styles.visaText}>We are Accepting</Text>
           <Image
             source={require('../../assets/img/Visa-Logo.png')}
-            style={{
-              width: 200,
-              height: 60,
-              marginBottom: 10,
-              marginTop: 20,
-              alignContent: 'center',
-            }}
+            style={styles.visaLogo}
           />
         </View>
-
         <View style={styles.inputContainer}>
           <Text style={styles.inputLabel}>Card Holder Email</Text>
           <TextInput
@@ -117,6 +108,7 @@ const Paymentdetails = () => {
             onChangeText={setCardHolderEmail}
             value={cardHolderEmail}
             placeholder="Enter email"
+            placeholderTextColor="#AAAAAA"
             keyboardType="email-address"
           />
         </View>
@@ -131,18 +123,13 @@ const Paymentdetails = () => {
               backgroundColor: '#FFFFFF',
               textColor: '#000000',
             }}
-            style={{
-              width: '100%',
-              height: 50,
-              marginVertical: 30,
-            }}
+            style={styles.cardField}
             onCardChange={(cardDetails) => setCardDetails(cardDetails)}
-            onFocus={(focusedField) => {
-            }}
+            onFocus={(focusedField) => {}}
           />
         </View>
-        <TouchableOpacity onPress={handlePayPress} style={styles.confirmButton}>
-          <Text style={styles.confirmButtonText}>Confirm</Text>
+        <TouchableOpacity onPress={handlePayPress} style={styles.confirmButton} disabled={loading}>
+          <Text style={styles.confirmButtonText}>{loading ? 'Processing...' : 'Confirm'}</Text>
         </TouchableOpacity>
       </View>
     </StripeProvider>
@@ -154,6 +141,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#401971',
     alignItems: 'center',
+    padding: 20,
   },
   header: {
     flexDirection: 'row',
@@ -162,51 +150,68 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 30,
     color: '#FFFFFF',
-    marginHorizontal: 40,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  acceptingContainer: {
+    alignItems: 'center',
+    marginVertical: 20,
   },
   visaText: {
     fontSize: 20,
     color: '#F6BD0F',
-    marginTop: 20,
-    marginLeft: -60,
+    marginTop: 30,
+  },
+  visaLogo: {
+    width: 200,
+    height: 60,
+    marginTop: 10,
+    marginBottom: 30,
   },
   inputContainer: {
-    marginTop: 20,
+    width: '100%',
+    marginVertical: 20,
   },
   inputLabel: {
     fontSize: 20,
     color: '#C7ADCE',
-    marginBottom: 20,
-    marginTop: 30,
+    marginBottom: 10,
   },
   input: {
-    width: 350,
+    width: '100%',
+    height: 50,
     backgroundColor: '#FFFFFF',
-    padding: 10,
-    borderRadius: 5,
+    padding: 15,
+    borderRadius: 10,
     fontSize: 18,
+    color: '#000000',
+  },
+  cardFieldContainer: {
+    width: '100%',
   },
   cardFieldLabel: {
     fontSize: 20,
     color: '#C7ADCE',
-    marginTop: 40,
-    marginBottom: -10,
+    marginTop: 20,
+    marginBottom: 10,
   },
-  cardFieldContainer: {
-    width: 350,
+  cardField: {
+    width: '100%',
+    height: 50,
+    marginBottom: 30,
   },
   confirmButton: {
     backgroundColor: '#F6BD0F',
-    height: 40,
-    width: 300,
+    height: 50,
+    width: '70%',
     justifyContent: 'center',
-    borderRadius: 20,
-    marginTop: 90,
+    alignItems: 'center',
+    borderRadius: 10,
+    marginTop: 30,
   },
   confirmButtonText: {
     fontSize: 20,
-    color: '#000000',
-    textAlign: 'center',
+    color: '#401971',
     fontWeight: 'bold',
   },
 });

@@ -3,8 +3,6 @@ import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Alert } fro
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as ImagePicker from 'expo-image-picker';
-import { firebase } from '../../config';
 import axios from 'axios';
 
 const API_URL = 'http://192.168.182.240:3000';
@@ -12,74 +10,97 @@ const API_URL = 'http://192.168.182.240:3000';
 const Editacc = () => {
     const navigation = useNavigation();
     const [username, setUsername] = useState('');
-    const [image, setImage] = useState(null);
-    const [uploading, setUploading] = useState(false);
-    const [userId, setUserId]  = useState('');
+    const [userId, setUserId] = useState('');
+    const [fullName, setFullName] = useState('');
+    const [email, setEmail] = useState('');
+    const [nic, setNic] = useState('');
+    const [contactNumber, setContactNumber] = useState('');
+    const [profileImage, setProfileImage] = useState('');
 
     useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const user_id = await AsyncStorage.getItem('user_id');
+                if (user_id) {
+                    setUserId(user_id);
+                    const response = await axios.get(`${API_URL}/get-user/${user_id}`);
+                    const userData = response.data[0];
+                    setFullName(userData.name);
+                    setEmail(userData.email);
+                    setNic(userData.nic);
+                    setContactNumber(userData.contact_number);
+                    setProfileImage(userData.profile_image);
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        };
+
+        fetchUserData();
+
         AsyncStorage.getItem('username')
             .then((value) => setUsername(value))
             .catch((error) => console.error('Error fetching username:', error));
-    
-        AsyncStorage.getItem('user_id')
-            .then((value) => setUserId(value))
-            .catch((error) => console.log('Error fetching user_id:', error));
     }, []);
-    
-    
-    const pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-        });
 
-        if (!result.cancelled && result.assets && result.assets.length > 0) {
-            setImage(result.assets[0].uri);
-            
-        }
+    const validateEmail = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
     };
 
-    const uploadImage = async () => {
-        setUploading(true);
+    const validateNic = (nic) => {
+        const nicRegex = /^(\d{9}[vV]|\d{12})$/;
+        return nicRegex.test(nic);
+    };
+
+    const validateContactNumber = (contactNumber) => {
+        const contactNumberRegex = /^0\d{9}$/;
+        return contactNumberRegex.test(contactNumber);
+    };
+
+    const validateFullName = (name) => {
+        return name.length <= 12;
+    };
+
+    const saveChanges = async () => {
+        if (!validateFullName(fullName)) {
+            Alert.alert('Error', 'Name can contain a maximum of 12 characters');
+            return;
+        }
+        if (!validateEmail(email)) {
+            Alert.alert('Error', 'Invalid email address');
+            return;
+        }
+        if (!validateNic(nic)) {
+            Alert.alert('Error', 'NIC must be either 12 digits or 9 digits followed by "v" or "V"');
+            return;
+        }
+        if (!validateContactNumber(contactNumber)) {
+            Alert.alert('Error', 'Contact number should contain 10 digits starting with 0');
+            return;
+        }
 
         try {
             const user_id = await AsyncStorage.getItem('user_id');
-            if (!image) {
-                throw new Error('No image selected');
+            if (!user_id) {
+                Alert.alert('Error', 'User ID not found');
+                return;
             }
-
-            const response = await fetch(image);
-            const blob = await response.blob();
-
-            const filename = image.substring(image.lastIndexOf('/') + 1);
-            const ref = firebase.storage().ref().child(filename);
-
-            const snapshot = await ref.put(blob);
-            const downloadURL = await snapshot.ref.getDownloadURL();
-
-            await axios.put(`${API_URL}/upload-image`, {
-                user_id: user_id, 
-                img_url: downloadURL,
-            });
-
-            setUploading(false);
-            Alert.alert('Success', 'Image uploaded successfully');
-            setImage(null);
+            const updatedData = {
+                user_id: parseInt(user_id, 10),
+                name: fullName,
+                email: email,
+                nic: nic,
+                contact_number: contactNumber
+            };
+            await axios.put(`${API_URL}/edit-user`, updatedData);
+            Alert.alert('Success', 'Profile updated successfully');
+            AsyncStorage.setItem('username', fullName);
+            navigation.navigate('Editacc'); // Navigate to the same screen
         } catch (error) {
-            console.error('Error uploading image:', error.message);
-            setUploading(false);
-            Alert.alert('Error', error.message);
+            console.error('Error updating profile:', error);
+            Alert.alert('Error', 'Failed to update profile');
         }
-    };
-
-    const goToProfile = () => {
-        navigation.navigate('Profile');
-    };
-
-    const goToLogin = () => {
-        navigation.navigate('Profile');
     };
 
     const goToChangePassword = () => {
@@ -87,76 +108,39 @@ const Editacc = () => {
     };
 
     return (
-        <KeyboardAwareScrollView>
-            <View style={styles.container}>
-                <Text style={styles.title}>
-                    Edit Profile
-                </Text>
-                <TouchableOpacity onPress={pickImage}>
-                    <View style={styles.imageContainer}>
-                        {image && <Image
-                            source={{ uri: image }}
-                            style={{ width: 150, height: 150 }}
-                        />}
-                    </View>
+        <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+            <Text style={styles.title}>Edit Profile</Text>
+            <Image
+                source={profileImage ? { uri: profileImage } : require('../../assets/img/userprofile.png')}
+                style={styles.profileImage}
+            />
+            <Text style={styles.labelText}>{username}</Text>
+            <Text style={styles.labelText1}>{email}</Text>
+            <Text style={styles.labelText1}>{nic}</Text>
+
+            <View style={styles.form}>
+                <TextInput
+                    placeholder='Enter Full Name'
+                    placeholderTextColor={'#555555'}
+                    style={styles.input}
+                    value={fullName}
+                    onChangeText={setFullName}
+                />
+                <TextInput
+                    placeholder='Enter Contact No'
+                    placeholderTextColor={'#555555'}
+                    style={styles.input}
+                    value={contactNumber}
+                    onChangeText={setContactNumber}
+                />
+            </View>
+            <TouchableOpacity onPress={goToChangePassword}>
+                <Text style={styles.changePasswordText}>Change Password</Text>
+            </TouchableOpacity>
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity onPress={saveChanges} style={styles.button}>
+                    <Text style={styles.buttonText}>Save</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.uploadButton} onPress={uploadImage}>
-                    <Text style={styles.buttonText}>Upload Image</Text>
-                </TouchableOpacity>
-                <Text style={styles.labelText}>
-                    {username}
-                </Text>
-                <View>
-                    <View style={styles.inputContainer}>
-                        <TextInput
-                            placeholder='Enter Full Name'
-                            placeholderTextColor={'#000000'}
-                            style={styles.input}
-                        />
-                    </View>
-                    <View style={[styles.inputContainer, { marginTop: 30 }]}>
-                        <TextInput
-                            placeholder='Enter Email Address'
-                            placeholderTextColor={'#000000'}
-                            style={styles.input}
-                        />
-                    </View>
-                    <View style={[styles.inputContainer, { marginTop: 30 }]}>
-                        <TextInput
-                            placeholder='Enter NIC'
-                            placeholderTextColor={'#000000'}
-                            style={styles.input}
-                        />
-                    </View>
-                    <View style={[styles.inputContainer, { marginTop: 30 }]}>
-                        <TextInput
-                            placeholder='Enter Contact No'
-                            placeholderTextColor={'#000000'}
-                            style={styles.input}
-                        />
-                    </View>
-                </View>
-                <TouchableOpacity onPress={goToChangePassword}>
-                    <Text style={styles.changePasswordText}>
-                        Change Password
-                    </Text>
-                </TouchableOpacity>
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity onPress={goToProfile}>
-                        <View style={styles.button}>
-                            <Text style={styles.buttonText}>
-                                Cancel
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={goToLogin}>
-                        <View style={styles.button}>
-                            <Text style={styles.buttonText}>
-                                Save
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
             </View>
         </KeyboardAwareScrollView>
     );
@@ -164,80 +148,77 @@ const Editacc = () => {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         backgroundColor: '#401971',
         alignItems: 'center',
-        height: 887,
-        paddingVertical: 40,
-    },
-    labelText: {
-        fontSize: 30,
-        color: '#FFFFFF',
-        marginBottom: 30,
-        marginTop: 20,
-    },
-    inputContainer: {
-        backgroundColor: '#FFFFFF',
-        borderRadius: 10,
-        height: 35,
-        width: 350,
-        marginHorizontal: 20,
-        justifyContent: 'center',
-        paddingLeft: 20,
-        marginBottom: 5,
-    },
-    input: {
-        fontSize: 18,
-        opacity: 0.5,
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        marginHorizontal: 20,
-        marginTop: 20,
-    },
-    button: {
-        backgroundColor: '#F6BD0F',
-        height: 40,
-        width: 150,
-        justifyContent: 'center',
-        borderRadius: 20,
-        marginHorizontal: 10,
-        marginTop: 20,
-        marginBottom: 4,
-    },
-    buttonText: {
-        fontSize: 25,
-        color: '#000000',
-        textAlign: 'center',
-    },
-    changePasswordText: {
-        fontSize: 18,
-        color: '#C69CD1',
-        marginTop: 20,
-        marginRight: 200,
+        paddingVertical: 20,
+        paddingHorizontal: 20,
     },
     title: {
         fontSize: 30,
         color: '#FFFFFF',
-        marginBottom: 10,
-        marginTop: 10,
-    },
-    uploadButton: {
-        backgroundColor: '#F6BD0F',
-        height: 35,
-        width: 150,
-        justifyContent: 'center',
-        borderRadius: 20,
-        marginHorizontal: 10,
-        marginTop: 20,
-        marginBottom: 4,
-    },
-    imageContainer: {
-        alignItems: 'center',
-        height: 150,
-        width: 150,
-        borderColor: '#FFFFFF',
-        borderWidth: 2,
+        marginTop: 40,
         marginBottom: 20,
+        fontWeight: 'bold',
+    },
+    profileImage: {
+        width: 150,
+        height: 150,
+        borderRadius: 75,
+        marginBottom: 20,
+        borderWidth: 4,
+        borderColor: '#F6BD0F',
+    },
+    labelText: {
+        fontSize: 22,
+        color: '#FFFFFF',
+        marginBottom: 40,
+        fontWeight: 'bold',
+    },
+    labelText1: {
+        fontSize: 22,
+        color: '#FFFFFF',
+        marginBottom: 20,
+        alignSelf: 'flex-start',
+        marginLeft: 10,
+    },
+    form: {
+        width: '100%',
+    },
+    input: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: 10,
+        height: 40,
+        marginVertical: 10,
+        paddingLeft: 15,
+        fontSize: 18,
+        color: '#000000',
+    },
+    changePasswordText: {
+        fontSize: 20,
+        color: '#C69CD1',
+        marginTop: 10,
+        marginBottom: 20,
+        marginRight: 200,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        width: '100%',
+        marginTop: 20,
+    },
+    button: {
+        backgroundColor: '#F6BD0F',
+        height: 50,
+        width: '48%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10,
+    },
+    buttonText: {
+        fontSize: 20,
+        color: '#401971',
+        fontWeight: 'bold',
     },
 });
 

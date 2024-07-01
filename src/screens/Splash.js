@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/native';
 const Splash = () => {
   const navigation = useNavigation(); 
 
-  // useEffect hook to handle navigation after a certain time delay
   useEffect(() => {
     const timer = setTimeout(() => {
       navigateToLogin(); 

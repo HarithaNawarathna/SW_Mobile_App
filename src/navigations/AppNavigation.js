@@ -3,7 +3,6 @@ import React from 'react';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 
-import Changepass from '../screens/Changepass';
 import Chats from '../screens/Chats';
 import Createacc from '../screens/Createacc';
 import Dashboard from '../screens/Dashboard';
@@ -28,6 +27,7 @@ import Paymentverification from '../screens/Paymentverification';
 import Upcomingeventdetails from '../screens/Upcomingeventdetails';
 import Emailverification from '../screens/Emailverification';
 import PaymentSuccess from '../screens/PaymentSuccess';
+import Changepass from '../screens/Changepass';
 import BottomTabNavigation from './BottomTabNavigation';
 import QrCode from '../screens/QrCode';
 
@@ -161,6 +161,11 @@ const AppNavigation = ({ userToken }) => {
                         <Stack.Screen
                             name="PaymentSuccess"
                             component={PaymentSuccess}
+                            options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
+                        />
+                        <Stack.Screen
+                            name="Changepass"
+                            component={Changepass}
                             options={{ cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid }}
                         />
                         <Stack.Screen
