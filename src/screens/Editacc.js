@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     labelText1: {
-        fontSize: 22,
+        fontSize: 18,
         color: '#FFFFFF',
         marginBottom: 20,
         alignSelf: 'flex-start',

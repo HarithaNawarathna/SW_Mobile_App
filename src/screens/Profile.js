@@ -11,21 +11,6 @@ import { set } from 'firebase/database';
 
 const API_URL = 'http://192.168.182.240:3000';
 
-const TicketsButton = () => {
-  const navigation = useNavigation();
-
-  function gotoMytickets() {
-    navigation.navigate('Mytickets');
-  }
-
-  return (
-    <TouchableOpacity onPress={gotoMytickets} style={styles.ticketsbuttonContainer}>
-      <Icon name="ticket" size={30} color="#FFB300" />
-      <Text style={styles.buttonText}>Tickets</Text>
-    </TouchableOpacity>
-  );
-}
-
 const EditProfileButton = () => {
   const navigation = useNavigation();
 
@@ -154,7 +139,6 @@ const uploadImage = async () => {
       <TouchableOpacity style={styles.uploadButton} onPress={uploadImage}>
         <Text style={styles.uploadButtonText}>Upload Image</Text>
       </TouchableOpacity>
-      <TicketsButton />
       <EditProfileButton />
       <LogoutButton />
     </View>
@@ -214,21 +198,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#3A155B',
     flexDirection: 'row',
     justifyContent: 'center',
-  },
-  ticketsbuttonContainer: {
-    marginTop: 20,
-    alignItems: 'center',
-    flexDirection: 'row',
-    width: '80%',
-    paddingVertical: 10,
-    borderRadius: 20,
-    backgroundColor: '#3A155B',
-    justifyContent: 'center',
-  },
-  buttonText: {
-    fontSize: 20,
-    color: '#FFFFFF',
-    marginHorizontal: 10,
   },
   buttonTextSmall: {
     fontSize: 16,

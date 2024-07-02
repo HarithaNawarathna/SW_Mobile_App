@@ -30,7 +30,6 @@ const Eventdetails = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Event Details</Text>
-        <BookMarkButton />
       </View>
 
       <Image
@@ -78,20 +77,6 @@ function BuyTicketsButton({ event }) {
       <View style={styles.buyTicketsButton}>
         <Text style={styles.buyTicketsButtonText}>Buy Tickets</Text>
       </View>
-    </TouchableOpacity>
-  );
-}
-
-function BookMarkButton() {
-  const navigation = useNavigation();
-
-  function gotofavourite() {
-    navigation.navigate('Favourite');
-  }
-
-  return (
-    <TouchableOpacity onPress={gotofavourite}>
-      <Icon style={styles.bookmarkButton} name="bookmarks" size={30} color="#FFB300" />
     </TouchableOpacity>
   );
 }

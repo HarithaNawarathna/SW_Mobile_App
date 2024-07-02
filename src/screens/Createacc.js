@@ -10,7 +10,7 @@ const API_URL = 'http://192.168.182.240:3000';
 
 function Createprofilefield({ formData, handleChange }) {
     const placeholders = {
-        name: "Enter FULL NAME",
+        name: "Enter Your NAME",
         email: "Enter EMAIL ADDRESS",
         nic: "Enter NIC",
         contact_number: "Enter CONTACT NUMBER",

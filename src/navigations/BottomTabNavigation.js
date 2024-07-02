@@ -22,9 +22,6 @@ function HomeBottomNavigator() {
             case 'Chats':
               iconName = focused ? 'chatbubble' : 'chatbubble-outline';
               break;
-            case 'Favourite':
-              iconName = focused ? 'heart' : 'heart-outline';
-              break;
             case 'Profile':
               iconName = focused ? 'person' : 'person-outline';
               break;
@@ -61,15 +58,6 @@ function HomeBottomNavigator() {
       <Tab.Screen
         name="Chats"
         component={Chats}
-        options={{
-          headerShown: false,
-          tabBarLabel: '',
-        }}
-      />
-
-      <Tab.Screen
-        name="Favourite"
-        component={Favourite}
         options={{
           headerShown: false,
           tabBarLabel: '',

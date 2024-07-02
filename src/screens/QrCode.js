@@ -1,23 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Platform } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
+import * as FileSystem from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
 
 const API_URL = 'http://192.168.182.240:3000';
 
 const QrCode = () => {
     const [tickets, setTickets] = useState([]);
     const navigation = useNavigation();
+    const qrCodeRef = useRef();
 
     const fetchEventDetails = async () => {
         try {
             const response = await axios.get(`${API_URL}/get-tickets-data-by-user/1/1`);
-            console.log(response.data);
             setTickets(response.data);
         } catch (error) {
-            console.error('Error fetching tickets:', error);
+            console.error('error fetching tickets:', error);
         }
     };
 
@@ -25,7 +27,37 @@ const QrCode = () => {
         fetchEventDetails();
     }, []);
 
+    useEffect(() => {
+        if (tickets.length > 0) {
+            downloadQRCode();
+        }
+    }, [tickets]);
+
     const ticketsString = JSON.stringify(tickets);
+
+    const downloadQRCode = async () => {
+        if (Platform.OS === 'android') {
+            const { status } = await MediaLibrary.requestPermissionsAsync();
+            if (status !== 'granted') {
+                console.error('storage permission not granted');
+                return;
+            }
+        }
+
+        qrCodeRef.current.toDataURL(async (data) => {
+            const fileUri = `${FileSystem.cacheDirectory}qr_code.png`;
+            await FileSystem.writeAsStringAsync(fileUri, data, { encoding: FileSystem.EncodingType.Base64 });
+            
+            const asset = await MediaLibrary.createAssetAsync(fileUri);
+            await MediaLibrary.createAlbumAsync('QR Codes', asset, false)
+                .then(() => {
+                    console.log('qr code saved to gallery');
+                })
+                .catch((error) => {
+                    console.error('error saving to gallery:', error);
+                });
+        });
+    };
 
     return (
         <View style={styles.container}>
@@ -37,7 +69,7 @@ const QrCode = () => {
                     <Icon name="close" size={30} color="#000000" />
                 </TouchableOpacity>
                 <Text style={styles.headerText}>
-                    Payment {'\n'} Successful
+                    payment {'\n'} successful
                 </Text>
                 <View style={styles.qrContainer}>
                     {tickets.length > 0 && (
@@ -46,9 +78,13 @@ const QrCode = () => {
                             size={235}
                             color="#000000"
                             backgroundColor="white"
+                            getRef={(ref) => (qrCodeRef.current = ref)}
                         />
                     )}
                 </View>
+                <TouchableOpacity style={styles.downloadButton} onPress={downloadQRCode}>
+                    <Text style={styles.downloadButtonText}>Download Qr Code</Text>
+                </TouchableOpacity>
             </View>
         </View>
     );
@@ -68,7 +104,7 @@ const styles = StyleSheet.create({
     card: {
         marginVertical: 200,
         width: '73%',
-        height: 380,
+        height: 430,
         alignItems: 'center',
         backgroundColor: '#C7ADCE',
         borderRadius: 10,
@@ -85,6 +121,7 @@ const styles = StyleSheet.create({
     },
     qrContainer: {
         paddingTop: 25,
+        height: 260,
     },
     headerText: {
         fontSize: 22,
@@ -100,5 +137,15 @@ const styles = StyleSheet.create({
         right: 10,
         padding: 10,
         zIndex: 1,
+    },
+    downloadButton: {
+        marginTop: 20,
+        backgroundColor: '#401971',
+        padding: 10,
+        borderRadius: 5,
+    },
+    downloadButtonText: {
+        color: 'white',
+        fontSize: 16,
     },
 });

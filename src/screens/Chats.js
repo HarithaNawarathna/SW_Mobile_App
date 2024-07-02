@@ -17,7 +17,6 @@ const ChatItem = ({ name, date, image }) => {
                 <Image source={image} style={styles.chatImage} />
                 <View style={styles.chatContent}>
                     <Text style={styles.chatName}>{name}</Text>
-                    <Text style={styles.chatDate}>{formattedDate}</Text>
                 </View>
             </View>
         </TouchableOpacity>
@@ -27,22 +26,22 @@ const ChatItem = ({ name, date, image }) => {
 const Chats = () => {
     const chatData = [
         {
-            name: "John Doe",
+            name: "Fitness Expo",
             date: "2024-06-14",
             image: require('../../assets/img/festive.jpg') // Replace with actual image source
         },
         {
-            name: "Jane Smith",
+            name: "Food Festival",
             date: "2024-07-21",
             image: require('../../assets/img/festive.jpg') // Replace with actual image source
         },
         {
-            name: "Jane Smith",
+            name: "Art Exhibition",
             date: "2024-07-21",
             image: require('../../assets/img/festive.jpg') // Replace with actual image source
         },
         {
-            name: "Jane Smith",
+            name: "Tech Conference",
             date: "2024-07-21",
             image: require('../../assets/img/festive.jpg') // Replace with actual image source
         },

@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     lineHeight: 59,
   },
   form: {
-    width: '80%',
+    width: '90%',
     marginTop: 50,
   },
   input: {
