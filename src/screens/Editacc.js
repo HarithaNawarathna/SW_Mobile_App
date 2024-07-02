@@ -165,14 +165,15 @@ const styles = StyleSheet.create({
         width: 150,
         height: 150,
         borderRadius: 75,
-        marginBottom: 20,
+        marginTop: 30,
+        marginBottom: 30,
         borderWidth: 4,
         borderColor: '#F6BD0F',
     },
     labelText: {
         fontSize: 22,
         color: '#FFFFFF',
-        marginBottom: 40,
+        marginBottom: 60,
         fontWeight: 'bold',
     },
     labelText1: {
@@ -180,10 +181,10 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         marginBottom: 20,
         alignSelf: 'flex-start',
-        marginLeft: 10,
+        marginLeft: 15,
     },
     form: {
-        width: '100%',
+        width: '95%',
     },
     input: {
         backgroundColor: '#FFFFFF',

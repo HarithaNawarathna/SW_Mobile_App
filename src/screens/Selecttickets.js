@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, Alert } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Alert, ActivityIndicator } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import axios from 'axios';
@@ -17,7 +17,7 @@ function CheckoutButton({ onPress }) {
     );
 }
 
-const TicketType = ({ price, onUpdate }) => {
+const TicketType = ({ type, price, onUpdate }) => {
     const [quantity, setQuantity] = useState(0);
 
     const decreaseQuantity = () => {
@@ -34,7 +34,10 @@ const TicketType = ({ price, onUpdate }) => {
 
     return (
         <View style={styles.ticketType}>
-            <Text style={styles.ticketTypePrice}>{price}</Text>
+            <View style={styles.ticketInfo}>
+                <Text style={styles.ticketTypeText}>{type}</Text>
+                <Text style={styles.ticketTypePrice}>{price}</Text>
+            </View>
             <View style={styles.quantityContainer}>
                 <TouchableOpacity onPress={decreaseQuantity}>
                     <Text style={styles.quantityButton}>-</Text>
@@ -54,6 +57,23 @@ const Selecttickets = () => {
     const { eventId, eventName, eventDate, eventTime, imgUrl } = route.params;
     const [totalPrice, setTotalPrice] = useState(0);
     const [quantity, setQuantity] = useState(0);
+    const [ticketTypes, setTicketTypes] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchTicketData = async () => {
+            try {
+                const response = await axios.get(`${API_URL}/get-ticket-data-by-event/${eventId}`);
+                setTicketTypes(response.data);
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching ticket data:", error);
+                setLoading(false);
+            }
+        };
+
+        fetchTicketData();
+    }, [eventId]);
 
     const gotoPaymentdetails = () => {
         if (quantity === 0) {
@@ -67,6 +87,14 @@ const Selecttickets = () => {
         setTotalPrice(totalPrice + (price * quantityToAdd));
         setQuantity(quantity + quantityToAdd);
     };
+
+    if (loading) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#F6BD0F" />
+            </View>
+        );
+    }
 
     return (
         <View style={styles.container}>
@@ -86,8 +114,13 @@ const Selecttickets = () => {
             <Text style={styles.ticketTypetext}>Ticket Type</Text>
 
             <View style={styles.ticketTypeTitle}>
-                {[1000, 2000, 3000].map((price, index) => (
-                    <TicketType price={price} key={index} onUpdate={updateSummary} />
+                {ticketTypes.map((ticket) => (
+                    <TicketType 
+                        key={ticket.id} 
+                        type={ticket.type_name} 
+                        price={ticket.price} 
+                        onUpdate={updateSummary} 
+                    />
                 ))}
             </View>
 
@@ -121,7 +154,7 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
         marginTop: 50,
-        marginBottom: 30,
+        marginBottom: 10,
     },
     headerText: {
         fontSize: 30,
@@ -134,8 +167,8 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     eventImage: {
-        width: 150,
-        height: 140,
+        width: 170,
+        height: 160,
         borderRadius: 20,
         marginHorizontal: 20,
     },
@@ -154,13 +187,12 @@ const styles = StyleSheet.create({
     },
     ticketTypeTitle: {
         flexDirection: 'column',
-        marginTop: 5,
         alignItems: 'center',
     },
     ticketTypetext: {
         fontSize: 25,
         color: '#FFFFFF',
-        marginTop: 20,
+        marginTop: 30,
         marginRight: 200,
     },
     ticketType: {
@@ -174,6 +206,16 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
     },
+    ticketInfo: {
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        marginTop: -2,
+        marginBottom: -2,
+    },
+    ticketTypeText: {
+        fontSize: 20,
+        color: '#000000',
+    },
     ticketTypePrice: {
         fontSize: 20,
         color: '#000000',
@@ -181,7 +223,7 @@ const styles = StyleSheet.create({
     quantityContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 5,
+        marginTop:5,
         justifyContent: 'flex-end',
     },
     quantityButton: {
@@ -224,5 +266,11 @@ const styles = StyleSheet.create({
         color: '#000000',
         textAlign: 'center',
         fontWeight: 'bold',
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#401971',
     },
 });

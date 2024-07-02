@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../App';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/Feather';
 
 const API_URL = 'http://192.168.182.240:3000';
 
@@ -12,6 +13,9 @@ function Changepassfield() {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [currentPasswordVisible, setCurrentPasswordVisible] = useState(false);
+  const [newPasswordVisible, setNewPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const { user } = useContext(AuthContext);
   const navigation = useNavigation();
 
@@ -46,16 +50,19 @@ function Changepassfield() {
   };
 
   return (
-    <View>
+    <View style={styles.inputContainer}>
       <View style={styles.inputField}>
         <TextInput
           placeholder='Enter Old Password'
           placeholderTextColor={'#555555'}
           style={styles.inputText}
-          secureTextEntry={true}
+          secureTextEntry={!currentPasswordVisible}
           value={currentPassword}
           onChangeText={setCurrentPassword}
         />
+        <TouchableOpacity onPress={() => setCurrentPasswordVisible(!currentPasswordVisible)} style={styles.eyeIcon}>
+          <Icon name={currentPasswordVisible ? 'eye-off' : 'eye'} size={20} color="#555555" />
+        </TouchableOpacity>
       </View>
 
       <View style={styles.inputField}>
@@ -63,10 +70,13 @@ function Changepassfield() {
           placeholder='Enter New Password'
           placeholderTextColor={'#555555'}
           style={styles.inputText}
-          secureTextEntry={true}
+          secureTextEntry={!newPasswordVisible}
           value={newPassword}
           onChangeText={setNewPassword}
         />
+        <TouchableOpacity onPress={() => setNewPasswordVisible(!newPasswordVisible)} style={styles.eyeIcon}>
+          <Icon name={newPasswordVisible ? 'eye-off' : 'eye'} size={20} color="#555555" />
+        </TouchableOpacity>
       </View>
 
       <View style={styles.inputField}>
@@ -74,10 +84,13 @@ function Changepassfield() {
           placeholder='Confirm Password'
           placeholderTextColor={'#555555'}
           style={styles.inputText}
-          secureTextEntry={true}
+          secureTextEntry={!confirmPasswordVisible}
           value={confirmPassword}
           onChangeText={setConfirmPassword}
         />
+        <TouchableOpacity onPress={() => setConfirmPasswordVisible(!confirmPasswordVisible)} style={styles.eyeIcon}>
+          <Icon name={confirmPasswordVisible ? 'eye-off' : 'eye'} size={20} color="#555555" />
+        </TouchableOpacity>
       </View>
       <BottomButtons3 navigation={navigation} handleChangePassword={handleChangePassword} />
     </View>
@@ -137,6 +150,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 80,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
   profileImage: {
     width: 150,
@@ -149,19 +163,30 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 2,
+    alignSelf: 'center',
+  },
+  inputContainer: {
+    width: '100%',
+    alignItems: 'center',
   },
   inputField: {
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
     height: 40,
-    width: 350,
+    width: '95%',
     marginVertical: 15,
     paddingLeft: 15,
     justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   inputText: {
+    flex: 1,
     fontSize: 18,
     color: '#000000',
+  },
+  eyeIcon: {
+    paddingHorizontal: 10,
   },
   buttonRow: {
     flexDirection: 'row',

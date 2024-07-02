@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, Alert } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 import { StripeProvider, CardField, useConfirmPayment } from '@stripe/stripe-react-native';
 import axios from 'axios';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -67,7 +66,7 @@ const Paymentdetails = () => {
           payment_id: paymentIntent.id,
           user_id: 456,
           Email: cardHolderEmail,
-          amount: paymentIntent.amount
+          amount: paymentIntent.amount,
         };
 
         axios.post(`${API_URL}/savepayment`, paymentData)
@@ -115,7 +114,7 @@ const Paymentdetails = () => {
         <View style={styles.cardFieldContainer}>
           <Text style={styles.cardFieldLabel}>Card Details</Text>
           <CardField
-            postalCodeEnabled={true}
+            postalCodeEnabled={false}
             placeholder={{
               number: '4242 4242 4242 4242',
             }}
@@ -134,7 +133,7 @@ const Paymentdetails = () => {
       </View>
     </StripeProvider>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -166,7 +165,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 60,
     marginTop: 10,
-    marginBottom: 30,
+    marginBottom: 50,
   },
   inputContainer: {
     width: '100%',
@@ -207,7 +206,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
-    marginTop: 30,
+    marginTop: 80,
   },
   confirmButtonText: {
     fontSize: 20,

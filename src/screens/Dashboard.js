@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    marginTop: 20,
+    marginTop: 30,
     width: '90%',
   },
   searchButtonContent: {

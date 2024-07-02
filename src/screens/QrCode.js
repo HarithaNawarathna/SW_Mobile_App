@@ -32,7 +32,7 @@ const QrCode = () => {
             <View style={styles.card}>
                 <TouchableOpacity 
                     style={styles.closeButton}
-                    onPress={() => navigation.navigate('Dashboard')}
+                    onPress={() => navigation.navigate('BottomTabNavigation')}
                 >
                     <Icon name="close" size={30} color="#000000" />
                 </TouchableOpacity>

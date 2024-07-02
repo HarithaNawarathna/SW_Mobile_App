@@ -22,13 +22,17 @@ const Search = () => {
       });
   }, []);
 
-  const filteredEvents = events.filter(event =>
-    event.event_name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredEvents = events.filter(event => {
+    const queryWords = searchQuery.toLowerCase().split(' ');
+    const eventWords = event.event_name.toLowerCase().split(' ');
+    return queryWords.every((queryWord, index) => {
+      return eventWords[index] && eventWords[index].startsWith(queryWord);
+    });
+  });
 
   function gotoEventDetails(eventId) {
     navigation.navigate('Eventdetails', { eventId });
-}
+  }
 
   return (
     <View style={styles.container}>

@@ -8,13 +8,14 @@ const API_URL = 'http://192.168.182.240:3000';
 
 const Eventdetails = () => {
   const route = useRoute();
-  const id = route.params?.eventId || null;
+  const id = route.params?.eventId || null; 
   const [event, setEvent] = useState(null);
 
   useEffect(() => {
     axios.get(`${API_URL}/geteventdatabyid/${id}`)
       .then(response => {
         setEvent(response.data[0]);
+      
       })
       .catch(error => {
         console.error('Error fetching event data:', error);
@@ -63,17 +64,15 @@ const Eventdetails = () => {
 
 function BuyTicketsButton({ event }) {
   const navigation = useNavigation();
-
   function gotoselecttickets() {
     navigation.navigate('Selecttickets', {
-      eventId: event.id,
-      imgUrl : event.image_url,
+      eventId: event.id,  
+      imgUrl: event.image_url,
       eventName: event.event_name,
       eventDate: event.date,
       eventTime: event.time,
     });
   }
-
   return (
     <TouchableOpacity onPress={gotoselecttickets}>
       <View style={styles.buyTicketsButton}>
@@ -110,7 +109,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 30,
     color: '#FFFFFF',
-    marginBottom: 10,
+    marginBottom: 30,
     marginHorizontal: 40,
   },
   eventImage: {

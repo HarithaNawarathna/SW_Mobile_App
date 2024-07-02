@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     headerText: {
         fontSize: 30,
         color: '#FFFFFF',
-        marginBottom: 10,
+        marginBottom: 30,
         marginHorizontal: 40,
     },
     eventImage: {
