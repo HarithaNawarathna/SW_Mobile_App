@@ -1,119 +1,64 @@
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useNavigation } from '@react-navigation/native';
 
-function Emailfield(props_emailf) {
-
-    const stack = props_emailf.stack
+// Function for Email field component
+function Emailfield() {
+    const navigation = useNavigation();
     
     return (
+        // Email input field
         <View style={{ marginTop: 10 }}>
-
-            <View style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: 20,
-                height: 40,
-                width: 300,
-                marginHorizontal: 20,
-                justifyContent: 'center',
-                paddingLeft: 20,
-            }}>
+            <View style={styles.inputContainer}>
                 <TextInput
                     placeholder='Enter Your Email'
                     placeholderTextColor={'#000000'}
-                    style={{
-                        opacity: 0.6,
-                        fontSize: 15,
-                    }}
+                    style={styles.input}
                 />
             </View>
-            <SendVerificationButton stack={stack} />
+            <SendVerificationButton />
         </View>
     );
 }
 
-function SendVerificationButton(propsverification) {
-
-    const stack = propsverification.stack;
+function SendVerificationButton() {
+    const navigation = useNavigation();
 
     function gotoResetpass2(){
-        stack.navigate('Resetpass2')
+        navigation.navigate('Resetpass2')
     }
 
     return (
-
+        // TouchableOpacity containing the button to send verification code
         <TouchableOpacity onPress={gotoResetpass2}>
-            <View style={{
-            backgroundColor: '#F6BD0F',
-            height: 40,
-            width: 300,
-            justifyContent: 'center',
-            borderRadius: 20,
-            marginHorizontal: 20,
-            marginTop: 40,
-            marginBottom: 80,
-
-        }}>
-            <Text style={{
-                fontSize: 20,
-                color: '#000000',
-                textAlign: 'center',
-                fontWeight: 'bold',
-            }}>
-                Send Verification Code
-            </Text>
-        </View>
+            <View style={styles.button}>
+                <Text style={styles.buttonText}>
+                    Send Verification Code
+                </Text>
+            </View>
         </TouchableOpacity>
-
     );
 }
 
-const Resetpass1 = (propsresetpass1) => {
-
-    const stack = propsresetpass1.navigation;
+const Resetpass1 = () => {
+    const navigation = useNavigation();
 
     return (
         <View style={styles.container}>
-            <Text style={{
-                fontSize: 22,
-                color: '#FFFFFF',
-                marginBottom: 5,
-                fontWeight: 'bold',
-            }}>
+            <Text style={styles.title}>
                 Reset Password Verification
             </Text>
-
-            <View>
-                <Image
-                    source={require('../../assets/img/forgotpass.png')}
-                    style={{
-                        width: 250,
-                        height: 250,
-                        alignContent: 'center',
-                    }}
-                />
-
-
-            </View>
-            <View>
-                <Text style={{
-                    fontSize: 16,
-                    color: '#BBBBC4',
-                    marginTop: 5,
-                    marginBottom: 20,
-                    textAlign: 'center',
-                }}>
-                    Enter your email starting with john******.com to continue
-                </Text>
-            </View>
-
-            <Emailfield stack={stack} />
-
+            <Image
+                source={require('../../assets/img/forgotpass.png')}
+                style={styles.image}
+            />
+            <Text style={styles.description}>
+                Enter your email starting with john******.com to continue
+            </Text>
+            <Emailfield />
         </View>
     )
 }
-
-export default Resetpass1
 
 const styles = StyleSheet.create({
     container: {
@@ -122,4 +67,53 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-})
+    title: {
+        fontSize: 22,
+        color: '#FFFFFF',
+        marginBottom: 5,
+        fontWeight: 'bold',
+    },
+    image: {
+        width: 250,
+        height: 250,
+        alignSelf: 'center',
+    },
+    description: {
+        fontSize: 16,
+        color: '#BBBBC4',
+        marginTop: 5,
+        marginBottom: 20,
+        textAlign: 'center',
+    },
+    inputContainer: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: 20,
+        height: 40,
+        width: 300,
+        marginHorizontal: 20,
+        justifyContent: 'center',
+        paddingLeft: 20,
+    },
+    input: {
+        opacity: 0.6,
+        fontSize: 18,
+    },
+    button: {
+        backgroundColor: '#F6BD0F',
+        height: 40,
+        width: 300,
+        justifyContent: 'center',
+        borderRadius: 20,
+        marginHorizontal: 20,
+        marginVertical: 50,
+        alignSelf: 'center',
+    },
+    buttonText: {
+        fontSize: 20,
+        color: '#000000',
+        textAlign: 'center',
+        fontWeight: 'bold',
+    },
+});
+
+export default Resetpass1;

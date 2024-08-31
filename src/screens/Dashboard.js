@@ -1,8 +1,11 @@
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from 'react-native'
 import React from 'react'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { useNavigation } from '@react-navigation/native'; 
 
-const Dashboard = ({ navigation }) => {
+
+const Dashboard = () => {
+  const navigation = useNavigation(); 
 
   function viewMore() {
     navigation.navigate('Popularevents');
@@ -16,70 +19,43 @@ const Dashboard = ({ navigation }) => {
     navigation.navigate('Search');
   }
 
+  // Array of upcoming events
+  const upcomingEvents = [
+    { name: 'Event 1', date: 'May 1, 2024', imageSource: require('../../assets/img/festive.jpg') },
+    { name: 'Event 2', date: 'May 5, 2024', imageSource: require('../../assets/img/festive.jpg') },
+    { name: 'Event 3', date: 'May 10, 2024', imageSource: require('../../assets/img/festive.jpg') },
+    { name: 'Event 4', date: 'May 15, 2024', imageSource: require('../../assets/img/festive.jpg') },
+  ];
+
   return (
     <View style={styles.container}>
 
-      <View style={{
-        flexDirection: 'row',
-        marginTop: 50,
-        marginRight: 100,
-      }}>
-        <Text style={{
-          fontSize: 30,
-          color: '#FFFFFF',
-        }}>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>
           Hello, --Name--
         </Text>
-
-        <Icon style={{
-          marginTop: 8,
-          marginLeft: 10,
-        }} name="hand-wave" size={30} color="#F6BD0F" />
-
+        <Icon style={styles.waveIcon} name="hand-wave" size={30} color="#F6BD0F" />
       </View>
-      <Text style={{
-        fontSize: 20,
-        color: '#C7ADCE',
-        marginRight: 130,
-        marginTop: 10,
-      }}>
+
+      <Text style={styles.subTitle}>
         Let's find a good event!
       </Text>
-
+      {/* Button to navigate to Search Screen */}
       <TouchableOpacity onPress={navigateToSearch} style={styles.searchButton}>
-        <View style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}>
-          <Text style={{
-            color: '#C7ADCE',
-            fontSize: 18,
-            marginRight: 150
-          }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={{ color: '#C7ADCE', fontSize: 18, marginRight: 150 }}>
             Search Events
           </Text>
           <Icon name="magnify" size={24} color="#C7ADCE" />
         </View>
       </TouchableOpacity>
 
-      <View style={{
-        flexDirection: 'row',
-        marginTop: 20,
-      }}>
-
-        <Text style={{
-          fontSize: 25,
-          color: '#FFFFFF',
-        }}>
+      <View style={{ flexDirection: 'row', marginTop: 20 }}>
+        <Text style={{ fontSize: 25, color: '#FFFFFF' }}>
           Popular Events
         </Text>
-
         <TouchableOpacity onPress={viewMore}>
-          <Text style={{
-            fontSize: 15,
-            color: '#FFFFFF',
-            marginLeft: 90,
-          }}>
+          <Text style={styles.viewMoreText}>
             View More
           </Text>
         </TouchableOpacity>
@@ -88,13 +64,7 @@ const Dashboard = ({ navigation }) => {
       <View style={styles.containerbox}>
         <Image
           source={require('../../assets/img/festive.jpg')}
-          style={{
-            width: 150,
-            height: 160,
-            borderRadius: 20,
-            marginVertical: 10,
-            marginHorizontal: 10,
-          }}
+          style={{ width: 150, height: 160, borderRadius: 20, marginVertical: 10, marginHorizontal: 10 }}
         />
         <View style={styles.eventDetails}>
           <Text style={styles.eventDetailText1}>Event Name</Text>
@@ -102,78 +72,35 @@ const Dashboard = ({ navigation }) => {
           <TouchableOpacity onPress={more}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text style={styles.eventDetailText3}>More</Text>
-              <Icon style={{marginTop: 20,}} name="chevron-right" size={20} color="#000000" />
+              <Icon style={{ marginTop: 20 }} name="chevron-right" size={20} color="#000000" />
             </View>
           </TouchableOpacity>
         </View>
       </View>
 
-      <View style={{
-        flexDirection: 'row',
-        marginTop: 20,
-      }}>
-        <Text style={{
-          fontSize: 25,
-          color: '#FFFFFF',
-          marginRight: 130,
-        }}>
+      <View style={{ flexDirection: 'row', marginTop: 20 }}>
+        <Text style={styles.upcomingEventsText}>
           Upcoming Events
         </Text>
       </View>
 
-      <ScrollView horizontal={true}>
-        <View style={{
-          flexDirection: 'row',
-          marginTop: 20,
-        }}>
-          <Image
-            source={require('../../assets/img/festive.jpg')}
-            style={{
-              width: 150,
-              height: 160,
-              borderRadius: 20,
-              marginVertical: 10,
-              marginHorizontal: 10,
-            }}
-          />
-          <Image
-            source={require('../../assets/img/festive.jpg')}
-            style={{
-              width: 150,
-              height: 160,
-              borderRadius: 20,
-              marginVertical: 10,
-              marginHorizontal: 10,
-            }}
-          />
-          <Image
-            source={require('../../assets/img/festive.jpg')}
-            style={{
-              width: 150,
-              height: 160,
-              borderRadius: 20,
-              marginVertical: 10,
-              marginHorizontal: 10,
-            }}
-          />
-          <Image
-            source={require('../../assets/img/festive.jpg')}
-            style={{
-              width: 150,
-              height: 160,
-              borderRadius: 20,
-              marginVertical: 10,
-              marginHorizontal: 10,
-            }}
-          />
+      {/* Horizontal ScrollView for Upcoming Events */}
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        <View style={{ flexDirection: 'row', marginTop: 20 }}>
+          {/* Render each upcoming event */}
+          {upcomingEvents.map((event, index) => (
+            <Image
+              key={index}
+              source={event.imageSource}
+              style={{ width: 150, height: 160, borderRadius: 20, marginVertical: 10, marginHorizontal: 10 }}
+            />
+          ))}
         </View>
       </ScrollView>
 
     </View>
   )
 }
-
-export default Dashboard
 
 const styles = StyleSheet.create({
   container: {
@@ -204,7 +131,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#000000',
     fontWeight: 'bold',
-
   },
   eventDetailText2: {
     fontSize: 15,
@@ -217,4 +143,35 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 20,
   },
-})
+  title: {
+    fontSize: 30,
+    color: '#FFFFFF',
+    marginTop: 50,
+    marginRight: 110,
+  },
+  titleContainer: {
+    flexDirection: 'row',
+  },
+  waveIcon: {
+    marginTop: 60,
+    marginLeft: 1,
+  },
+  subTitle: {
+    fontSize: 20,
+    color: '#C7ADCE',
+    marginRight: 130,
+    marginTop: 10,
+  },
+  viewMoreText: {
+    fontSize: 15,
+    color: '#FFFFFF',
+    marginLeft: 90,
+  },
+  upcomingEventsText: {
+    fontSize: 25,
+    color: '#FFFFFF',
+    marginRight: 130,
+  },
+});
+
+export default Dashboard

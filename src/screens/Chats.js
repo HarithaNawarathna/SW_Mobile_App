@@ -71,10 +71,6 @@ const Chats = () => {
                 marginBottom: 10,
 
             }}>
-                <Text style={{
-                    color: '#FFFFFF',
-                    textAlign: 'center'
-                }}>--here comes the bottom tab navigation--</Text>
             </View>
         </View>
     );
